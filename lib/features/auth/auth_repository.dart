@@ -21,7 +21,8 @@ class AuthRepository {
       "isLogin": _authLocalDataSource.checkIsAuth(),
       "id": _authLocalDataSource.getId(),
       "email": _authLocalDataSource.getEmail(),
-      "username": _authLocalDataSource.getName(),
+      "name": _authLocalDataSource.getName(),
+      "mobile": _authLocalDataSource.getEmail(),
     };
   }
 
@@ -78,6 +79,33 @@ class AuthRepository {
     await _authLocalDataSource.setMobile(result['mobile']);
     //await _authLocalDataSource.setImage(result['image']);
     return Map.from(result); //
+  }
+
+
+  //  Modifier le mot de passe
+  Future<String> updatePassword({
+    String? password,
+    String? passwordConfirmation}) async {
+    final result = await _authRemoteDataSource.updatePassword(
+        password: password,
+        passwordConfirmation: passwordConfirmation
+    );
+    return result;
+  }
+
+  // Mise à jour profil
+  Future<String> updateUser({String? nom,String? prenom,
+    String? telephone,}) async {
+    final result = await _authRemoteDataSource.updateUser(
+      nom: nom,
+      prenom: prenom,
+      telephone: telephone,
+    );
+    print(result);
+    Map<String, dynamic> user = result['user'];
+    String message = result['message'];
+
+    return message; //
   }
 
   Future<void> signOut() async {

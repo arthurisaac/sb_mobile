@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:smartbox/ui/utils/strings_constants.dart';
 
 import '../../ui/utils/api_body_parameters.dart';
 import '../../ui/utils/api_utils.dart';
@@ -78,6 +79,69 @@ class AuthRemoteDataSource {
       throw AuthException(errorMessageCode: e.toString());
     }
   }
+
+
+  Future<dynamic> updatePassword({
+    String? password,
+    String? passwordConfirmation,
+  }) async {
+    try {
+      final body = {
+        "password": password,
+        "password_confirmation": passwordConfirmation,
+        //fcmIdKey: fcmToken,
+      };
+      final response = await http.post(Uri.parse(updatePasswordUrl),
+          body: body, headers: ApiUtils.getHeaders());
+      final responseJson = jsonDecode(response.body);
+
+      if (responseJson.containsKey('errors')) {
+        throw AuthException(errorMessageCode: responseJson['message']);
+      }
+
+      return responseJson['message'];
+    } on SocketException catch (_) {
+      throw AuthException(errorMessageCode: noInternet);
+    } on AuthException catch (e) {
+      throw AuthException(errorMessageCode: e.toString());
+    } catch (e) {
+      throw AuthException(errorMessageCode: e.toString());
+    }
+  }
+
+
+  Future<dynamic> updateUser({
+    String? nom,
+    String? prenom,
+    String? telephone,
+    String? mobile,
+  }) async {
+    try {
+      final body = {
+        "nom": nom,
+        "prenom": prenom,
+        "telephone": telephone,
+        "mobile": telephone,
+        //fcmIdKey: fcmToken,
+      };
+      final response = await http.post(Uri.parse(updateUserUrl),
+          body: body, headers: ApiUtils.getHeaders());
+      final responseJson = jsonDecode(response.body);
+
+      if (responseJson.containsKey('errors')) {
+        throw AuthException(errorMessageCode: responseJson['message']);
+      }
+
+      return responseJson;
+    } on SocketException catch (_) {
+      throw AuthException(errorMessageCode: noInternet);
+    } on AuthException catch (e) {
+      throw AuthException(errorMessageCode: e.toString());
+    } catch (e) {
+      throw AuthException(errorMessageCode: e.toString());
+    }
+  }
+
 
   static Future<String> getFCMToken() async {
     try {

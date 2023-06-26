@@ -11,4 +11,8 @@ const String jwtTokenKey = "jwtToken";
 //api end points
 const String loginUrl = "${baseUrl}login";
 const String registerUrl = "${baseUrl}register";
-const String rideRequestUrl = "${baseUrl}ride-request";
+const String updatePasswordUrl = "${baseUrl}change-password";
+const String updateUserUrl = "${baseUrl}me/update";
+
+// espace entre les widgets
+const double space = 20;

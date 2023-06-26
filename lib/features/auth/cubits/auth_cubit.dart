@@ -71,6 +71,13 @@ class AuthCubit extends Cubit<AuthState> {
     return "";
   }
 
+  String getMobile() {
+    if (state is Authenticated) {
+      return (state as Authenticated).authModel.mobile!;
+    }
+    return "";
+  }
+
   String getProfile() {
     if (state is Authenticated) {
       return (state as Authenticated).authModel.image!;
