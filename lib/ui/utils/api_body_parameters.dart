@@ -1,0 +1,11 @@
+const String userIdKey = "user_id";
+const String idKey = "id";
+const String nameKey = "name";
+const String emailKey = "email";
+const String riderKey = "rider";
+const String ipAddressKey = "IpAddress";
+const String mobileKey = "mobile";
+const String passwordKey = "password";
+const String passwordConfirmationKey = "password_confirmation";
+const String imageKey = "image";
+const String fcmIdKey = "fcm_id";
