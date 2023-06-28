@@ -1,6 +1,8 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:smartbox/app/routes.dart';
+import 'package:smartbox/features/auth/auth_local_data_source.dart';
+import 'package:smartbox/ui/utils/constants.dart';
 
 class ChooseCountryScreen extends StatefulWidget {
   const ChooseCountryScreen({Key? key}) : super(key: key);
@@ -17,11 +19,11 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(30),
+        padding: const EdgeInsets.all(30),
         child: Column(
           children: [
             const Text("Choisir le pays"),
-            Spacer(),
+            const Spacer(),
             TextFormField(
               controller: countryController,
               keyboardType: TextInputType.text,
@@ -30,7 +32,12 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
               decoration: InputDecoration(
                 hintText: "Pays",
                 errorText: null,
-                border: const OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: const Color(0xFF8C98A8).withOpacity(0.2),
+                  ),
+                  borderRadius: BorderRadius.circular(sbInputRadius),
+                ),
               ),
               validator: (value) {
                 if (value!.isEmpty) {
@@ -47,6 +54,10 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                   showPhoneCode: false,
                   onSelect: (Country country) {
                     print('pays selectionné: ${country.name}');
+                    print('Code pays: ${country.countryCode}');
+                    AuthLocalDataSource auth = AuthLocalDataSource();
+                    auth.setCountry(country.name);
+                    auth.setCountryCode(country.countryCode);
                     setState(() {
                       countryController.text = country.name;
                     });
@@ -66,7 +77,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                         borderSide: BorderSide(
                           color: const Color(0xFF8C98A8).withOpacity(0.2),
                         ),
-                        borderRadius: BorderRadius.circular(16.0),
+                        borderRadius: BorderRadius.circular(sbInputRadius),
                       ),
                     ),
                     // Optional. Styles the text in the search field
@@ -85,7 +96,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
               },
               child: Container(
                 padding: const EdgeInsets.all(15),
-                child: Text("Continuer"),
+                child: const Text("Continuer"),
               ),
             ),
             const SizedBox(

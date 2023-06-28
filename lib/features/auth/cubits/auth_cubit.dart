@@ -29,7 +29,6 @@ class AuthCubit extends Cubit<AuthState> {
   void checkAuthStatus() {
     //authDetails is map. keys are isLogin,userId,authProvider,jwtToken
     final authDetails = _authRepository.getLocalAuthDetails();
-    print(authDetails);
 
     if (authDetails['isLogin'] != null && authDetails['isLogin'] == true) {
       emit(Authenticated(authModel: AuthModel.fromJson(authDetails)));
@@ -57,9 +56,16 @@ class AuthCubit extends Cubit<AuthState> {
     return null;
   }
 
-  String getName() {
+  String getPrenom() {
     if (state is Authenticated) {
-      return (state as Authenticated).authModel.username!;
+      return (state as Authenticated).authModel.prenom!;
+    }
+    return "";
+  }
+
+  String getNom() {
+    if (state is Authenticated) {
+      return (state as Authenticated).authModel.nom!;
     }
     return "";
   }
@@ -81,6 +87,13 @@ class AuthCubit extends Cubit<AuthState> {
   String getProfile() {
     if (state is Authenticated) {
       return (state as Authenticated).authModel.image!;
+    }
+    return "";
+  }
+
+  String getCountry() {
+    if (state is Authenticated) {
+      return (state as Authenticated).authModel.country!;
     }
     return "";
   }

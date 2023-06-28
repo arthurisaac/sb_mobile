@@ -14,7 +14,8 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  TextEditingController nameController = TextEditingController(text: "");
+  TextEditingController nomController = TextEditingController(text: "");
+  TextEditingController prenomController = TextEditingController(text: "");
   TextEditingController emailController = TextEditingController(text: "");
   TextEditingController passwordController = TextEditingController(text: "");
   TextEditingController passwordConfirmationController = TextEditingController(text: "");
@@ -30,15 +31,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text("Inscription"),
+              const Text("Inscription"),
               TextFormField(
-                controller: nameController,
+                controller: nomController,
                 keyboardType: TextInputType.text,
                 showCursor: false,
                 readOnly: false,
                 decoration: const InputDecoration(
                   labelText: "Nom",
                   hintText: "Nom",
+                  errorText: null,
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Champ requis';
+                  }
+                  return null;
+                },
+                onTap: () {},
+              ),
+              TextFormField(
+                controller: prenomController,
+                keyboardType: TextInputType.text,
+                showCursor: false,
+                readOnly: false,
+                decoration: const InputDecoration(
+                  labelText: "Prenom",
+                  hintText: "Prénom",
                   errorText: null,
                   border: OutlineInputBorder(),
                 ),
@@ -139,14 +159,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 builder: (context, state) {
                   return TextButton(onPressed: () {
                     context.read<SignUpCubit>().signUpUser(
-                      name: nameController.text.trim(),
+                      nom: nomController.text.trim(),
+                      prenom: prenomController.text.trim(),
                       email: emailController.text.trim(),
                       password: passwordController.text.trim(),
                       passwordConfirmation: passwordConfirmationController.text.trim(),
                       mobile: mobileController.text.trim(),
                     );
                   }, child: Container(
-                    margin: EdgeInsets.all(8),
+                    margin: const EdgeInsets.all(8),
                     child: Text("Inscription"),
                   ));
                 },
@@ -160,9 +181,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void dispose() {
-    nameController.dispose();
+    nomController.dispose();
+    prenomController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    passwordConfirmationController.dispose();
+    mobileController.dispose();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
 

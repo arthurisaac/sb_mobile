@@ -16,3 +16,5 @@ const String updateUserUrl = "${baseUrl}me/update";
 
 // espace entre les widgets
 const double space = 20;
+
+const double sbInputRadius = 20;

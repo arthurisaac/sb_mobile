@@ -21,8 +21,9 @@ class AuthRepository {
       "isLogin": _authLocalDataSource.checkIsAuth(),
       "id": _authLocalDataSource.getId(),
       "email": _authLocalDataSource.getEmail(),
-      "name": _authLocalDataSource.getName(),
-      "mobile": _authLocalDataSource.getEmail(),
+      "nom": _authLocalDataSource.getNom(),
+      "prenom": _authLocalDataSource.getPrenom(),
+      "mobile": _authLocalDataSource.getMobile(),
     };
   }
 
@@ -30,14 +31,16 @@ class AuthRepository {
       {bool? authStatus,
       int? id,
       String? ipAddress,
-      String? name,
+      String? nom,
+      String? prenom,
       String? email,
       String? mobile,
       String? image}) {
     _authLocalDataSource.changeAuthStatus(authStatus);
     _authLocalDataSource.setId(id);
     _authLocalDataSource.setIpAddress(ipAddress);
-    _authLocalDataSource.setName(name);
+    _authLocalDataSource.setNom(nom);
+    _authLocalDataSource.setPrenom(prenom);
     _authLocalDataSource.setImage(image);
   }
 
@@ -48,7 +51,8 @@ class AuthRepository {
         email: email, password: password);
     await _authLocalDataSource.setId(result['id']);
     await _authLocalDataSource.changeAuthStatus(true);
-    await _authLocalDataSource.setName(result['username']);
+    await _authLocalDataSource.setNom(result['nom']);
+    await _authLocalDataSource.setPrenom(result['prenom']);
     await _authLocalDataSource.setEmail(result['email']);
     await _authLocalDataSource.setMobile(result['mobile']);
     await _authLocalDataSource.setImage(result['image']);
@@ -57,24 +61,34 @@ class AuthRepository {
   }
 
   Future<Map<String, dynamic>> addUserData({
-    String? name,
+    String? nom,
+    String? prenom,
     String? email,
     String? password,
     String? passwordConfirmation,
     String? mobile,
     /*, String? latitude, String? longitude*/
   }) async {
+    AuthLocalDataSource auth = AuthLocalDataSource();
+
+    String country = auth.getCountry() ?? "";
+    String countryCode = auth.getCountryCode() ?? "";
+
     final result = await _authRemoteDataSource.addUser(
-      name: name,
+      nom: nom,
+      prenom: prenom,
       email: email,
       password: password,
       passwordConfirmation:
           passwordConfirmation,
-        mobile: mobile/*, latitude: latitude ?? "", longitude: longitude ?? ""*/
+        mobile: mobile,
+      country: country,
+      countryCode: countryCode/*, latitude: latitude ?? "", longitude: longitude ?? ""*/
     );
     await _authLocalDataSource.setId(result['id']);
     await _authLocalDataSource.changeAuthStatus(true);
-    await _authLocalDataSource.setName(result['name']);
+    await _authLocalDataSource.setNom(result['nom']);
+    await _authLocalDataSource.setPrenom(result['prenom']);
     await _authLocalDataSource.setEmail(result['email']);
     await _authLocalDataSource.setMobile(result['mobile']);
     //await _authLocalDataSource.setImage(result['image']);

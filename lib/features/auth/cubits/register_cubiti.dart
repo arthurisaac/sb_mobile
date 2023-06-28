@@ -35,7 +35,8 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   //to signIn user
   void signUpUser({
-    String? name,
+    String? nom,
+    String? prenom,
     String? email,
     //String? mobile,
     String? password,
@@ -49,7 +50,8 @@ class SignUpCubit extends Cubit<SignUpState> {
     //  emit(SignInProgress(authProvider));
     //signIn user with given provider and also add user details in api
     _authRepository.addUserData(
-      name: name,
+      nom: nom,
+      prenom: prenom,
       email: email,
       //mobile: mobile,
       password: password,

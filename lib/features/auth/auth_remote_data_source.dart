@@ -41,21 +41,26 @@ class AuthRemoteDataSource {
   }
 
   Future<dynamic> addUser({
-    String? name,
+    String? nom,
+    String? prenom,
     String? email,
     String? mobile,
+    String? country,
+    String? countryCode,
     String? password,
     String? passwordConfirmation,
   }) async {
     try {
       //body of post request
       final body = {
-        nameKey: name,
+        nomKey: nom,
+        prenomKey: prenom,
         emailKey: email,
-        //mobileKey: mobile,
         passwordKey: password,
         passwordConfirmationKey: passwordConfirmation,
-        mobileKey: mobile
+        mobileKey: mobile,
+        countryKey: country,
+        countryCodeKey: countryCode
         //fcmIdKey: fcmToken,
       };
       //print("call here"+body.toString());

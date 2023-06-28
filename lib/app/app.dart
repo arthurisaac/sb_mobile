@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:smartbox/app/routes.dart';
+import 'package:smartbox/features/auth/cubits/update_password_cubit.dart';
+import 'package:smartbox/features/auth/cubits/update_profile_cubit.dart';
 
 import '../features/auth/auth_repository.dart';
 import '../features/auth/cubits/auth_cubit.dart';
@@ -49,6 +51,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthCubit>(create: (_) => AuthCubit(AuthRepository())),
         BlocProvider<SignUpCubit>(create: (_) => SignUpCubit(AuthRepository())),
         BlocProvider<SignInCubit>(create: (_) => SignInCubit(AuthRepository())),
+        BlocProvider<UpdateProfileCubit>(create: (_) => UpdateProfileCubit(AuthRepository())),
+        BlocProvider<UpdatePasswordCubit>(create: (_) => UpdatePasswordCubit(AuthRepository())),
       ],
       child: Builder(
         builder: (context) {

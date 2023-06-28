@@ -22,8 +22,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   @override
   void initState() {
-    lastNameController.text = context.read<AuthCubit>().getName();
-    //firstNameController.text = context.read<AuthCubit>().getPrenom();
+    lastNameController.text = context.read<AuthCubit>().getPrenom();
+    firstNameController.text = context.read<AuthCubit>().getNom();
     phoneController.text = context.read<AuthCubit>().getMobile();
     emailController.text = context.read<AuthCubit>().getEmail();
 

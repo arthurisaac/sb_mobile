@@ -41,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               spaceWidget,
               Center(
                 child: Image.network(
-                  "https://ui-avatars.com/api/?name=${context.read<AuthCubit>().getName()}&rounded=true",
+                  "https://ui-avatars.com/api/?name=${context.read<AuthCubit>().getNom()}${context.read<AuthCubit>().getPrenom()}&rounded=true",
                   fit: BoxFit.fill,
                   loadingBuilder: (BuildContext context, Widget child,
                       ImageChunkEvent? loadingProgress) {
@@ -70,7 +70,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(
                     width: 42,
                   ),
-                  Text(" ${context.read<AuthCubit>().getName()}"),
+                  Text(" ${context.read<AuthCubit>().getNom()}"),
+                ],
+              ),
+              spaceWidget,
+              Row(
+                children: [
+                  Text(
+                    firstName,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    width: 42,
+                  ),
+                  Text(" ${context.read<AuthCubit>().getPrenom()}"),
                 ],
               ),
               spaceWidget,
@@ -86,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(
                     width: 25,
                   ),
-                  Text("${context.read<AuthCubit>().getMobile()}"),
+                  Text(context.read<AuthCubit>().getMobile()),
                 ],
               ),
               spaceWidget,
@@ -102,10 +118,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(
                     width: 25,
                   ),
-                  Text("${context.read<AuthCubit>().getEmail()}"),
+                  Text(context.read<AuthCubit>().getEmail()),
                 ],
               ),
-              spaceWidget,
               spaceWidget,
               spaceWidget,
               TextButton.icon(
