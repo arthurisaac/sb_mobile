@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartbox/utils/my_firebase_util.dart';
 
 import '../../app/routes.dart';
 import '../../features/auth/cubits/auth_cubit.dart';
@@ -21,12 +22,13 @@ class _SplashScreenState extends State<SplashScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
+    MyFirebaseUtil().getToken();
 
     super.initState();
   }
 
   void navigateToNextScreen() async {
-    final currentAuthState = context.read<AuthCubit>().state;
+    final currentAuthState =  context.read<AuthCubit>().state;
     if (currentAuthState is Authenticated) {
       Navigator.of(context).pushReplacementNamed(Routes.home, arguments: false);
     } else {
@@ -36,9 +38,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text("Smartbox!"),
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: Image.asset("images/smartbox_logo.png", width: MediaQuery.of(context).size.width * 0.8,),
+        ),
       ),
     );
   }

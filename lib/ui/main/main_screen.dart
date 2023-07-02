@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:smartbox/ui/home/home_screen.dart';
 import 'package:smartbox/ui/profile/profile_screen.blade.dart';
 
 class MainScreen extends StatefulWidget {
@@ -15,9 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _pages = <Widget>[
-    Icon(
-      Icons.add
-    ),
+    HomeScreen(),
     Icon(
       Icons.abc_outlined
     ),

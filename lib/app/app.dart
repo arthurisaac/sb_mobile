@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:smartbox/app/routes.dart';
 import 'package:smartbox/features/auth/cubits/update_password_cubit.dart';
 import 'package:smartbox/features/auth/cubits/update_profile_cubit.dart';
+import 'package:smartbox/ui/main/splash_screen.dart';
 
 import '../features/auth/auth_repository.dart';
 import '../features/auth/cubits/auth_cubit.dart';
@@ -47,27 +50,56 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthCubit>(create: (_) => AuthCubit(AuthRepository())),
-        BlocProvider<SignUpCubit>(create: (_) => SignUpCubit(AuthRepository())),
-        BlocProvider<SignInCubit>(create: (_) => SignInCubit(AuthRepository())),
-        BlocProvider<UpdateProfileCubit>(create: (_) => UpdateProfileCubit(AuthRepository())),
-        BlocProvider<UpdatePasswordCubit>(create: (_) => UpdatePasswordCubit(AuthRepository())),
-      ],
-      child: Builder(
-        builder: (context) {
-          return MaterialApp(
-            builder: (context, widget) {
-              return ScrollConfiguration(
-                  behavior: GlobalScrollBehavior(), child: widget!);
+        providers: [
+          BlocProvider<AuthCubit>(create: (_) => AuthCubit(AuthRepository())),
+          BlocProvider<SignUpCubit>(
+              create: (_) => SignUpCubit(AuthRepository())),
+          BlocProvider<SignInCubit>(
+              create: (_) => SignInCubit(AuthRepository())),
+          BlocProvider<UpdateProfileCubit>(
+              create: (_) => UpdateProfileCubit(AuthRepository())),
+          BlocProvider<UpdatePasswordCubit>(
+              create: (_) => UpdatePasswordCubit(AuthRepository())),
+        ],
+        child: MaterialApp(
+          builder: (context, widget) {
+            return ScrollConfiguration(
+                behavior: GlobalScrollBehavior(), child: widget!);
+          },
+          debugShowCheckedModeBanner: true,
+          //initialRoute: Routes.splash,
+          home: FutureBuilder(
+            future: Firebase.initializeApp(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Builder(
+                  builder: (context) {
+                    return const SplashScreen();
+                  },
+                );
+              }
+
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return Scaffold(
+                  body: Center(
+                    child: Icon(
+                      Icons.error_outline,
+                      size: MediaQuery.of(context).size.width * 0.5,
+                    ),
+                  ),
+                );
+              }
+
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             },
-            debugShowCheckedModeBanner: true,
-            initialRoute: Routes.splash,
-            onGenerateRoute: Routes.onGenerateRouted,
-          );
-        },
-      ),
-    );
+          ),
+          onGenerateRoute: Routes.onGenerateRouted,
+        ));
   }
 }
 

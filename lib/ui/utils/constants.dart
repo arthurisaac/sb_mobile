@@ -13,6 +13,7 @@ const String loginUrl = "${baseUrl}login";
 const String registerUrl = "${baseUrl}register";
 const String updatePasswordUrl = "${baseUrl}change-password";
 const String updateUserUrl = "${baseUrl}me/update";
+const String categoriesUrl = "${baseUrl}categories";
 
 // espace entre les widgets
 const double space = 20;
