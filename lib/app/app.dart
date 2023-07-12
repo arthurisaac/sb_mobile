@@ -99,6 +99,15 @@ class MyApp extends StatelessWidget {
             },
           ),
           onGenerateRoute: Routes.onGenerateRouted,
+          theme: ThemeData(
+            cardTheme: const CardTheme(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(sbInputRadius / 2),
+                ),
+              ),
+            ),
+          ),
         ));
   }
 }

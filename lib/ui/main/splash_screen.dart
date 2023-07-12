@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartbox/ui/main/main_screen.dart';
 import 'package:smartbox/utils/my_firebase_util.dart';
 
 import '../../app/routes.dart';
@@ -28,9 +29,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigateToNextScreen() async {
+    if (!mounted) return;
     final currentAuthState =  context.read<AuthCubit>().state;
     if (currentAuthState is Authenticated) {
-      Navigator.of(context).pushReplacementNamed(Routes.home, arguments: false);
+      //Navigator.of(context).pushReplacementNamed(Routes.home, arguments: false);
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MainScreen()));
     } else {
       Navigator.of(context).pushReplacementNamed(Routes.country_choice);
     }

@@ -7,6 +7,7 @@ import 'package:smartbox/ui/utils/widgets_utils.dart';
 import '../../app/routes.dart';
 import '../../features/auth/cubits/auth_cubit.dart';
 import '../../features/auth/cubits/sign_in_cubit.dart';
+import '../main/main_screen.dart';
 import '../utils/constants.dart';
 import '../utils/ui_utils.dart';
 
@@ -102,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
           .of(context)
           .size
           .height,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
@@ -188,16 +189,87 @@ class _LoginScreenState extends State<LoginScreen> {
                 BlocConsumer<SignInCubit, SignInState>(
                     bloc: context.read<SignInCubit>(),
                     listener: (context, state) async {
+                      if (state is SignInProgress) {
+                        showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (_) {
+                            return const Dialog(
+                              backgroundColor: Colors.white,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      // The loading indicator
+                                      CircularProgressIndicator(),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      // Some text
+                                      Text('Connexion en cours...')
+                                    ],
+                                  ),
+                                ),
+                            );
+                          }
+                        );
+                      } else
                       if (state is SignInFailure) {
-                        UiUtils.setSnackBar(
-                            "Connexion ", state.errorMessage, context, false);
+                        //if (!mounted) return;
+                        Navigator.of(context).pop();
+
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (_) {
+                              return Dialog(
+                                backgroundColor: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      // The loading indicator
+                                      const Icon(Icons.error, color: Colors.red, size: 96,),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      // Some text
+                                      Text('${state.errorMessage}'),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Theme.of(context).primaryColor,
+                                          elevation: 0,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(sbInputRadius),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          //if (!mounted) return;
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("Fermer"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                        );
+                        /*UiUtils.setSnackBar(
+                            "Connexion ", state.errorMessage, context, false);*/
                       } else if (state is SignInSuccess) {
                         context
                             .read<AuthCubit>()
                             .updateDetails(authModel: state.authModel);
-                        Navigator.of(context).pushReplacementNamed(
+                       /* Navigator.of(context).pushReplacementNamed(
                             Routes.home,
-                            arguments: false);
+                            arguments: false);*/
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => MainScreen()));
                       }
                     },
                     builder: (context, state) {
