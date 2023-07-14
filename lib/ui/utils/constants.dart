@@ -20,10 +20,14 @@ const String categoriesUrl = "${baseUrl}categories";
 const String boxesInCategoryUrl = "${baseUrl}boxes-in-category";
 const String saveOrderUrl = "${baseUrl}save-order";
 const String savePaymentUrl = "${baseUrl}save-payment";
+const String settingsUrl = "${baseUrl}settings";
+const String sectionUrl = "${baseUrl}sections";
+const String checkNumberUrl = "${baseUrl}check-number";
+const String confirmedOrderUrl = "${baseUrl}confirmed-order";
 
 // espace entre les widgets
 const double space = 20;
 
-const double sbInputRadius = 20;
+const double sbInputRadius = 14;
 
 const String priceSymbol = "F CFA";

@@ -164,7 +164,7 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      box.isInside!.isNotEmpty ? Html(
+                      box.isInside != null && box.isInside!.isNotEmpty ? Html(
                         data: box.isInside,
                         style: {
                           "body": Style(padding: HtmlPaddings.zero, margin: Margins.zero),

@@ -28,13 +28,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Inscription"),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(space),
           child: Column(
             children: [
+              spaceWidget,
+              Text(
+                "Inscription",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              spaceWidget,
+              spaceWidget,
               TextFormField(
                 controller: nomController,
                 keyboardType: TextInputType.text,
@@ -167,7 +176,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 onTap: () {},
               ),
               spaceWidget,
-              spaceWidget,
               BlocConsumer<SignUpCubit, SignUpState>(
                 bloc: context.read<SignUpCubit>(),
                 listener: (context, state) async {
@@ -219,7 +227,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),*/
                   );
                 },
-              )
+              ),
             ],
           ),
         ),

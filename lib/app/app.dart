@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
             return ScrollConfiguration(
                 behavior: GlobalScrollBehavior(), child: widget!);
           },
-          debugShowCheckedModeBanner: true,
+          debugShowCheckedModeBanner: false,
           //initialRoute: Routes.splash,
           home: FutureBuilder(
             future: Firebase.initializeApp(),

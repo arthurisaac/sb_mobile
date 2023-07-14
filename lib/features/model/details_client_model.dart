@@ -6,6 +6,7 @@ class Order {
   String? pays;
   String? telephone;
   String? mail;
+  int? orderConfirmation;
 
   Order({this.id, this.nom, this.prenom, this.ville, this.pays, this.telephone, this.mail});
 
@@ -17,6 +18,7 @@ class Order {
     pays = json['pays'];
     telephone = json['telephone'];
     mail = json['mail'];
+    orderConfirmation = json['order_confirmation'];
   }
 
   /* Map<String, dynamic> toJson() {

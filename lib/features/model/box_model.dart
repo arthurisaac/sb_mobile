@@ -22,6 +22,7 @@ class Box {
   String? country;
   int? enable;
   String? image;
+  String? trique;
   List<Images>? images;
   String? createdAt;
   String? updatedAt;
@@ -48,6 +49,7 @@ class Box {
         this.country,
         this.enable,
         this.image,
+        this.trique,
         this.images,
         this.createdAt,
         this.updatedAt});
@@ -74,6 +76,7 @@ class Box {
     country = json['country'];
     enable = json['enable'];
     image = json['image'];
+    trique = json['trique'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
 

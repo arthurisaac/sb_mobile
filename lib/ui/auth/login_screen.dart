@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartbox/ui/auth/manual_login_screen.dart';
 import 'package:smartbox/ui/auth/registration_screen.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
@@ -95,223 +96,185 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-      Container(
-      width: double.infinity,
-      height: MediaQuery
-          .of(context)
-          .size
-          .height,
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Colors.blue,
-              Colors.red,
-            ],
-          )
-      ),
-      ),
-      Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(space),
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: emailController,
-                  keyboardType: TextInputType.text,
-                  showCursor: false,
-                  readOnly: false,
-                  decoration: InputDecoration(
-                    labelText: "Email",
-                    hintText: "Email",
-                    errorText: null,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(sbInputRadius),
+    return Scaffold(
+      body: Stack(
+        children: [
+        /*Container(
+        width: double.infinity,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height,
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Colors.blue,
+                Colors.red,
+              ],
+            )
+        ),
+        ),*/
+          ShaderMask(
+            shaderCallback: (rect) {
+              return LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.transparent, Colors.black],
+              ).createShader(Rect.fromLTRB(0, -140, rect.width, rect.height-20));
+            },
+            blendMode: BlendMode.darken,
+            child: Container(
+              decoration: const BoxDecoration(
+                // gradient: LinearGradient(
+                //   colors: [gradientStart, gradientEnd],
+                //   begin: FractionalOffset(0, 0),
+                //   end: FractionalOffset(0, 1),
+                //   stops: [0.0, 1.0],
+                //   tileMode: TileMode.clamp
+                // ),
+                image: DecorationImage(
+                  image: ExactAssetImage('images/give_black.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Align(
+                  alignment: const FractionalOffset(0.5, 0.0),
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 110.0),
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius:
+                          20.0, // has the effect of softening the shadow
+                          spreadRadius:
+                          0, // has the effect of extending the shadow
+                          // offset: Offset(
+                          //   10.0, // horizontal, move right 10
+                          //   10.0, // vertical, move down 10
+                          // ),
+                        )
+                      ],
+                    ),
+                    child: Image.asset('images/smartbox_logo.png',
+                        width: 70),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 0,
+                child: Container(
+                    margin: const EdgeInsets.only(bottom: 10.0),
+                    child: const Text(
+                      'Explorer de nouvelles idées de cadeau',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                      textAlign: TextAlign.center,
+                    )),
+              ),
+              Expanded(
+                flex: 0,
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 28.0),
+                  padding: const EdgeInsets.symmetric(vertical: 18.0),
+                  constraints: const BoxConstraints(
+                    maxWidth: 330.0,
+                  ),
+                  child: const Text(
+                    'Nous faisons de notre mieux pour vous fournir une idée de cadeau pour vos proches.',
+                    style: TextStyle(fontSize: 16.0, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 0,
+                child: ButtonTheme(
+                  minWidth: 320.0,
+                  height: 50.0,
+                  child: MaterialButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+                    },
+                    textColor: Colors.blueAccent,
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)
+                    ),
+                    child: const Text(
+                      'S\'inscrire',
+                      style: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Champ requis';
-                    }
-                    return null;
-                  },
-                  onTap: () {},
                 ),
-                spaceWidget,
-                TextFormField(
-                  controller: passwordController,
-                  keyboardType: TextInputType.text,
-                  showCursor: false,
-                  readOnly: false,
-                  obscureText: !_passwordVisible,
-                  decoration: InputDecoration(
-                    labelText: "Mot de passe",
-                    hintText: "Mot de passe",
-                    errorText: null,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(sbInputRadius),
-                    ),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
-                      icon: Icon(
-                        // Based on passwordVisible state choose the icon
-                        _passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Theme
-                            .of(context)
-                            .primaryColorDark,
+              ),
+              Expanded(
+                flex: 0,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: ButtonTheme(
+                    minWidth: 320.0,
+                    height: 50.0,
+                    child: MaterialButton(
+                      onPressed: () {},
+                      textColor: Colors.white,
+                      color: Colors.blueAccent,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)
+                      ),
+                      child: const Text(
+                        'Continuer avec Google',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Champ requis';
-                    }
-                    return null;
-                  },
-                  onTap: () {
-                    setState(() {
-                      _passwordVisible = !_passwordVisible;
-                    });
-                  },
                 ),
-                spaceWidget,
-                BlocConsumer<SignInCubit, SignInState>(
-                    bloc: context.read<SignInCubit>(),
-                    listener: (context, state) async {
-                      if (state is SignInProgress) {
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (_) {
-                            return const Dialog(
-                              backgroundColor: Colors.white,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 20),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      // The loading indicator
-                                      CircularProgressIndicator(),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      // Some text
-                                      Text('Connexion en cours...')
-                                    ],
-                                  ),
-                                ),
-                            );
-                          }
-                        );
-                      } else
-                      if (state is SignInFailure) {
-                        //if (!mounted) return;
-                        Navigator.of(context).pop();
-
-                        showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (_) {
-                              return Dialog(
-                                backgroundColor: Colors.white,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 20),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      // The loading indicator
-                                      const Icon(Icons.error, color: Colors.red, size: 96,),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      // Some text
-                                      Text('${state.errorMessage}'),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Theme.of(context).primaryColor,
-                                          elevation: 0,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(sbInputRadius),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          //if (!mounted) return;
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text("Fermer"),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }
-                        );
-                        /*UiUtils.setSnackBar(
-                            "Connexion ", state.errorMessage, context, false);*/
-                      } else if (state is SignInSuccess) {
-                        context
-                            .read<AuthCubit>()
-                            .updateDetails(authModel: state.authModel);
-                       /* Navigator.of(context).pushReplacementNamed(
-                            Routes.home,
-                            arguments: false);*/
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => MainScreen()));
-                      }
-                    },
-                    builder: (context, state) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Theme
-                              .of(context)
-                              .primaryColor,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(sbInputRadius),
-                          ),
+              ),
+              Expanded(
+                flex: 0,
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 20.0),
+                  child: ButtonTheme(
+                    minWidth: 200.0,
+                    height: 50.0,
+                    child: MaterialButton(
+                      onPressed: () {
+                        //Navigator.pushNamed(context, '/signup');
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ManualLoginScreen()));
+                      },
+                      textColor: Colors.white,
+                      child: Text(
+                        'Connexion',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
                         ),
-                        onPressed: () async {
-                          if (emailController.text.isNotEmpty &&
-                              passwordController.text.isNotEmpty) {
-                            context.read<SignInCubit>().signInUser(
-                                email: emailController.text,
-                                password: passwordController.text);
-                          } else {}
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(14),
-                          child: const Center(child: Text("Connexion")),
-                        ),
-                      );
-                    }),
-                spaceWidget,
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const RegistrationScreen()));
-                    },
-                    child: const Text("S'inscrire"))
-              ],
-            ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
+        ],
       ),
-      ],
     );
   }
 }

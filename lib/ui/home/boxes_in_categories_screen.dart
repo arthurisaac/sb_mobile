@@ -136,6 +136,7 @@ class BoxItem extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("${box.name}"),
                   smallSpaceWidget,
