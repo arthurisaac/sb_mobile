@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:smartbox/ui/main/main_screen.dart';
+import 'package:smartbox/ui/reserve/reservation_screen.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
 import '../../features/model/box_model.dart';
@@ -229,11 +229,11 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
       Uri.parse(confirmedOrderUrl),
       headers: ApiUtils.getHeaders(),
       body: {
-        "order_id": widget.order.id.toString()
+        "order_id": widget.order.id.toString(),
+        "user": widget.box.id.toString(),
       },
     );
     if (response.statusCode == 200) {
-      // final responseJson = jsonDecode(response.body);
 
       if (mounted) {
         Navigator.of(context).pop();
@@ -272,8 +272,13 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MainScreen()));
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ReservationScreen(
+                              box: widget.box,
+                            ),
+                          ),
+                        );
                       },
                       child: const Text("OK"),
                     ),

@@ -60,7 +60,6 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                     showPhoneCode: false,
                     onSelect: (Country country) {
                       print('pays selectionné: ${country.name}');
-                      print('Code pays: ${country.countryCode}');
                       AuthLocalDataSource auth = AuthLocalDataSource();
                       auth.setCountry(country.name);
                       auth.setCountryCode(country.countryCode);

@@ -8,6 +8,7 @@ import 'package:smartbox/features/model/settings_model.dart';
 import 'package:smartbox/ui/home/home_screen.dart';
 import 'package:smartbox/ui/profile/profile_screen.blade.dart';
 import 'package:smartbox/ui/save_box/save_box_screen.dart';
+import 'package:smartbox/ui/saved/saved_box_screen.dart';
 
 import '../utils/api_utils.dart';
 import '../utils/constants.dart';
@@ -29,57 +30,64 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  Future<bool> _onWillPop() async {
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder<SettingsModel?>(
-        future: getSettings(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text("Une erreur s'est produite"),
-            );
-          }
-          if (snapshot.hasData) {
-            SettingsModel? settingsModel = snapshot.data;
-            return Center(
-              child: [
-                HomeScreen(
-                  settingsModel: settingsModel!,
-                ),
-                const SaveBoxScreen(),
-                const Icon(Icons.abc_outlined),
-                const ProfileScreen()
-              ].elementAt(_selectedIndex),
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-        selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.black,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Accueil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.qr_code_scanner),
-            label: 'Enregistrer',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.card_giftcard),
-            label: 'Enregistrer',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
-            label: 'Profil',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: FutureBuilder<SettingsModel?>(
+          future: getSettings(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text("Une erreur s'est produite"),
+              );
+            }
+            if (snapshot.hasData) {
+              SettingsModel? settingsModel = snapshot.data;
+              return Center(
+                child: [
+                  HomeScreen(
+                    settingsModel: settingsModel!,
+                  ),
+                  const SaveBoxScreen(),
+                  const SavedBoxScreen(),
+                  const ProfileScreen()
+                ].elementAt(_selectedIndex),
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+          selectedItemColor: Theme.of(context).primaryColor,
+          unselectedItemColor: Colors.black,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Accueil',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.qr_code_scanner),
+              label: 'Enregistrer',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.card_giftcard),
+              label: 'Enregistrer',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.more_horiz),
+              label: 'Profil',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }

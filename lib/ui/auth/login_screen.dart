@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),*/
           ShaderMask(
             shaderCallback: (rect) {
-              return LinearGradient(
+              return const LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [Colors.transparent, Colors.black],
@@ -165,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     child: Image.asset('images/smartbox_logo.png',
-                        width: 70),
+                        width: 100),
                   ),
                 ),
               ),
@@ -173,8 +173,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 flex: 0,
                 child: Container(
                     margin: const EdgeInsets.only(bottom: 10.0),
+                    padding: const EdgeInsets.all(10),
                     child: const Text(
-                      'Explorer de nouvelles idées de cadeau',
+                      'Explorer de nouvelles idées de cadeau à offrir',
                       style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -220,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              Expanded(
+             /* Expanded(
                 flex: 0,
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -245,7 +246,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-              ),
+              ),*/
               Expanded(
                 flex: 0,
                 child: Container(

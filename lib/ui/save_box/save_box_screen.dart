@@ -109,7 +109,7 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
                         height: 15,
                       ),
                       // Some text
-                      Text('Code invalide ou cadeau indisponible'),
+                      const Text('Code invalide ou cadeau indisponible'),
                       const SizedBox(
                         height: 15,
                       ),
@@ -166,6 +166,8 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Enregistrer un cadeau"),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
       ),
       body: SafeArea(
         child: Stack(

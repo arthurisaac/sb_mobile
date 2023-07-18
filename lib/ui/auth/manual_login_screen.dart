@@ -42,6 +42,14 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/login_bg.png"),
+                fit: BoxFit.cover,
+              )
+          ),
+        ),
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -57,7 +65,10 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                   spaceWidget,
                   Text(
                     "Connexion",
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .titleLarge,
                   ),
                   spaceWidget,
                   spaceWidget,
@@ -70,6 +81,8 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                       labelText: "Email",
                       hintText: "Email",
                       errorText: null,
+                      filled: true,
+                      fillColor: Colors.white,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(sbInputRadius),
                       ),
@@ -107,7 +120,9 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                           _passwordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Theme.of(context).primaryColorDark,
+                          color: Theme
+                              .of(context)
+                              .primaryColorDark,
                         ),
                       ),
                     ),
@@ -177,19 +192,21 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                                           height: 15,
                                         ),
                                         // Some text
-                                        Text('${state.errorMessage}'),
+                                        Text(state.errorMessage),
                                         const SizedBox(
                                           height: 15,
                                         ),
                                         ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             primary:
-                                                Theme.of(context).primaryColor,
+                                            Theme
+                                                .of(context)
+                                                .primaryColor,
                                             elevation: 0,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(
-                                                      sbInputRadius),
+                                              BorderRadius.circular(
+                                                  sbInputRadius),
                                             ),
                                           ),
                                           onPressed: () {
@@ -217,14 +234,14 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                         }
                       },
                       builder: (context, state) {
-                        return ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Theme.of(context).primaryColor,
-                            elevation: 0,
+                        return TextButton(
+                          style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(sbInputRadius),
+                              borderRadius: BorderRadius.circular(10),
                             ),
+                            primary: Colors.white,
+                            backgroundColor: Theme.of(context).primaryColor,
+                            minimumSize: const Size.fromHeight(12),
                           ),
                           onPressed: () async {
                             if (emailController.text.isNotEmpty &&

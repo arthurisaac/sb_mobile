@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartbox/ui/client_details/details_client_screen.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
-import '../../features/auth/cubits/auth_cubit.dart';
 import '../../features/model/box_model.dart';
-import '../utils/api_body_parameters.dart';
 import '../utils/constants.dart';
 
 class DeliveryModeScreen extends StatefulWidget {

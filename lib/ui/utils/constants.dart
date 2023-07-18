@@ -1,5 +1,6 @@
-const String serverUrl = 'http://192.168.1.198:8000/';
+//const String serverUrl = 'http://192.168.1.198:8000/';
 //const String serverUrl = 'http://localhost:8000/';
+const String serverUrl = 'https://smartbox.fasobizness.com/';
 const String baseUrl = '${serverUrl}api/';
 const String mediaUrl = '${serverUrl}storage/';
 const String jwtKey = 'rBDsbikDxRIlKEyvmW9wDpndJoM1Ieov8jH0zive';
@@ -24,6 +25,8 @@ const String settingsUrl = "${baseUrl}settings";
 const String sectionUrl = "${baseUrl}sections";
 const String checkNumberUrl = "${baseUrl}check-number";
 const String confirmedOrderUrl = "${baseUrl}confirmed-order";
+const String reserveOrderUrl = "${baseUrl}reserve-order";
+const String savedOrderUrl = "${baseUrl}saved-box-order";
 
 // espace entre les widgets
 const double space = 20;
@@ -31,3 +34,5 @@ const double space = 20;
 const double sbInputRadius = 14;
 
 const String priceSymbol = "F CFA";
+
+const String showOnBoarding = "showHome";
