@@ -2,6 +2,7 @@ class SettingsModel {
   int? id;
   int? bannerAdEnable;
   String? bannerAd;
+  String? bannerAdDetail;
   String? headerBackground;
   String? headerTitle;
   int? headerCategoory;
@@ -15,6 +16,7 @@ class SettingsModel {
       {this.id,
         this.bannerAdEnable,
         this.bannerAd,
+        this.bannerAdDetail,
         this.headerBackground,
         this.headerTitle,
         this.headerCategoory,
@@ -28,6 +30,7 @@ class SettingsModel {
     id = json['id'];
     bannerAdEnable = json['banner_ad_enable'];
     bannerAd = json['banner_ad'];
+    bannerAdDetail = json['banner_ad_detail'];
     headerBackground = json['header_background'];
     headerTitle = json['header_title'];
     headerCategoory = json['header_categoory'];

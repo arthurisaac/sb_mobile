@@ -21,7 +21,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(profile),
-        automaticallyImplyLeading: false,
         centerTitle: true,
         actions: [
           IconButton(

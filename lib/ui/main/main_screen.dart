@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:smartbox/features/model/settings_model.dart';
 import 'package:smartbox/ui/home/home_screen.dart';
+import 'package:smartbox/ui/more/more_screen.dart';
 import 'package:smartbox/ui/profile/profile_screen.blade.dart';
 import 'package:smartbox/ui/save_box/save_box_screen.dart';
 import 'package:smartbox/ui/saved/saved_box_screen.dart';
@@ -56,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   const SaveBoxScreen(),
                   const SavedBoxScreen(),
-                  const ProfileScreen()
+                  const MoreScreen()
                 ].elementAt(_selectedIndex),
               );
             }

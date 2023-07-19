@@ -260,7 +260,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ManualLoginScreen()));
                       },
                       textColor: Colors.white,
-                      child: Text(
+                      child: const Text(
                         'Connexion',
                         style: TextStyle(
                             fontSize: 16,

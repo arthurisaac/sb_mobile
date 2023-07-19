@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../helper/color.dart';
+import 'constants.dart';
 
 class UiUtils {
   static void setSnackBar(String title, String msg, BuildContext context, bool showAction, {Function? onPressedAction, Duration? duration}) {
@@ -39,5 +40,31 @@ class UiUtils {
           : null,
       elevation: 2.0,
     ));
+  }
+
+  static void modalLoading(BuildContext context, String title) {
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: space),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // The loading indicator
+                  const CircularProgressIndicator(),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  // Some text
+                  Text(title)
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

@@ -3,11 +3,14 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:smartbox/features/model/box_model.dart';
 import 'package:smartbox/features/model/boxes_model.dart';
 import 'package:smartbox/features/model/category_model.dart';
 import 'package:smartbox/features/model/sections_model.dart';
 import 'package:smartbox/features/model/settings_model.dart';
+import 'package:smartbox/ui/ad/ad_details_screen.dart';
 import 'package:smartbox/ui/home/boxes_in_categories_screen.dart';
+import 'package:smartbox/ui/search/search_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
@@ -77,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: space),
                           child: Text(
-                            "Préparez votre été",
+                            "${widget.settingsModel.headerTitle}",
                             style: Theme.of(context)
                                 .textTheme
                                 .titleLarge
@@ -108,6 +111,58 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
+              Container(
+                margin: const EdgeInsets.all(space),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SearchScreen()));
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: space, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(sbInputRadius)
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Chercher un cadeau"),
+                              Icon(Icons.search)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    MaterialButton(
+                      onPressed: () {},
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(16),
+                      shape: const CircleBorder(),
+                      child: const Icon(
+                        Icons.favorite,
+                        size: 20,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              widget.settingsModel.bannerAdEnable == 1 ? GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdDetailsScreen(ad: widget.settingsModel.bannerAdDetail.toString() ?? "No details")));
+                },
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.orange
+                  ),
+                  padding: const EdgeInsets.all(14),
+                  child: Text("${widget.settingsModel.bannerAd}", textAlign: TextAlign.center, style: const TextStyle(color: Colors.white),),
+                ),
+              ) : Container(),
               Padding(
                 padding: const EdgeInsets.all(space),
                 child: FutureBuilder<List<CategoryModel>?>(

@@ -23,6 +23,7 @@ class Box {
   int? enable;
   String? image;
   String? trique;
+  Map<String, dynamic>? favorites;
   List<Images>? images;
   String? createdAt;
   String? updatedAt;
@@ -51,6 +52,7 @@ class Box {
     this.image,
     this.trique,
     this.images,
+    this.favorites,
     this.createdAt,
     this.updatedAt,
   });
@@ -78,6 +80,7 @@ class Box {
     enable = json['enable'];
     image = json['image'];
     trique = json['trique'];
+    favorites = json['favorites'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
 
@@ -112,6 +115,7 @@ class Box {
     data['country'] = this.country;
     data['enable'] = this.enable;
     data['image'] = this.image;
+    data['favorites'] = this.favorites;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     if (this.images != null) {

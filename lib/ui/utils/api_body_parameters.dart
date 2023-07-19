@@ -33,3 +33,5 @@ const String orderConfirmationKey = "order_confirmation";
 const String delivreyConfirmationKey = "delivrey_confirmation";
 const String phoneNumberKey = "phone_number";
 const String otpCodeKey = "opt_code";
+const String searchKey = "q";
+const String codeKey = "code";
