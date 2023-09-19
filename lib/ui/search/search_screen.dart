@@ -34,6 +34,9 @@ class _SearchScreenState extends State<SearchScreen> {
           showCursor: true,
           readOnly: false,
           style: const TextStyle(color: Colors.white),
+          decoration: const InputDecoration(
+            hintText: "Tapez pour recherchez un coffret",
+          ),
           onTap: () {},
           onChanged: (text) {
             //print('First text field: $text');
@@ -75,13 +78,14 @@ class _SearchScreenState extends State<SearchScreen> {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 4.0,
-                            mainAxisSpacing: 4.0,
-                          ),
                           shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 30,
+                            crossAxisSpacing: 24,
+                            childAspectRatio: 0.75,
+                          ),
                           itemCount: boxList.length,
                           itemBuilder: (context, index) {
                             Box box = boxList[index];

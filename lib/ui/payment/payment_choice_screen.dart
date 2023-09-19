@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartbox/features/model/details_client_model.dart';
+import 'package:smartbox/features/model/new_order_model.dart';
 import 'package:smartbox/ui/main/main_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
 
@@ -14,7 +17,7 @@ import '../utils/api_utils.dart';
 import '../utils/widgets_utils.dart';
 
 class PaymentChoiceScreen extends StatefulWidget {
-  final Order order;
+  final NewOrder order;
   final Box box;
   final double total;
   const PaymentChoiceScreen({Key? key, required this.order, required this.box, required this.total}) : super(key: key);
@@ -142,7 +145,7 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                       child: Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(14),
-                        child: const Center(child: Text("Connexion")),
+                        child: const Center(child: Text("Valider")),
                       ),
                     )
                   ],
@@ -196,6 +199,9 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
         body: body
     );
 
+    final responseJson = jsonDecode(response.body);
+    //print(response.body);
+
     if (response.statusCode == 201) {
 
       if (mounted) {
@@ -243,14 +249,69 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
         );
       }
 
-    } else {
-      // La requête a échoué avec un code d'erreur, comme 401 Unauthorized
+    } else if (response.statusCode == 200) {
       if (kDebugMode) {
         print('Request failed with status: ${response.statusCode}.');
       }
 
+
+      var rpc = responseJson['data'];
+      String body = rpc['message'];
+
       if (mounted) {
         Navigator.of(context).pop();
+
+        if (body.isNotEmpty) {
+          showDialog(
+              barrierDismissible: true,
+              context: context,
+              builder: (_) {
+                return Dialog(
+                  backgroundColor: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // The loading indicator
+                        const Icon(Icons.error, color: Colors.orange, size: 96,),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        // Some text
+                        const Text('Une erreur s\'est produite lors du paiement', textAlign: TextAlign.center,),
+                        spaceWidget,
+                        Padding(
+                          padding: const EdgeInsets.all(space),
+                          child: Text(body),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).primaryColor,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(sbInputRadius),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("Fermer"),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+          );
+        }
+
+      } else {
+        final responseJson = jsonDecode(response.body);
+        var message = responseJson['message'];
 
         showDialog(
             barrierDismissible: true,
@@ -264,12 +325,16 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // The loading indicator
-                      const Icon(Icons.error, color: Colors.red, size: 96,),
+                      const Icon(Icons.error, color: Colors.orange, size: 96,),
                       const SizedBox(
                         height: 15,
                       ),
-                      // Some text
-                      const Text('Une erreur s\'est produite'),
+                      const Text('Une erreur s\'est produite lors du paiement', textAlign: TextAlign.center,),
+                      spaceWidget,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(message),
+                      ),
                       const SizedBox(
                         height: 15,
                       ),

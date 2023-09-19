@@ -67,4 +67,24 @@ class UiUtils {
           );
         });
   }
+
+  static void okAlertDialog(BuildContext context, String title, String message, onPressed) {
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: onPressed,
+          child: const Text("OK"),
+        )
+      ],
+    );
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }

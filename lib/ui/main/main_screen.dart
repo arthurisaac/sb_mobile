@@ -4,11 +4,11 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbox/features/model/settings_model.dart';
 import 'package:smartbox/ui/home/home_screen.dart';
 import 'package:smartbox/ui/more/more_screen.dart';
-import 'package:smartbox/ui/profile/profile_screen.blade.dart';
-import 'package:smartbox/ui/save_box/save_box_screen.dart';
+import 'package:smartbox/ui/save_box/save_box_presentation_screen.dart';
 import 'package:smartbox/ui/saved/saved_box_screen.dart';
 
 import '../utils/api_utils.dart';
@@ -24,6 +24,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   void _onItemTapped(int index) {
     setState(() {
@@ -34,6 +35,14 @@ class _MainScreenState extends State<MainScreen> {
   Future<bool> _onWillPop() async {
     return false;
   }
+
+  Future saveSupportContact(String supportMail, String supportChat, String supportPhone) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString("support_mail", supportMail);
+    prefs.setString("support_chat", supportChat);
+    prefs.setString("support_phone", supportPhone);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +59,14 @@ class _MainScreenState extends State<MainScreen> {
             }
             if (snapshot.hasData) {
               SettingsModel? settingsModel = snapshot.data;
+
+              saveSupportContact(settingsModel!.supportMail ?? "", settingsModel.supportChat ?? "", settingsModel.supportPhone ?? "");
               return Center(
                 child: [
                   HomeScreen(
                     settingsModel: settingsModel!,
                   ),
-                  const SaveBoxScreen(),
+                  const SaveBoxPresentationScreen(),
                   const SavedBoxScreen(),
                   const MoreScreen()
                 ].elementAt(_selectedIndex),
@@ -65,6 +76,7 @@ class _MainScreenState extends State<MainScreen> {
           },
         ),
         bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
           selectedItemColor: Theme.of(context).primaryColor,
           unselectedItemColor: Colors.black,
@@ -79,11 +91,11 @@ class _MainScreenState extends State<MainScreen> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.card_giftcard),
-              label: 'Enregistrer',
+              label: 'Vos cadeaux',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.more_horiz),
-              label: 'Profil',
+              label: 'Plus',
             ),
           ],
           currentIndex: _selectedIndex,

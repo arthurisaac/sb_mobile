@@ -44,6 +44,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             iconTheme: const IconThemeData(color: Colors.black),
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+
           ),
           body: SingleChildScrollView(
             child: Padding(

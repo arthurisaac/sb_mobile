@@ -38,8 +38,6 @@ class _SplashScreenState extends State<SplashScreen> {
     final prefs = await SharedPreferences.getInstance();
     final showHome = prefs.getBool(showOnBoarding) ?? false;
 
-    print(showHome);
-
     if (mounted) {
       if (!showHome) {
         Navigator.of(context).push(
@@ -66,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Center(
           child: Image.asset(
             "images/smartbox_logo.png",
-            width: MediaQuery.of(context).size.width * 0.8,
+            width: MediaQuery.of(context).size.width * 0.5,
           ),
         ),
       ),

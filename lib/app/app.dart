@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +16,9 @@ import '../features/auth/cubits/auth_cubit.dart';
 import '../features/auth/cubits/register_cubiti.dart';
 import '../features/auth/cubits/sign_in_cubit.dart';
 import '../ui/utils/constants.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+
+import '../utils/firebase_options.dart';
 
 Future<Widget> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,7 +71,9 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           //initialRoute: Routes.splash,
           home: FutureBuilder(
-            future: Firebase.initializeApp(),
+            future: Firebase.initializeApp(
+              options: DefaultFirebaseOptions.currentPlatform,
+            ),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return Builder(
@@ -80,7 +84,9 @@ class MyApp extends StatelessWidget {
               }
 
               if (snapshot.hasError) {
-                print(snapshot.error);
+                if (kDebugMode) {
+                  print(snapshot.error);
+                }
                 return Scaffold(
                   body: Center(
                     child: Icon(

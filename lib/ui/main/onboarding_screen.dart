@@ -128,7 +128,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(30),
+              padding: const EdgeInsets.all(60),
               child: Image.asset(
                 urlImage,
                 fit: BoxFit.cover,

@@ -16,6 +16,7 @@ class DeliveryModeScreen extends StatefulWidget {
 
 class _DeliveryModeScreenState extends State<DeliveryModeScreen> {
   String livraison = "";
+  String label = "";
   TextEditingController deliveryController = TextEditingController(text: "");
 
   @override
@@ -24,59 +25,96 @@ class _DeliveryModeScreenState extends State<DeliveryModeScreen> {
       appBar: AppBar(
         title: const Text("Mode de livraison"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(space),
-        child: Column(
-          children: [
-            RadioListTile(
-                title: Text("Livraison à domicile"),
-                value: "domicile",
-                groupValue: livraison,
-                onChanged: (value) {
-                  setState(() {
-                    livraison = value.toString();
-                  });
-                }),
-            RadioListTile(
-                title: Text("Envoyer par mail"),
-                value: "mail",
-                groupValue: livraison,
-                onChanged: (value) {
-                  setState(() {
-                    livraison = value.toString();
-                  });
-                }),
-            RadioListTile(
-                title: Text("Envoyer par sms"),
-                value: "sms",
-                groupValue: livraison,
-                onChanged: (value) {
-                  setState(() {
-                    livraison = value.toString();
-                  });
-                }),
-            spaceWidget,
-            TextFormField(
-              controller: deliveryController,
-              keyboardType: TextInputType.text,
-              showCursor: false,
-              readOnly: false,
-              decoration: InputDecoration(
-                hintText: "Où livrer",
-                label: const Text("Livraison"),
-                errorText: null,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(sbInputRadius),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Card(
+                elevation: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    spaceWidget,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: space),
+                      child: Text("Livraison", style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(space),
+                      child: Text("Comment souhaitez-vous envoyer le coffret cadeau?",),
+                    ),
+                    RadioListTile(
+                        title: Text("Livraison à domicile"),
+                        value: "domicile",
+                        groupValue: livraison,
+                        onChanged: (value) {
+                          setState(() {
+                            livraison = value.toString();
+                            label = "Adresse de livraison";
+                          });
+                        }),
+                    RadioListTile(
+                        title: Text("Envoyer par mail"),
+                        value: "mail",
+                        groupValue: livraison,
+                        onChanged: (value) {
+                          setState(() {
+                            livraison = value.toString();
+                            label = "Adresse mail";
+                          });
+                        }),
+                    RadioListTile(
+                        title: const Text("Envoyer par sms"),
+                        value: "sms",
+                        groupValue: livraison,
+                        onChanged: (value) {
+                          setState(() {
+                            livraison = value.toString();
+                            label = "Numéro de téléphone";
+                          });
+                        }),
+                  ],
                 ),
               ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Champ requis';
-                }
-                return null;
-              },
-            ),
-          ],
+              spaceWidget,
+              (livraison.isNotEmpty) ? Card(
+                elevation: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(space),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Livraison", style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),),
+                      spaceWidget,
+                      spaceWidget,
+                      TextFormField(
+                        controller: deliveryController,
+                        keyboardType: TextInputType.text,
+                        showCursor: false,
+                        readOnly: false,
+                        decoration: InputDecoration(
+                          hintText: "Où livrer",
+                          label: Text(label),
+                          errorText: null,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(sbInputRadius),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Champ requis';
+                          }
+                          return null;
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ) : Container(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Container(
@@ -85,7 +123,13 @@ class _DeliveryModeScreenState extends State<DeliveryModeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            (widget.box.discount! > 0) ? Text(
+              "${widget.box.discount} $priceSymbol",
+              style: Theme.of(context)
+                  .textTheme
+                  .labelLarge
+                  ?.copyWith(fontWeight: FontWeight.w800),
+            ) : Text(
               "${widget.box.price} $priceSymbol",
               style: Theme.of(context)
                   .textTheme

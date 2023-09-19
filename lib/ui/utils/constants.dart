@@ -1,5 +1,6 @@
-//const String serverUrl = 'http://192.168.1.198:8000/';
-const String serverUrl = 'http://localhost:8000/';
+//const String serverUrl = 'http://192.168.11.105:8000/';
+const String serverUrl = 'http://192.168.1.198:8000/';
+//const String serverUrl = 'http://localhost:8001/';
 //const String serverUrl = 'https://smartbox.fasobizness.com/';
 const String baseUrl = '${serverUrl}api/';
 const String mediaUrl = '${serverUrl}storage/';
@@ -33,6 +34,12 @@ const String searchBoxUrl = "${baseUrl}search-box";
 const String resetEmailUrl = "${baseUrl}password/email";
 const String checkCodeUrl = "${baseUrl}password/code/check";
 const String passwordResetUrl = "${baseUrl}password/reset";
+const String faqUrl = "${baseUrl}faqs";
+const String sendMessageUrl = "${baseUrl}send-message";
+const String sendCommentUrl = "${baseUrl}send-comment";
+
+const String sliderMainPageUrl = "${baseUrl}sliders-main-page";
+const String deleteUserUrl = "${baseUrl}delete-user";
 
 // espace entre les widgets
 const double space = 20;

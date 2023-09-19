@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartbox/features/model/box_model.dart';
 import 'package:smartbox/features/model/details_client_model.dart';
+import 'package:smartbox/features/model/new_order_model.dart';
 import 'package:smartbox/ui/payment/payment_choice_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
@@ -14,6 +15,8 @@ import '../utils/api_body_parameters.dart';
 import '../utils/api_utils.dart';
 
 import 'package:http/http.dart' as http;
+
+import '../utils/ui_utils.dart';
 
 class DeliveryResumeScreen extends StatefulWidget {
   final Box box;
@@ -32,7 +35,7 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
   @override
   void initState() {
 
-    total = widget.box.price as double;
+    total = (widget.box.discount! > 0) ? double.tryParse(widget.box.discount.toString()) ?? 0 : double.tryParse(widget.box.price.toString()) ?? 0;
 
     super.initState();
   }
@@ -128,7 +131,7 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text("Sous-total"),
-                        Text("${widget.box.price} $priceSymbol")
+                        Text("$total $priceSymbol")
                       ],
                     )
                   ],
@@ -149,7 +152,7 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Montant total", style: TextStyle(fontWeight: FontWeight.bold),),
-                Text("${widget.box.price} $priceSymbol")
+                Text("$total $priceSymbol")
               ],
             ),
           ),
@@ -159,7 +162,7 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("${widget.box.price} $priceSymbol", style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w800),),
+                Text("$total $priceSymbol", style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w800),),
                 ElevatedButton(onPressed: () {
                   saveDetails();
                 }, child: Container(
@@ -175,25 +178,8 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
     );
   }
 
-  Future<Order?> saveDetails() async {
-    const Dialog(
-      backgroundColor: Colors.white,
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // The loading indicator
-            CircularProgressIndicator(),
-            SizedBox(
-              height: 15,
-            ),
-            // Some text
-            Text('Connexion en cours...')
-          ],
-        ),
-      ),
-    );
+  Future saveDetails() async {
+    UiUtils.modalLoading(context, "Chargement en cours");
 
     final body = {
       userKey: context.read<AuthCubit>().getId().toString(),
@@ -217,17 +203,14 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
     if (kDebugMode) {
       print(response.statusCode);
     }
-    if (response.statusCode == 201) {
-      // La requête a réussi, vous pouvez accéder aux données dans response.body
-      // print(response.body);
+    if (!mounted) return null;
+    Navigator.of(context).pop();
 
+    if (response.statusCode == 201 ||response.statusCode == 200) {
 
       final responseJson = jsonDecode(response.body);
 
-      Order order = Order.fromJson(responseJson['order']);
-
-      if (!mounted) return order;
-      Navigator.of(context).pop();
+      NewOrder order = NewOrder.fromJson(responseJson['order']);
 
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentChoiceScreen(order: order, box: widget.box, total: total, )));
 
@@ -239,8 +222,6 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
       }
 
       if (mounted) {
-        Navigator.of(context).pop();
-
         showDialog(
             barrierDismissible: true,
             context: context,

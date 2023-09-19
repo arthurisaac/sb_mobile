@@ -165,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     child: Image.asset('images/smartbox_logo.png',
-                        width: 100),
+                        width: 150),
                   ),
                 ),
               ),

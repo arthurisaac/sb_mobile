@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:smartbox/ui/home/boxes_in_categories_screen.dart';
+import 'package:smartbox/ui/boxes/box_details_screen.dart';
+import 'package:smartbox/ui/boxes/box_details_with_exchange_screen.dart';
+import 'package:smartbox/ui/helper/please_login_screen.dart';
 import 'package:smartbox/ui/utils/api_body_parameters.dart';
+import 'package:smartbox/ui/utils/ui_utils.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
 import '../../features/auth/cubits/auth_cubit.dart';
@@ -15,6 +19,8 @@ import '../../features/model/box_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../../features/model/details_client_model.dart';
+import '../boxes/box_details_reservation_screen.dart';
+import '../reserve/reservation_screen.dart';
 import '../utils/api_utils.dart';
 import '../utils/constants.dart';
 
@@ -26,341 +32,734 @@ class SavedBoxScreen extends StatefulWidget {
 }
 
 class _SavedBoxScreenState extends State<SavedBoxScreen> {
+  TextEditingController commentController = TextEditingController(text: "");
+  String notation = "5";
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return context.read<AuthCubit>().state is Authenticated
+    ? Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text("Cadeaux enregistrés"),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(space),
-        child: FutureBuilder<List<Order>?>(
-            future: getBoxes(),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text("Une erreur s'est produite"),
-                );
-              }
-              if (snapshot.hasData) {
-                List<Order>? list = snapshot.data;
+      body: Center(
+        child: Padding(
+              padding: const EdgeInsets.all(space),
+              child: FutureBuilder<List<Order>?>(
+                  future: getBoxes(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text("Une erreur s'est produite"),
+                      );
+                    }
+                    if (snapshot.hasData) {
+                      List<Order>? list = snapshot.data;
+                      //print(list!.length);
 
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: list?.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Order order = list![index];
+                      if (list!.isEmpty) {
+                        return const Center(
+                          child: Text("Aucun cadeau enregistré"),
+                        );
+                      } else {
+                        List<Order>? enCours = [];
+                        List<Order>? reserve = [];
+                        List<Order>? consomme = [];
 
-                    Box? box = order.box;
+                        for (var order in list) {
+                          print(order.status);
+                          if (order.status == 0) {
+                            print("En cours");
+                            enCours.add(order);
+                          } else if (order.status == 1) {
+                            print("En reservé");
+                            reserve.add(order);
+                          } else if (order.status == 2) {
+                            print("consomme");
+                            consomme.add(order);
+                          }
+                        }
 
-                    return Card(
-                      elevation: 50,
-                      shadowColor: Colors.black,
-                      child: GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20),
-                              ),
-                            ),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            backgroundColor: Colors.white,
-                            isScrollControlled: true,
-                            builder: (context) {
-                              return SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.75,
-                                child: SingleChildScrollView(
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        CarouselSlider(
-                                          options: CarouselOptions(
-                                            disableCenter: true,
-                                            autoPlay: true,
-                                            viewportFraction: 1.0,
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            enCours.isNotEmpty ? spaceWidget : Container(),
+                            enCours.isNotEmpty
+                                ? const Text(
+                                    "En cours",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                : const Text(""),
+                            enCours.isNotEmpty ? spaceWidget : Container(),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: enCours.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                Order order = enCours[index];
+
+                                Box? box = order.box;
+
+                                return Card(
+                                  elevation: 50,
+                                  shadowColor: Colors.black,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 100,
+                                        width: double.maxFinite,
+                                        padding:
+                                            const EdgeInsets.only(bottom: 15),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                                "$mediaUrl${box!.image}"),
+                                            fit: BoxFit.cover,
                                           ),
-                                          items: box.images
-                                              ?.map(
-                                                (item) => Container(
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: NetworkImage("$mediaUrl${item.image}" ??
-                                                        "https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80"),
-                                                    fit: BoxFit.cover),
-                                              ),
-                                              //child: Text(item.toString()),
+                                          borderRadius: const BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10)),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: space),
+                                        child: Text(
+                                          "${box.price} $priceSymbol",
+                                          style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: space),
+                                        child: Divider(),
+                                      ),
+                                      spaceWidget,
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: space),
+                                        child: Text(
+                                          "${box.name}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium
+                                              ?.copyWith(
+                                                  fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      spaceWidget,
+                                      spaceWidget,
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: TextButton(
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
                                             ),
-                                          )
-                                              .toList(),
+                                            primary: Colors.white,
+                                            backgroundColor:
+                                                Theme.of(context).primaryColor,
+                                            minimumSize:
+                                                const Size.fromHeight(12),
+                                          ),
+                                          onPressed: () async {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BoxDetailsReservationScreen(
+                                                          box: box,
+                                                          order: order,
+                                                        )));
+                                          },
+                                          child: Container(
+                                            width: double.infinity,
+                                            padding: const EdgeInsets.all(8),
+                                            child: const Center(
+                                              child: Text("Voir"),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      spaceWidget
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                            enCours.isNotEmpty
+                                ? const SizedBox(
+                                    height: 20,
+                                  )
+                                : Container(),
+                            reserve.isNotEmpty
+                                ? const Text(
+                                    "Réservé",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                : const Text(""),
+                            reserve.isNotEmpty ? spaceWidget : Container(),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: reserve.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                Order order = reserve[index];
+                                Box? box = order.box;
+
+                                return Card(
+                                  elevation: 50,
+                                  shadowColor: Colors.black,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BoxDetailsWithExchangeScreen(
+                                            box: box,
+                                            order: order,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 100,
+                                          width: double.maxFinite,
+                                          padding:
+                                              const EdgeInsets.only(bottom: 15),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  "$mediaUrl${box!.image}"),
+                                              fit: BoxFit.cover,
+                                            ),
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(10),
+                                                    topRight:
+                                                        Radius.circular(10)),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.all(space),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "${box.name}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleMedium
-                                                    ?.copyWith(fontWeight: FontWeight.bold),
-                                                textAlign: TextAlign.start,
-                                              ),
-                                              const SizedBox(
-                                                height: 30,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  RatingBarIndicator(
-                                                    rating: box.notation!.toDouble(),
-                                                    itemBuilder: (context, index) => const Icon(
-                                                      Icons.star,
-                                                      color: Colors.amber,
-                                                    ),
-                                                    itemCount: 5,
-                                                    itemSize: 13.0,
-                                                    direction: Axis.horizontal,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Text(
-                                                    "${box.notationCount}",
-                                                    style: const TextStyle(fontSize: 12),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              (box.discount != null && box.discount! > 0)
-                                                  ? Text(
-                                                "${box.price} $priceSymbol",
-                                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: space),
+                                          child: Text(
+                                            "Cadeau réservé",
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: space),
+                                          child: Divider(),
+                                        ),
+                                        spaceWidget,
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: space),
+                                          child: Text(
+                                            "${box.name}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium
+                                                ?.copyWith(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                          ),
+                                        ),
+                                        spaceWidget,
+                                        order.reservation != null
+                                            ? Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: space),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Container(),
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.date_range,
+                                                          size: 15,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "${order.reservation}",
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodySmall
+                                                                  ?.copyWith(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .primaryColor,
+                                                                  ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               )
-                                                  : Container(),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          color: Colors.white,
-                                          padding: const EdgeInsets.all(space),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              spaceWidget,
-                                              Row(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.people,
-                                                        size: 14,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Text("${box.maxPerson} personnes"),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  const Text("|"),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.hourglass_bottom,
-                                                        size: 14,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Text("Validité : ${box.validity} mois")
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              Text(
-                                                "Qu'est-ce qui est inclus ?",
-                                                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              box.isInside != null && box.isInside!.isNotEmpty ? Html(
-                                                data: box.isInside,
-                                                style: {
-                                                  "body": Style(padding: HtmlPaddings.zero, margin: Margins.zero),
-                                                  "ul": Style(padding: HtmlPaddings.only(left: 15), margin: Margins.zero, listStyleImage: const ListStyleImage("${serverUrl}images/list.jpg")),
-                                                  "li": Style(padding: HtmlPaddings.only(left: 5)),
-                                                },
-                                              )  : Container(),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              Text(
-                                                "Que devrais-je savoir ?",
-                                                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              box.mustKnow!.isNotEmpty ? Html(
-                                                data: box.mustKnow,
-                                                style: {
-                                                  "body": Style(padding: HtmlPaddings.zero, margin: Margins.zero),
-                                                  "ul": Style(padding: HtmlPaddings.only(left: 15), margin: Margins.zero, listStyleImage: const ListStyleImage("${serverUrl}images/list.png")),
-                                                  "li": Style(padding: HtmlPaddings.only(left: 5)),
-                                                },
-                                              )  : Container(),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              Html(
-                                                data: box.description,
-                                                style: {
-                                                  "body": Style(padding: HtmlPaddings.zero, margin: Margins.zero),
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(height: 60,)
+                                            : Container(),
+                                        spaceWidget,
                                       ],
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 100,
-                              width: double.maxFinite,
-                              padding: const EdgeInsets.only(bottom: 15),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage("$mediaUrl${box!.image}"),
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10)),
-                              ),
+                                );
+                              },
                             ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: space),
-                              child: Text(
-                                "Cadeau réservé",
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: space),
-                              child: Divider(),
-                            ),
-                            spaceWidget,
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: space),
-                              child: Text(
-                                "${box.name}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            spaceWidget,
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: space),
-                              child: Text("${box.description}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        color: Colors.grey.shade500,
-                                      ),
-                                  overflow: TextOverflow.ellipsis),
-                            ),
-                            spaceWidget,
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: space),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.date_range,
-                                        size: 15,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "${order.reservation}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall
-                                            ?.copyWith(
+                            consomme.isNotEmpty
+                                ? const Text(
+                                    "Consommé",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                : const Text(""),
+                            consomme.isNotEmpty ? spaceWidget : Container(),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: consomme.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                Order order = consomme[index];
+                                Box? box = order.box;
+
+                                return Card(
+                                  elevation: 50,
+                                  shadowColor: Colors.black,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => detail(
+                                            context: context,
+                                            order: order,
+                                            box: box,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 100,
+                                          width: double.maxFinite,
+                                          padding:
+                                              const EdgeInsets.only(bottom: 15),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  "$mediaUrl${box!.image}"),
+                                              fit: BoxFit.cover,
+                                            ),
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(10),
+                                                    topRight:
+                                                        Radius.circular(10)),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: space),
+                                          child: Text(
+                                            "Cadeau consommé",
+                                            style: TextStyle(
                                               color: Theme.of(context)
                                                   .primaryColor,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: space),
+                                          child: Divider(),
+                                        ),
+                                        spaceWidget,
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: space),
+                                          child: Text(
+                                            "${box.name}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium
+                                                ?.copyWith(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                          ),
+                                        ),
+                                        spaceWidget,
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                            spaceWidget,
+                          ],
+                        );
+                      }
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  }),
+            )
+      ),
+    ) : const PleaseLoginScreen();
+  }
+
+  Widget detail(
+      {required BuildContext context, required Order order, required Box box}) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Votre cadeau"),
+      ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CarouselSlider(
+                options: CarouselOptions(
+                  disableCenter: true,
+                  autoPlay: true,
+                  viewportFraction: 1.0,
+                ),
+                items: box.images
+                    ?.map(
+                      (item) => Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage("$mediaUrl${item.image}" ??
+                                  "https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80"),
+                              fit: BoxFit.cover),
+                        ),
+                        //child: Text(item.toString()),
+                      ),
+                    )
+                    .toList(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(space),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${box.name}",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.start,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      children: [
+                        RatingBarIndicator(
+                          rating: box.notation!.toDouble(),
+                          itemBuilder: (context, index) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          itemCount: 5,
+                          itemSize: 13.0,
+                          direction: Axis.horizontal,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "${box.notationCount}",
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    (box.discount != null && box.discount! > 0)
+                        ? Text(
+                            "${box.price} $priceSymbol",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        : Container(),
+                  ],
+                ),
+              ),
+              Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(space),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    spaceWidget,
+                    Row(
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.people,
+                              size: 14,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text("${box.maxPerson} personnes"),
                           ],
                         ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Text("|"),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.hourglass_bottom,
+                              size: 14,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text("Validité : ${box.validity} mois")
+                          ],
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Qu'est-ce qui est inclus ?",
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    box.isInside != null && box.isInside!.isNotEmpty
+                        ? Html(
+                            data: box.isInside,
+                            style: {
+                              "body": Style(
+                                  padding: HtmlPaddings.zero,
+                                  margin: Margins.zero),
+                              "ul": Style(
+                                padding: HtmlPaddings.only(left: 15),
+                                margin: Margins.zero,
+                                listStyleImage: const ListStyleImage(
+                                    "${serverUrl}images/list.jpg"),
+                              ),
+                              "li": Style(
+                                padding: HtmlPaddings.only(
+                                  left: 5,
+                                ),
+                              ),
+                            },
+                          )
+                        : Container(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Que devrais-je savoir ?",
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    box.mustKnow!.isNotEmpty
+                        ? Html(
+                            data: box.mustKnow,
+                            style: {
+                              "body": Style(
+                                  padding: HtmlPaddings.zero,
+                                  margin: Margins.zero),
+                              "ul": Style(
+                                  padding: HtmlPaddings.only(left: 15),
+                                  margin: Margins.zero,
+                                  listStyleImage: const ListStyleImage(
+                                      "${serverUrl}images/list.png")),
+                              "li": Style(padding: HtmlPaddings.only(left: 5)),
+                            },
+                          )
+                        : Container(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Html(
+                      data: box.description,
+                      style: {
+                        "body": Style(
+                            padding: HtmlPaddings.zero, margin: Margins.zero),
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Donnez son avis",
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    spaceWidget,
+                    TextFormField(
+                      controller: commentController,
+                      keyboardType: TextInputType.multiline,
+                      showCursor: false,
+                      readOnly: false,
+                      decoration: InputDecoration(
+                        labelText: "Commentaire",
+                        hintText: "Donnez votre avis sur le cadeau",
+                        errorText: null,
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(sbInputRadius),
+                        ),
                       ),
-                    );
-                  },
-                );
-              }
-              return const Center(child: CircularProgressIndicator());
-            }),
+                      validator: (value) {
+                        if (value!.isEmpty ||
+                            !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(value)) {
+                          return 'Entrer un email valide!';
+                        }
+                        return null;
+                      },
+                      onTap: () {},
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    RatingBar.builder(
+                      initialRating: 3,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        switch (index) {
+                          case 0:
+                            return const Icon(
+                              Icons.sentiment_very_dissatisfied,
+                              color: Colors.red,
+                            );
+                          case 1:
+                            return const Icon(
+                              Icons.sentiment_dissatisfied,
+                              color: Colors.redAccent,
+                            );
+                          case 2:
+                            return const Icon(
+                              Icons.sentiment_neutral,
+                              color: Colors.amber,
+                            );
+                          case 3:
+                            return const Icon(
+                              Icons.sentiment_satisfied,
+                              color: Colors.lightGreen,
+                            );
+                          default:
+                            return const Icon(
+                              Icons.sentiment_very_satisfied,
+                              color: Colors.green,
+                            );
+                        }
+                      },
+                      onRatingUpdate: (rating) {
+                        setState(() => notation = rating.toString());
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        primary: Colors.white,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        minimumSize: const Size.fromHeight(12),
+                      ),
+                      onPressed: () async {
+                        sendCommentAndNotation(box.id.toString());
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(14),
+                        child: const Center(
+                          child: Text("Envoyer"),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 60,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -387,6 +786,82 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
     } else {
       // La requête a échoué avec un code d'erreur, comme 401 Unauthorized
       print('Request failed with status: ${response.statusCode}.');
+      return null;
+    }
+  }
+
+  sendCommentAndNotation(String box) async {
+    if (mounted) {
+      UiUtils.modalLoading(context, "Chargement en cours");
+    }
+
+    final response = await http
+        .post(Uri.parse(sendCommentUrl), headers: ApiUtils.getHeaders(), body: {
+      "box": box,
+      "user": context.read<AuthCubit>().getId().toString(),
+      "comment": commentController.text,
+      "notation": notation
+    });
+
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final responseJson = jsonDecode(response.body);
+
+      if (!mounted) return;
+
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // The loading indicator
+                  const Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.greenAccent,
+                    size: 96,
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  // Some text
+                  const Text('Merci pour vos commentaires'),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).primaryColor,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(sbInputRadius),
+                      ),
+                    ),
+                    onPressed: () {
+                      //if (!mounted) return;
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Ok"),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      // La requête a échoué avec un code d'erreur, comme 401 Unauthorized
+      if (kDebugMode) {
+        print('Request failed with status: ${response.statusCode}.');
+      }
       return null;
     }
   }

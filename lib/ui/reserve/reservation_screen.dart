@@ -4,17 +4,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:smartbox/ui/main/main_screen.dart';
+import 'package:smartbox/ui/utils/ui_utils.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../features/model/box_model.dart';
+import '../../features/model/details_client_model.dart';
 import '../utils/api_utils.dart';
 import '../utils/constants.dart';
 
 class ReservationScreen extends StatefulWidget {
   final Box box;
+  final Order order;
 
-  const ReservationScreen({Key? key, required this.box}) : super(key: key);
+  const ReservationScreen({Key? key, required this.box, required this.order})
+      : super(key: key);
 
   @override
   State<ReservationScreen> createState() => _ReservationScreenState();
@@ -22,22 +27,34 @@ class ReservationScreen extends StatefulWidget {
 
 class _ReservationScreenState extends State<ReservationScreen> {
   TextEditingController dateController = TextEditingController(text: "");
+  var initDate = DateTime.now().add(const Duration(days: 3));
+  var firstDate = DateTime.now().add(const Duration(days: 2));
+  var lastDate = DateTime(2026);
+
+  @override
+  void initState() {
+    print(widget.box.startTime);
+    print(widget.box.endTime);
+    if (widget.box.startTime != null && widget.box.startTime!.isNotEmpty) {
+      firstDate = DateTime.parse(widget.box.startTime.toString());
+      initDate = firstDate;
+    }
+
+    if (widget.box.endTime != null && widget.box.endTime!.isNotEmpty) {
+      lastDate = DateTime.parse(widget.box.endTime.toString());
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage("images/login_bg.png"),
-            fit: BoxFit.cover,
-          )),
-        ),
-        Scaffold(
-          appBar: AppBar(),
-          body: Padding(
-            padding: const EdgeInsets.all(space),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Padding(
+          padding: const EdgeInsets.all(space),
+          child: SingleChildScrollView(
             child: Column(
               children: [
                 spaceWidget,
@@ -45,7 +62,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   "Reservation",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                spaceWidget,
+                /*spaceWidget,
                 TextField(
                     controller: dateController,
                     decoration: const InputDecoration(
@@ -54,10 +71,11 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     readOnly: true, // when true user cannot edit text
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2023),
-                          lastDate: DateTime(2026));
+                        context: context,
+                        initialDate: initDate,
+                        firstDate: firstDate,
+                        lastDate: lastDate,
+                      );
 
                       if (pickedDate != null) {
                         print(pickedDate);
@@ -68,8 +86,33 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           dateController.text = formattedDate;
                         });
                       } else {}
-                    }),
-                spaceWidget,
+                    }),*/
+                const SizedBox(
+                  height: 30,
+                ),
+                SfDateRangePicker(
+                  onSelectionChanged:
+                      (DateRangePickerSelectionChangedArgs args) {
+                    if (args.value is DateTime) {
+                      setState(() => dateController.text = args.value.toString());
+                    }
+                  },
+                  showNavigationArrow: true,
+                  selectionMode: DateRangePickerSelectionMode.single,
+                  //initialSelectedDate: initDate,
+                  minDate: firstDate,
+                  maxDate: lastDate,
+                  monthCellStyle: const DateRangePickerMonthCellStyle(
+                    //textStyle: TextStyle(color: Colors.lightGreen),
+                    cellDecoration: BoxDecoration(color: Colors.green),
+                    disabledDatesDecoration: BoxDecoration(color: Colors.red),
+                    //cellDecoration: BoxDecoration(color:Colors.lightGreen),
+                    disabledDatesTextStyle: TextStyle(color: Colors.white),
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
                 TextButton(
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -82,13 +125,15 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   onPressed: () async {
                     if (dateController.text.isNotEmpty) {
                       madeReservation();
-                    } else {}
+                    } else {
+                      UiUtils.setSnackBar("Attention", "Choisir la data d'abord", context, false);
+                    }
                   },
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(8),
                     child: const Center(
-                      child: Text("Connexion"),
+                      child: Text("Enregistrer"),
                     ),
                   ),
                 )
@@ -96,43 +141,20 @@ class _ReservationScreenState extends State<ReservationScreen> {
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 
   madeReservation() async {
     if (mounted) {
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (_) {
-          return const Dialog(
-            backgroundColor: Colors.white,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // The loading indicator
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  // Some text
-                  Text('Chargement en cours...')
-                ],
-              ),
-            ),
-          );
-        },
-      );
+      UiUtils.modalLoading(context, "Chargement en cours");
     }
 
     final response = await http.post(
       Uri.parse(reserveOrderUrl),
       headers: ApiUtils.getHeaders(),
       body: {
-        "order_id": widget.box.id.toString(),
+        "order_id": widget.order.id.toString(),
         "reservation_date": dateController.text,
       },
     );

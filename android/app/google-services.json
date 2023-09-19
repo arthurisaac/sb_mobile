@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "503763831683",
+    "project_id": "smarbox-1260b",
+    "storage_bucket": "smarbox-1260b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503763831683:android:9059624b42ade555a904b6",
+        "android_client_info": {
+          "package_name": "com.arthurisaac.yiikri.smartbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "503763831683-jtcrhah7eqnd76r68prg2mepvp0k00t3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMYBC4vmbFRY3kSsAq3HUbezr22Ou73YY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "503763831683-jtcrhah7eqnd76r68prg2mepvp0k00t3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "503763831683-281d4pm5rc9438oqsc1qse44cv8m93qb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.arthurisaac.yiikri.smartbox"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

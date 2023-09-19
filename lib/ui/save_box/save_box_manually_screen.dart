@@ -83,36 +83,17 @@ class _SaveBoxManuallyScreenState extends State<SaveBoxManuallyScreen> {
 
   checkNumberCode() async {
     if (mounted) {
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (_) {
-          return const Dialog(
-            backgroundColor: Colors.white,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // The loading indicator
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  // Some text
-                  Text('Chargement en cours...')
-                ],
-              ),
-            ),
-          );
-        },
-      );
+      UiUtils.modalLoading(context, "Chargement en cours");
     }
 
     final response = await http
         .post(Uri.parse(checkNumberUrl), headers: ApiUtils.getHeaders(), body: {
       "number": numeroController.text,
     });
+
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
 
     if (response.statusCode == 200) {
       final responseJson = jsonDecode(response.body);
@@ -172,7 +153,6 @@ class _SaveBoxManuallyScreenState extends State<SaveBoxManuallyScreen> {
         Box box = Box.fromJson(jsonResponse["box"]);
         if (order.orderConfirmation == null) {
           if (mounted) {
-            Navigator.of(context).pop();
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => SaveBoxDetailsScreen(
@@ -184,7 +164,6 @@ class _SaveBoxManuallyScreenState extends State<SaveBoxManuallyScreen> {
           }
         } else {
           if (mounted) {
-            Navigator.of(context).pop();
             UiUtils.setSnackBar(
                 "Attention", "Cette commande a déjà été reservée.", context,
                 false);

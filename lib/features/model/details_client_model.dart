@@ -9,6 +9,7 @@ class Order {
   String? telephone;
   String? mail;
   String? reservation;
+  int? status;
   int? orderConfirmation;
   Box? box;
 
@@ -24,6 +25,7 @@ class Order {
     mail = json['mail'];
     orderConfirmation = json['order_confirmation'];
     reservation = json['reservation'];
+    status = json['status'];
     box = Box.fromJson(json['box']);
   }
 

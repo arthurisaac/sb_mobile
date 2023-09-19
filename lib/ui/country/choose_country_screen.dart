@@ -2,6 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:smartbox/app/routes.dart';
 import 'package:smartbox/features/auth/auth_local_data_source.dart';
+import 'package:smartbox/ui/main/main_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
@@ -55,11 +56,11 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                   showCountryPicker(
                     context: context,
                     exclude: <String>['KN', 'MF'],
-                    favorite: <String>['SE'],
+                    favorite: <String>['BF', 'ML'],
                     //Optional. Shows phone code before the country name.
                     showPhoneCode: false,
                     onSelect: (Country country) {
-                      print('pays selectionné: ${country.name}');
+                      //print('pays selectionné: ${country.name}');
                       AuthLocalDataSource auth = AuthLocalDataSource();
                       auth.setCountry(country.name);
                       auth.setCountryCode(country.countryCode);
@@ -70,8 +71,8 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                     countryListTheme: CountryListThemeData(
                       // Optional. Sets the border radius for the bottomsheet.
                       borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(40.0),
-                        topRight: Radius.circular(40.0),
+                        topLeft: Radius.circular(sbInputRadius),
+                        topRight: Radius.circular(sbInputRadius),
                       ),
                       // Optional. Styles the search field.
                       inputDecoration: InputDecoration(
@@ -104,7 +105,8 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushReplacementNamed(Routes.login);
+                  //Navigator.of(context).pushReplacementNamed(Routes.login);
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MainScreen()));
                 },
                 child: Container(
                   width: double.infinity,

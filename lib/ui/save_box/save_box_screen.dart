@@ -144,7 +144,8 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => SaveBoxDetailsScreen(
-                  box: box, order: order,
+                  box: box,
+                  order: order,
                 ),
               ),
             );
@@ -166,8 +167,6 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Enregistrer un cadeau"),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
       ),
       body: SafeArea(
         child: Stack(
@@ -198,17 +197,19 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
               ],
             ),
             Positioned(
-                child: Container(
-              width: double.infinity,
-              color: Colors.black.withOpacity(0.2),
-              padding: const EdgeInsets.all(space),
-              margin: const EdgeInsets.all(space),
-              child: const Text(
-                "Scanner le code qr du cadeau",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+              child: Container(
+                width: double.infinity,
+                color: Colors.black.withOpacity(0.2),
+                padding: const EdgeInsets.all(space),
+                margin: const EdgeInsets.all(space),
+                child: const Text(
+                  "Scanner le code qr du cadeau",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            )),
+            ),
             Positioned(
               left: 0,
               right: 0,
@@ -221,10 +222,13 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
                     minimumSize: const Size.fromHeight(50), // N
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(sbInputRadius),
-                    ),/// EW
+                    ),
+
+                    /// EW
                   ),
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SaveBoxManuallyScreen()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const SaveBoxManuallyScreen()));
                   },
                   child: const Text(
                     'Entrer manuellement',

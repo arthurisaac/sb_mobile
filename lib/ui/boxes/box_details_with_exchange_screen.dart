@@ -1,28 +1,33 @@
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smartbox/features/model/images_model.dart';
-import 'package:smartbox/ui/auth/manual_login_screen.dart';
 import 'package:smartbox/ui/order_now/delivery_mode_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
-import '../../features/auth/cubits/auth_cubit.dart';
 import '../../features/model/box_model.dart';
+import '../../features/model/details_client_model.dart';
+import '../reserve/reservation_screen.dart';
+import 'box_details_reservation_screen.dart';
 
-class BoxDetailsScreen extends StatefulWidget {
+class BoxDetailsWithExchangeScreen extends StatefulWidget {
   final Box box;
+  final Order order;
 
-  const BoxDetailsScreen({Key? key, required this.box}) : super(key: key);
+  const BoxDetailsWithExchangeScreen(
+      {Key? key, required this.box, required this.order})
+      : super(key: key);
 
   @override
-  State<BoxDetailsScreen> createState() => _BoxDetailsScreenState();
+  State<BoxDetailsWithExchangeScreen> createState() =>
+      _BoxDetailsWithExchangeScreenState();
 }
 
-class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
+class _BoxDetailsWithExchangeScreenState
+    extends State<BoxDetailsWithExchangeScreen> {
   late List<Images>? imgList = [];
   late Box box;
   int _index = 0;
@@ -38,6 +43,9 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.box.name ?? ""),
+      ),
       body: SingleChildScrollView(
         child: SizedBox(
           width: double.infinity,
@@ -266,64 +274,62 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
       bottomNavigationBar: Container(
         color: Colors.white,
         padding: const EdgeInsets.all(space),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            (widget.box.discount! > 0)
-                ? Text(
-                    "${widget.box.discount} $priceSymbol",
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w800, color: Colors.red),
-                  )
-                : Text(
-                    "${widget.box.price} $priceSymbol",
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge
-                        ?.copyWith(fontWeight: FontWeight.w800),
-                  ),
-            ElevatedButton(
-              onPressed: () {
-                if (context.read<AuthCubit>().state is Authenticated) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => DeliveryModeScreen(
-                        box: widget.box,
-                      )));
-                } else {
-                  AlertDialog alert = AlertDialog(
-                    title: const Text("Attention"),
-                    content: const Text("Vous avez besoin d'être connecté avant d'acheter une box"),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => const ManualLoginScreen())
-                          );
-                        },
-                        child: Text("Connexion", style: TextStyle(color: Theme.of(context).primaryColor),),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text("Annuler", style: TextStyle(color: Colors.red),),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                (widget.box.discount! > 0)
+                    ? Text(
+                        "${widget.box.discount} $priceSymbol",
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w800, color: Colors.red),
                       )
-                    ],
-                  );
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return alert;
-                    },
-                  );
-                }
-
+                    : Text(
+                        "${widget.box.price} $priceSymbol",
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge
+                            ?.copyWith(fontWeight: FontWeight.w800),
+                      ),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    color: Theme.of(context).primaryColor,
+                    child: const Text("Echanger avec un autre"),
+                  ),
+                )
+              ],
+            ),
+            spaceWidget,
+            ElevatedButton(
+              onPressed: () async {
+                showModalBottomSheet(
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  backgroundColor: Colors.white,
+                  isScrollControlled: true,
+                  builder: (context) {
+                    return ReservationScreen(
+                      box: box,
+                      order: widget.order,
+                    );
+                  },
+                );
               },
               child: Container(
+                width: double.infinity,
                 padding: const EdgeInsets.all(10),
-                color: Theme.of(context).primaryColor,
-                child: const Text("Acheter"),
+                child: const Center(
+                  child: Text("Modifier sa réservation"),
+                ),
               ),
             )
           ],
