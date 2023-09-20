@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
-import 'package:smartbox/features/model/box_model.dart';
 import 'package:smartbox/features/model/boxes_model.dart';
 import 'package:smartbox/features/model/category_model.dart';
 import 'package:smartbox/features/model/sections_model.dart';
@@ -18,8 +19,6 @@ import 'package:smartbox/ui/utils/widgets_utils.dart';
 
 import '../../features/model/slider_model.dart';
 import '../utils/api_utils.dart';
-import '../utils/strings_constants.dart';
-import '../utils/ui_utils.dart';
 
 class HomeScreen extends StatefulWidget {
   final SettingsModel settingsModel;
@@ -33,6 +32,16 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        // statusBarColor: Colors.red, // You can use this as well
+        statusBarIconBrightness:
+            Brightness.dark, // OR Vice Versa for ThemeMode.dark
+        statusBarBrightness:
+            Brightness.light, // OR Vice Versa for ThemeMode.dark
+      ),
+    );
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -65,9 +74,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (snapshot.hasData) {
                             return CarouselSlider(
                               options: CarouselOptions(
-                                height: MediaQuery.of(context).size.height * 0.4,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.4,
                                 autoPlay: true,
-                                aspectRatio: 16/9,
+                                aspectRatio: 16 / 9,
                                 enlargeCenterPage: false,
                                 disableCenter: true,
                                 viewportFraction: 1.0,
@@ -76,14 +86,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               items: list
                                   ?.map(
                                     (item) => carouselItem(sliderModel: item),
-                              )
+                                  )
                                   .toList(),
                             );
                           }
 
                           if (snapshot.hasError) {
                             return const Center(
-                              child: Icon(Icons.error_outline, size: 50,),
+                              child: Icon(
+                                Icons.error_outline,
+                                size: 50,
+                              ),
                             );
                           }
 
@@ -97,8 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           );
-                        }
-                    ),
+                        }),
                   ),
                   Column(
                     mainAxisSize: MainAxisSize.max,
@@ -146,14 +158,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SearchScreen()));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const SearchScreen()));
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: space, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: space, vertical: 10),
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(sbInputRadius)
-                        ),
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(sbInputRadius)),
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -166,7 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const FavoritesBoxesScreen()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const FavoritesBoxesScreen()));
                     },
                     color: Colors.white,
                     padding: const EdgeInsets.all(8),
@@ -180,19 +194,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            widget.settingsModel.bannerAdEnable == 1 ? GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdDetailsScreen(ad: widget.settingsModel.bannerAdDetail.toString() ?? "No details")));
-              },
-              child: Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.orange
-                ),
-                padding: const EdgeInsets.all(14),
-                child: Text("${widget.settingsModel.bannerAd}", textAlign: TextAlign.center, style: const TextStyle(color: Colors.white),),
-              ),
-            ) : Container(),
+            widget.settingsModel.bannerAdEnable == 1
+                ? GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AdDetailsScreen(
+                              ad: widget.settingsModel.bannerAdDetail
+                                  .toString())));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      decoration: const BoxDecoration(color: Colors.orange),
+                      padding: const EdgeInsets.all(14),
+                      child: Text(
+                        "${widget.settingsModel.bannerAd}",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                : Container(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: space),
               child: FutureBuilder<List<CategoryModel>?>(
@@ -210,7 +231,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       return GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: 30,
                             crossAxisSpacing: 24,
@@ -224,7 +246,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => BoxesInCategories(
                                           category: category.id ?? 0,
-                                          title: "${category.name}", settingsModel: widget.settingsModel,
+                                          title: "${category.name}",
+                                          settingsModel: widget.settingsModel,
                                         )));
                               },
                               child: Column(
@@ -282,7 +305,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           Section section = list![index];
                           List<Boxes>? boxList = section.boxes;
 
-
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
@@ -292,28 +314,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: const EdgeInsets.all(space),
                                 width: double.infinity,
                                 color: Colors.white,
-                                child: Text("${section.title}", style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),),
+                                child: Text(
+                                  "${section.title}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                ),
                               ),
                               spaceWidget,
                               Container(
-                                color: Colors.white,
-                                padding: const EdgeInsets.all(space),
-                                child: GridView.builder(
-                                  shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 20,
-                                      crossAxisSpacing: 24,
-                                      childAspectRatio: 0.8,
-                                    ),
-                                    itemCount: boxList?.length,
-                                    itemBuilder: (context, index) {
-                                      Boxes boxes = boxList![index];
+                                  color: Colors.white,
+                                  padding: const EdgeInsets.all(space),
+                                  child: GridView.builder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 20,
+                                        crossAxisSpacing: 24,
+                                        childAspectRatio: 0.8,
+                                      ),
+                                      itemCount: boxList?.length,
+                                      itemBuilder: (context, index) {
+                                        Boxes boxes = boxList![index];
 
-                                      return BoxItem(box: boxes.box!);
-                                    })
-                              )
+                                        return BoxItem(box: boxes.box!);
+                                      }))
                             ],
                           );
                         });
@@ -350,8 +379,6 @@ class _HomeScreenState extends State<HomeScreen> {
       return listCategories;
       //var responseJson =
     } else {
-      // La requête a échoué avec un code d'erreur, comme 401 Unauthorized
-      print('Request failed with status: ${response.statusCode}.');
       return null;
     }
   }
@@ -372,12 +399,9 @@ class _HomeScreenState extends State<HomeScreen> {
       return listSections;
       //var responseJson =
     } else {
-      // La requête a échoué avec un code d'erreur, comme 401 Unauthorized
-      print('Request failed with status: ${response.statusCode}.');
       return null;
     }
   }
-
 
   Future<List<SliderModel>?> getSliders() async {
     try {
@@ -389,11 +413,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
       var jsonResponse = responseJson['data'] as List<dynamic>;
 
-      List<SliderModel> list = jsonResponse.map((e) => SliderModel.fromJson(e)).toList();
+      List<SliderModel> list =
+          jsonResponse.map((e) => SliderModel.fromJson(e)).toList();
 
       return list;
     } catch (e) {
-      UiUtils.setSnackBar(errorOccured, e.toString(), context, false);
       //throw AlertException(errorMessageCode: e.toString());
       return null;
     }
@@ -403,7 +427,12 @@ class _HomeScreenState extends State<HomeScreen> {
     if (sliderModel.type == "categorie") {
       return GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => BoxesInCategories(category: sliderModel.typeId ?? 0, title: '', settingsModel: widget.settingsModel,)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => BoxesInCategories(
+                    category: sliderModel.typeId ?? 0,
+                    title: '',
+                    settingsModel: widget.settingsModel,
+                  )));
         },
         child: Container(
           decoration: BoxDecoration(
@@ -416,7 +445,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     } else {
-      return  Container(
+      return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
               image: NetworkImage("$mediaUrl${sliderModel.image}"),

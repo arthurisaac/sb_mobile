@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbox/features/model/settings_model.dart';
 import 'package:smartbox/ui/home/home_screen.dart';
@@ -13,6 +12,7 @@ import 'package:smartbox/ui/saved/saved_box_screen.dart';
 
 import '../utils/api_utils.dart';
 import '../utils/constants.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 class MainScreen extends StatefulWidget {
@@ -36,13 +36,13 @@ class _MainScreenState extends State<MainScreen> {
     return false;
   }
 
-  Future saveSupportContact(String supportMail, String supportChat, String supportPhone) async {
+  Future saveSupportContact(
+      String supportMail, String supportChat, String supportPhone) async {
     final SharedPreferences prefs = await _prefs;
     prefs.setString("support_mail", supportMail);
     prefs.setString("support_chat", supportChat);
     prefs.setString("support_phone", supportPhone);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +60,14 @@ class _MainScreenState extends State<MainScreen> {
             if (snapshot.hasData) {
               SettingsModel? settingsModel = snapshot.data;
 
-              saveSupportContact(settingsModel!.supportMail ?? "", settingsModel.supportChat ?? "", settingsModel.supportPhone ?? "");
+              saveSupportContact(
+                  settingsModel!.supportMail ?? "",
+                  settingsModel.supportChat ?? "",
+                  settingsModel.supportPhone ?? "");
               return Center(
                 child: [
                   HomeScreen(
-                    settingsModel: settingsModel!,
+                    settingsModel: settingsModel,
                   ),
                   const SaveBoxPresentationScreen(),
                   const SavedBoxScreen(),
@@ -77,7 +80,8 @@ class _MainScreenState extends State<MainScreen> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+          selectedIconTheme:
+              IconThemeData(color: Theme.of(context).primaryColor),
           selectedItemColor: Theme.of(context).primaryColor,
           unselectedItemColor: Colors.black,
           items: const <BottomNavigationBarItem>[
@@ -103,16 +107,6 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _getCurrentLocation() async {
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      print('Latitude: ${position.latitude}, Longitude: ${position.longitude}');
-    } catch (e) {
-      print("Erreur $e");
-    }
   }
 
   Future<SettingsModel?> getSettings() async {

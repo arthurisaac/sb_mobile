@@ -1,6 +1,5 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:smartbox/app/routes.dart';
 import 'package:smartbox/features/auth/auth_local_data_source.dart';
 import 'package:smartbox/ui/main/main_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
@@ -98,7 +97,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
               spaceWidget,
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(sbInputRadius),

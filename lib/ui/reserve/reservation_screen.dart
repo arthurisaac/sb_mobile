@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:smartbox/ui/main/main_screen.dart';
 import 'package:smartbox/ui/utils/ui_utils.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
-import 'package:http/http.dart' as http;
+// ignore: depend_on_referenced_packages
+import 'package:http/http.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../features/model/box_model.dart';
@@ -33,8 +31,6 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
   @override
   void initState() {
-    print(widget.box.startTime);
-    print(widget.box.endTime);
     if (widget.box.startTime != null && widget.box.startTime!.isNotEmpty) {
       firstDate = DateTime.parse(widget.box.startTime.toString());
       initDate = firstDate;
@@ -94,7 +90,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   onSelectionChanged:
                       (DateRangePickerSelectionChangedArgs args) {
                     if (args.value is DateTime) {
-                      setState(() => dateController.text = args.value.toString());
+                      setState(
+                          () => dateController.text = args.value.toString());
                     }
                   },
                   showNavigationArrow: true,
@@ -115,10 +112,10 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 ),
                 TextButton(
                   style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    primary: Colors.white,
                     backgroundColor: Theme.of(context).primaryColor,
                     minimumSize: const Size.fromHeight(12),
                   ),
@@ -126,7 +123,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     if (dateController.text.isNotEmpty) {
                       madeReservation();
                     } else {
-                      UiUtils.setSnackBar("Attention", "Choisir la data d'abord", context, false);
+                      UiUtils.setSnackBar("Attention",
+                          "Choisir la data d'abord", context, false);
                     }
                   },
                   child: Container(
@@ -150,7 +148,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
       UiUtils.modalLoading(context, "Chargement en cours");
     }
 
-    final response = await http.post(
+    final response = await post(
       Uri.parse(reserveOrderUrl),
       headers: ApiUtils.getHeaders(),
       body: {
@@ -188,7 +186,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).primaryColor,
+                        backgroundColor: Theme.of(context).primaryColor,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(sbInputRadius),

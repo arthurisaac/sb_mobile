@@ -18,14 +18,14 @@ class SubCategoryItemModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['sub_category'] = this.subCategory;
-    if (this.box != null) {
-      data['box'] = this.box!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['sub_category'] = subCategory;
+    if (box != null) {
+      data['box'] = box!.toJson();
     }
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

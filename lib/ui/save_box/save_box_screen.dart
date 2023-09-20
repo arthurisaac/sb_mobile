@@ -11,6 +11,7 @@ import '../../features/model/box_model.dart';
 import '../../features/model/details_client_model.dart';
 import '../utils/api_utils.dart';
 import '../utils/constants.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 class SaveBoxScreen extends StatefulWidget {
@@ -115,7 +116,7 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Theme.of(context).primaryColor,
+                          backgroundColor: Theme.of(context).primaryColor,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(sbInputRadius),
@@ -125,7 +126,7 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
                           //if (!mounted) return;
                           Navigator.of(context).pop();
                         },
-                        child: Text("Fermer"),
+                        child: const Text("Fermer"),
                       ),
                     ],
                   ),
@@ -152,7 +153,6 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
           }
         }
       }
-      print(jsonResponse);
     } else {
       // La requête a échoué avec un code d'erreur, comme 401 Unauthorized
       if (kDebugMode) {
@@ -218,7 +218,7 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
                 margin: const EdgeInsets.symmetric(horizontal: space),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
                     minimumSize: const Size.fromHeight(50), // N
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(sbInputRadius),

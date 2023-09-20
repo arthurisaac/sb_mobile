@@ -12,7 +12,7 @@ class _OrderNowScreenState extends State<OrderNowScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Mode de livraison"),
+        title: const Text("Mode de livraison"),
       ),
     );
   }

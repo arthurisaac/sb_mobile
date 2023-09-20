@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:smartbox/ui/utils/strings_constants.dart';
 
@@ -14,11 +15,7 @@ class AuthRemoteDataSource {
     try {
       String fcmToken = await getFCMToken();
       //body of post request
-      final body = {
-        emailKey: email,
-        passwordKey: password,
-        //fcmIdKey: fcmToken
-      };
+      final body = {emailKey: email, passwordKey: password, fcmIdKey: fcmToken};
       //print("call here"+body.toString());
       final response = await http.post(Uri.parse(loginUrl),
           body: body, headers: ApiUtils.getHeaders());
@@ -85,7 +82,6 @@ class AuthRemoteDataSource {
     }
   }
 
-
   Future<dynamic> updatePassword({
     String? password,
     String? passwordConfirmation,
@@ -113,7 +109,6 @@ class AuthRemoteDataSource {
       throw AuthException(errorMessageCode: e.toString());
     }
   }
-
 
   Future<dynamic> updateUser({
     String? nom,
@@ -147,10 +142,9 @@ class AuthRemoteDataSource {
     }
   }
 
-
   static Future<String> getFCMToken() async {
     try {
-      return await "token"; //fcm.FirebaseMessaging.instance.getToken() ?? "";
+      return "token"; //fcm.FirebaseMessaging.instance.getToken() ?? "";
     } catch (e) {
       return "";
     }

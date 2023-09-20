@@ -14,6 +14,7 @@ import '../../features/auth/cubits/auth_cubit.dart';
 import '../utils/api_body_parameters.dart';
 import '../utils/api_utils.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 import '../utils/ui_utils.dart';
@@ -23,7 +24,13 @@ class DeliveryResumeScreen extends StatefulWidget {
   final Order order;
   final String livraison;
   final String deliveryPlace;
-  const DeliveryResumeScreen({Key? key, required this.box, required this.order, required this.livraison, required this.deliveryPlace}) : super(key: key);
+  const DeliveryResumeScreen(
+      {Key? key,
+      required this.box,
+      required this.order,
+      required this.livraison,
+      required this.deliveryPlace})
+      : super(key: key);
 
   @override
   State<DeliveryResumeScreen> createState() => _DeliveryResumeScreenState();
@@ -34,11 +41,13 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
 
   @override
   void initState() {
-
-    total = (widget.box.discount! > 0) ? double.tryParse(widget.box.discount.toString()) ?? 0 : double.tryParse(widget.box.price.toString()) ?? 0;
+    total = (widget.box.discount! > 0)
+        ? double.tryParse(widget.box.discount.toString()) ?? 0
+        : double.tryParse(widget.box.price.toString()) ?? 0;
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,12 +66,23 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
                 padding: const EdgeInsets.all(20),
                 child: Row(
                   children: [
-                    Image.network("$mediaUrl${widget.box.image}", height: 50,),
-                    const SizedBox(width: 10,),
+                    Image.network(
+                      "$mediaUrl${widget.box.image}",
+                      height: 50,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("${widget.box.name}", style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),),
+                        Text(
+                          "${widget.box.name}",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
                         Text("Livraison : ${widget.livraison}"),
                       ],
                     )
@@ -79,7 +99,13 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Expéditeur", style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),),
+                    Text(
+                      "Expéditeur",
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
                     spaceWidget,
                     Text(context.read<AuthCubit>().getEmail())
                   ],
@@ -95,7 +121,13 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Détails client", style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),),
+                    Text(
+                      "Détails client",
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
                     spaceWidget,
                     Text("Nom ${widget.order.nom}"),
                     spaceWidget,
@@ -122,7 +154,13 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Montant total", style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),),
+                    Text(
+                      "Montant total",
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
                     spaceWidget,
                     const Row(
                       children: [],
@@ -137,12 +175,14 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 50,)
+              const SizedBox(
+                height: 50,
+              )
             ],
           ),
         ),
       ),
-      bottomNavigationBar:  Column(
+      bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
@@ -151,7 +191,10 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Montant total", style: TextStyle(fontWeight: FontWeight.bold),),
+                const Text(
+                  "Montant total",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 Text("$total $priceSymbol")
               ],
             ),
@@ -162,14 +205,22 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("$total $priceSymbol", style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w800),),
-                ElevatedButton(onPressed: () {
-                  saveDetails();
-                }, child: Container(
-                  padding: const EdgeInsets.all(10),
-                  color: Theme.of(context).primaryColor,
-                  child: const Text("Payer maintenant"),
-                ))
+                Text(
+                  "$total $priceSymbol",
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(fontWeight: FontWeight.w800),
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      saveDetails();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      color: Theme.of(context).primaryColor,
+                      child: const Text("Payer maintenant"),
+                    ))
               ],
             ),
           ),
@@ -195,24 +246,25 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
       promoCodeKey: "",
       totalKey: widget.box.price.toString(),
     };
-    final response = await http.post(
-        Uri.parse(saveOrderUrl),
-        headers: ApiUtils.getHeaders(),
-        body: body
-    );
+    final response = await http.post(Uri.parse(saveOrderUrl),
+        headers: ApiUtils.getHeaders(), body: body);
     if (kDebugMode) {
       print(response.statusCode);
     }
     if (!mounted) return null;
     Navigator.of(context).pop();
 
-    if (response.statusCode == 201 ||response.statusCode == 200) {
-
+    if (response.statusCode == 201 || response.statusCode == 200) {
       final responseJson = jsonDecode(response.body);
 
       NewOrder order = NewOrder.fromJson(responseJson['order']);
 
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentChoiceScreen(order: order, box: widget.box, total: total, )));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PaymentChoiceScreen(
+                order: order,
+                box: widget.box,
+                total: total,
+              )));
 
       return order;
     } else {
@@ -234,7 +286,11 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // The loading indicator
-                      const Icon(Icons.error, color: Colors.red, size: 96,),
+                      const Icon(
+                        Icons.error,
+                        color: Colors.red,
+                        size: 96,
+                      ),
                       const SizedBox(
                         height: 15,
                       ),
@@ -245,7 +301,7 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Theme.of(context).primaryColor,
+                          backgroundColor: Theme.of(context).primaryColor,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(sbInputRadius),
@@ -260,10 +316,8 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
                   ),
                 ),
               );
-            }
-        );
+            });
       }
-
 
       return null;
     }

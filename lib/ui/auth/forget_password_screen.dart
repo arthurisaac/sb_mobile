@@ -10,6 +10,7 @@ import 'package:smartbox/ui/utils/ui_utils.dart';
 
 import '../utils/api_utils.dart';
 import '../utils/widgets_utils.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 class ForgetPasswordScreen extends StatefulWidget {
@@ -93,10 +94,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     spaceWidget,
                     TextButton(
                       style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        primary: Colors.white,
                         backgroundColor: Theme.of(context).primaryColor,
                         minimumSize: const Size.fromHeight(12),
                       ),
@@ -105,10 +106,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       },
                       child: TextButton(
                         style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          primary: Colors.white,
                           backgroundColor: Theme.of(context).primaryColor,
                           minimumSize: const Size.fromHeight(12),
                         ),
@@ -148,7 +149,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
     if (response.statusCode == 200) {
       //print(response.body);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CheckCodeScreen()));
+      if (!mounted) return;
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const CheckCodeScreen()));
     } else if (response.statusCode == 404) {
       if (mounted) {
         UiUtils.setSnackBar(
@@ -166,8 +169,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       final responseJson = jsonDecode(response.body);
       var jsonResponse = responseJson['errors'];
 
-      print(jsonResponse);
-
       var keyResponse = "";
       var valueResponse = "";
 
@@ -181,14 +182,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       }
 
       if (keyResponse.isNotEmpty && valueResponse.isNotEmpty) {
-        print(keyResponse);
-        print(valueResponse);
         if (mounted) {
-          UiUtils.setSnackBar(
-              "Erreur $keyResponse",
-              "Une erreur s'est produite $valueResponse",
-              context,
-              false);
+          UiUtils.setSnackBar("Erreur $keyResponse",
+              "Une erreur s'est produite $valueResponse", context, false);
         }
       }
     } else {

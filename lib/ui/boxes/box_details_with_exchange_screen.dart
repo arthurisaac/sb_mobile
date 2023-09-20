@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smartbox/features/model/images_model.dart';
-import 'package:smartbox/ui/order_now/delivery_mode_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
 import '../../features/model/box_model.dart';
 import '../../features/model/details_client_model.dart';
 import '../reserve/reservation_screen.dart';
-import 'box_details_reservation_screen.dart';
 
 class BoxDetailsWithExchangeScreen extends StatefulWidget {
   final Box box;
@@ -66,8 +64,7 @@ class _BoxDetailsWithExchangeScreenState
                       (item) => Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage("$mediaUrl${item.image}" ??
-                                  "https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80"),
+                              image: NetworkImage("$mediaUrl${item.image}"),
                               fit: BoxFit.cover),
                         ),
                         //child: Text(item.toString()),

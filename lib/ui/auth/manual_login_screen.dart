@@ -191,8 +191,7 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                                           ),
                                           ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                              primary:
-                                                  Theme.of(context).primaryColor,
+                                              backgroundColor: Theme.of(context).primaryColor,
                                               elevation: 0,
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -230,10 +229,9 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                           builder: (context, state) {
                             return TextButton(
                               style: TextButton.styleFrom(
-                                shape: RoundedRectangleBorder(
+                                foregroundColor: Colors.white, shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                primary: Colors.white,
                                 backgroundColor: Theme.of(context).primaryColor,
                                 minimumSize: const Size.fromHeight(12),
                               ),

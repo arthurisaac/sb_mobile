@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartbox/ui/auth/manual_login_screen.dart';
 import 'package:smartbox/ui/auth/registration_screen.dart';
-import 'package:smartbox/ui/utils/widgets_utils.dart';
-
-import '../../app/routes.dart';
-import '../../features/auth/cubits/auth_cubit.dart';
-import '../../features/auth/cubits/sign_in_cubit.dart';
-import '../main/main_screen.dart';
-import '../utils/constants.dart';
-import '../utils/ui_utils.dart';
 
 //import 'package:video_player/video_player.dart';
 
@@ -24,7 +15,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController(text: "");
   TextEditingController passwordController = TextEditingController(text: "");
-  late bool _passwordVisible;
+  //late bool _passwordVisible;
 
   //late VideoPlayerController _videoPlayerController;
   //bool startedPlaying = false;
@@ -34,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     scaffoldKey = GlobalKey<ScaffoldState>();
-    _passwordVisible = false;
+    //_passwordVisible = false;
 
     /* _videoPlayerController =
         VideoPlayerController.asset('videos/christmas.mp4');
@@ -99,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
-        /*Container(
+          /*Container(
         width: double.infinity,
         height: MediaQuery
             .of(context)
@@ -122,7 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [Colors.transparent, Colors.black],
-              ).createShader(Rect.fromLTRB(0, -140, rect.width, rect.height-20));
+              ).createShader(
+                  Rect.fromLTRB(0, -140, rect.width, rect.height - 20));
             },
             blendMode: BlendMode.darken,
             child: Container(
@@ -154,9 +146,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         BoxShadow(
                           color: Colors.grey,
                           blurRadius:
-                          20.0, // has the effect of softening the shadow
+                              20.0, // has the effect of softening the shadow
                           spreadRadius:
-                          0, // has the effect of extending the shadow
+                              0, // has the effect of extending the shadow
                           // offset: Offset(
                           //   10.0, // horizontal, move right 10
                           //   10.0, // vertical, move down 10
@@ -164,8 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         )
                       ],
                     ),
-                    child: Image.asset('images/smartbox_logo.png',
-                        width: 150),
+                    child: Image.asset('images/smartbox_logo.png', width: 150),
                   ),
                 ),
               ),
@@ -205,23 +196,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 50.0,
                   child: MaterialButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const RegistrationScreen()));
                     },
                     textColor: Colors.blueAccent,
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)
-                    ),
+                        borderRadius: BorderRadius.circular(10.0)),
                     child: const Text(
                       'S\'inscrire',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                   ),
                 ),
               ),
-             /* Expanded(
+              /* Expanded(
                 flex: 0,
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -257,15 +248,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: MaterialButton(
                       onPressed: () {
                         //Navigator.pushNamed(context, '/signup');
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ManualLoginScreen()));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ManualLoginScreen()));
                       },
                       textColor: Colors.white,
                       child: const Text(
                         'Connexion',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontSize: 16, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                     ),

@@ -13,7 +13,7 @@ class CategoryModel {
         this.createdAt,});
 
   CategoryModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'] ?? null;
+    id = json['id'];
     name = json['name'] ?? "";
     image = json['image'] ?? "";
     createdAt = json['created_at'] ?? "";

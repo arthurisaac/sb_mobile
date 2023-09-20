@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartbox/ui/utils/constants.dart';
 
-import '../../app/routes.dart';
 import '../../features/auth/cubits/auth_cubit.dart';
 import '../../features/auth/cubits/register_cubiti.dart';
 import '../main/main_screen.dart';
@@ -238,10 +237,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       builder: (context, state) {
                         return TextButton(
                           style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
+                            foregroundColor: Colors.white, shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            primary: Colors.white,
                             backgroundColor: Theme.of(context).primaryColor,
                             minimumSize: const Size.fromHeight(12),
                           ),

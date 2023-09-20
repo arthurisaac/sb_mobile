@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smartbox/features/model/images_model.dart';
-import 'package:smartbox/ui/order_now/delivery_mode_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
@@ -63,8 +62,7 @@ class _BoxDetailsReservationScreenState
                     (item) => Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: NetworkImage("$mediaUrl${item.image}" ??
-                                "https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80"),
+                            image: NetworkImage("$mediaUrl${item.image}"),
                             fit: BoxFit.cover),
                       ),
                       //child: Text(item.toString()),
@@ -280,8 +278,7 @@ class _BoxDetailsReservationScreenState
                   top: Radius.circular(20),
                 ),
               ),
-              clipBehavior:
-              Clip.antiAliasWithSaveLayer,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
               backgroundColor: Colors.white,
               isScrollControlled: true,
               builder: (context) {
@@ -295,11 +292,14 @@ class _BoxDetailsReservationScreenState
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10),
             ),
             padding: const EdgeInsets.all(space),
             width: double.infinity,
-            child: const Text("Reserver maintenant", style: TextStyle(color: Colors.white),),
+            child: const Text(
+              "Reserver maintenant",
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ),
       ),

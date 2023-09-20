@@ -20,7 +20,6 @@ class DefaultFirebaseOptions {
         return ios;
       case TargetPlatform.macOS:
         return macos;
-      // TODO(Lyokone): Remove when FlutterFire CLI updated
       case TargetPlatform.windows:
         return android;
       default:
@@ -37,8 +36,7 @@ class DefaultFirebaseOptions {
       storageBucket: "smarbox-1260b.appspot.com",
       messagingSenderId: "503763831683",
       appId: "1:503763831683:web:a2e02e87d2b1b1e8a904b6",
-      measurementId: "G-QNMNZJ5QKV"
-  );
+      measurementId: "G-QNMNZJ5QKV");
 
   static const FirebaseOptions android = FirebaseOptions(
       apiKey: "AIzaSyDStmXdQdR7_Mt6Rnlov0Bqrtw1_7VDw2o",
@@ -47,8 +45,7 @@ class DefaultFirebaseOptions {
       storageBucket: "smarbox-1260b.appspot.com",
       messagingSenderId: "503763831683",
       appId: "1:503763831683:web:a2e02e87d2b1b1e8a904b6",
-      measurementId: "G-QNMNZJ5QKV"
-  );
+      measurementId: "G-QNMNZJ5QKV");
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: "AIzaSyDStmXdQdR7_Mt6Rnlov0Bqrtw1_7VDw2o",
@@ -56,7 +53,7 @@ class DefaultFirebaseOptions {
     projectId: "smarbox-1260b",
     storageBucket: "smarbox-1260b.appspot.com",
     messagingSenderId: "503763831683",
-    appId: "1:503763831683:web:a2e02e87d2b1b1e8a904b6",
+    appId: "1:337718001929:ios:c8c21e52928b929a7593d8",
     measurementId: "G-QNMNZJ5QKV",
     androidClientId: '',
     iosClientId: '',
@@ -70,6 +67,5 @@ class DefaultFirebaseOptions {
       storageBucket: "smarbox-1260b.appspot.com",
       messagingSenderId: "503763831683",
       appId: "1:503763831683:web:a2e02e87d2b1b1e8a904b6",
-      measurementId: "G-QNMNZJ5QKV"
-  );
+      measurementId: "G-QNMNZJ5QKV");
 }

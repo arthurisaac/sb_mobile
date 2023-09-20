@@ -61,10 +61,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       bottomSheet: isLastPage
           ? TextButton(
               style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0),
                 ),
-                primary: Colors.white,
                 backgroundColor: Theme.of(context).primaryColor,
                 minimumSize: const Size.fromHeight(80),
               ),
@@ -72,7 +72,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 final prefs = await SharedPreferences.getInstance();
                 prefs.setBool(showOnBoarding, true);
 
-                Navigator.of(context).pushReplacementNamed(Routes.country_choice);
+                if (!mounted) return;
+                Navigator.of(context)
+                    .pushReplacementNamed(Routes.countryChoice);
               },
               child: const Text(
                 "Commencer",
@@ -94,10 +96,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       controller: controller,
                       count: 3,
                       effect: WormEffect(
-                        spacing: 16,
-                        dotColor: Colors.black26,
-                        activeDotColor: Theme.of(context).primaryColor //Colors.teal.shade700,
-                      ),
+                          spacing: 16,
+                          dotColor: Colors.black26,
+                          activeDotColor: Theme.of(context)
+                              .primaryColor //Colors.teal.shade700,
+                          ),
                       onDotClicked: (index) => controller.animateToPage(index,
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.easeIn),

@@ -31,7 +31,7 @@ class AuthModel {
         this.createdAt,});
 
   AuthModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'] ?? null;
+    id = json['id'];
     ipAddress = json['ip_address'] ?? "";
     nom = json['nom'] ?? "";
     prenom = json['prenom'] ?? "";
@@ -70,8 +70,8 @@ class AuthModel {
     return AuthModel(
       id : id ?? this.id,
       ipAddress : ipAddress ?? this.ipAddress,
-      nom : nom ?? this.nom,
-      prenom : prenom ?? this.prenom,
+      nom : nom ?? nom,
+      prenom : prenom ?? prenom,
       email : email ?? this.email,
       mobile : mobile ?? this.mobile,
       image : image ?? this.image,

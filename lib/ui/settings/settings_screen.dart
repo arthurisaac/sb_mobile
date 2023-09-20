@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -9,12 +7,12 @@ import 'package:smartbox/ui/utils/constants.dart';
 import 'package:smartbox/ui/utils/ui_utils.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
-import '../../app/routes.dart';
 import '../../features/auth/cubits/auth_cubit.dart';
 import '../profile/profile_screen.blade.dart';
 import '../utils/api_body_parameters.dart';
 import '../utils/api_utils.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -30,10 +28,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> getNotification() async {
     final SharedPreferences prefs = await _prefs;
-    final bool _notification = prefs.getBool('notification') ?? false;
+    bool notification = prefs.getBool('notification') ?? false;
 
     setState(() {
-      notification = _notification;
+      notification = notification;
     });
   }
 
@@ -85,128 +83,131 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           spaceWidget,
           context.read<AuthCubit>().state is Authenticated
-          ? GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const ProfileScreen()));
-            },
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(space),
-              color: Colors.white,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.account_circle_outlined,
-                    color: Theme.of(context).primaryColor,
+              ? GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const ProfileScreen()));
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(space),
+                    color: Colors.white,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.account_circle_outlined,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text("Gérer votre compte"),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Text("Gérer votre compte"),
-                ],
-              ),
-            ),
-          ) : Container(),
+                )
+              : Container(),
           spaceWidget,
           context.read<AuthCubit>().state is Authenticated
               ? GestureDetector(
-            onTap: () {
-              showDialog(
-                  barrierDismissible: true,
-                  context: context,
-                  builder: (_) {
-                    return Dialog(
-                      backgroundColor: Colors.white,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: space, horizontal: space),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.no_accounts,
-                              size: 50,
-                            ),
-                            spaceWidget,
-                            Text(
-                              "Supprimer le comte",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            spaceWidget,
-                            Text(
-                              "êtes-vous sûr(e) de vouloir supprimer le compte GIFT?",
-                              textAlign: TextAlign.center,
-                            ),
-                            spaceWidget,
-                            Text(
-                              "Cette acction ne peut être annulée",
-                              textAlign: TextAlign.center,
-                            ),
-                            spaceWidget,
-                            Text(
-                              "La suppression du compte entrainera la perte de tous les bons et coffrets cadeaux enregistrés et de tous autre compte GIFT lié à votre adresse e-mail. Si vous avez une à support@gift.com",
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Container(
-                                width: double.infinity,
-                                child: Text(
-                                  "Non, je veux le garder",
-                                  style: TextStyle(color: Colors.white),
-                                  textAlign: TextAlign.center,
-                                ),
-                                padding: EdgeInsets.all(14),
-                                decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
-                                    borderRadius:
-                                        BorderRadius.circular(sbInputRadius)),
+                  onTap: () {
+                    showDialog(
+                        barrierDismissible: true,
+                        context: context,
+                        builder: (_) {
+                          return Dialog(
+                            backgroundColor: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: space, horizontal: space),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.no_accounts,
+                                    size: 50,
+                                  ),
+                                  spaceWidget,
+                                  const Text(
+                                    "Supprimer le comte",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  spaceWidget,
+                                  const Text(
+                                    "êtes-vous sûr(e) de vouloir supprimer le compte GIFT?",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  spaceWidget,
+                                  const Text(
+                                    "Cette acction ne peut être annulée",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  spaceWidget,
+                                  const Text(
+                                    "La suppression du compte entrainera la perte de tous les bons et coffrets cadeaux enregistrés et de tous autre compte GIFT lié à votre adresse e-mail. Si vous avez une à support@gift.com",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.all(14),
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context).primaryColor,
+                                          borderRadius: BorderRadius.circular(
+                                              sbInputRadius)),
+                                      child: const Text(
+                                        "Non, je veux le garder",
+                                        style: TextStyle(color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                  spaceWidget,
+                                  GestureDetector(
+                                    onTap: () {
+                                      delUser();
+                                    },
+                                    child: Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.all(10),
+                                      child: const Text(
+                                        "Oui, supprimer le compte",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            spaceWidget,
-                            GestureDetector(
-                              onTap: () {
-                                delUser();
-                              },
-                              child: Container(
-                                width: double.infinity,
-                                child: Text(
-                                  "Oui, supprimer le compte",
-                                  textAlign: TextAlign.center,
-                                ),
-                                padding: EdgeInsets.all(10),
-                              ),
-                            ),
-                          ],
+                          );
+                        });
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(space),
+                    color: Colors.white,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.no_accounts_sharp,
+                          color: Theme.of(context).primaryColor,
                         ),
-                      ),
-                    );
-                  });
-            },
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(space),
-              color: Colors.white,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.no_accounts_sharp,
-                    color: Theme.of(context).primaryColor,
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text("Suppression de votre compte"),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Text("Suppression de votre compte"),
-                ],
-              ),
-            ),
-          ) : Container(),
+                )
+              : Container(),
         ],
       ),
     );
@@ -222,19 +223,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (mounted) Navigator.of(context).pop();
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-
       if (!mounted) return;
 
-      UiUtils.okAlertDialog(context, "Succès", "Votre compte a été supprimé avec succès", () {
+      UiUtils.okAlertDialog(
+          context, "Succès", "Votre compte a été supprimé avec succès", () {
         context.read<AuthCubit>().signOut();
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const OnboardingScreen())
-        );
+            MaterialPageRoute(builder: (context) => const OnboardingScreen()));
       });
-
-    } else {
-      // La requête a échoué avec un code d'erreur, comme 401 Unauthorized
-      print('Request failed with status: ${response.statusCode}.');
     }
   }
 }

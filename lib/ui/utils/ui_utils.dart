@@ -50,7 +50,7 @@ class UiUtils {
           return Dialog(
             backgroundColor: Colors.white,
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: space),
+              padding: const EdgeInsets.symmetric(vertical: space),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

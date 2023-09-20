@@ -1,9 +1,6 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-
 class MyFirebaseUtil {
   getToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    print(token);
+    //String? token = await FirebaseMessaging.instance.getToken();
     //saveToken(token!);
   }
 

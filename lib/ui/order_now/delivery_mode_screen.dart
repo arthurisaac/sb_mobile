@@ -45,7 +45,7 @@ class _DeliveryModeScreenState extends State<DeliveryModeScreen> {
                       child: Text("Comment souhaitez-vous envoyer le coffret cadeau?",),
                     ),
                     RadioListTile(
-                        title: Text("Livraison à domicile"),
+                        title: const Text("Livraison à domicile"),
                         value: "domicile",
                         groupValue: livraison,
                         onChanged: (value) {
@@ -55,7 +55,7 @@ class _DeliveryModeScreenState extends State<DeliveryModeScreen> {
                           });
                         }),
                     RadioListTile(
-                        title: Text("Envoyer par mail"),
+                        title: const Text("Envoyer par mail"),
                         value: "mail",
                         groupValue: livraison,
                         onChanged: (value) {

@@ -6,6 +6,7 @@ import 'package:flutter_html/flutter_html.dart';
 
 import '../../features/model/faq_model.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 import '../utils/api_utils.dart';
@@ -53,7 +54,8 @@ class _HelpScreenState extends State<HelpScreen> {
                           style: {
                             "body": Style(
                               padding: HtmlPaddings.zero,
-                              margin: Margins.zero,),
+                              margin: Margins.zero,
+                            ),
                           },
                         ),
                       )
@@ -82,7 +84,6 @@ class _HelpScreenState extends State<HelpScreen> {
     final response = await http.post(Uri.parse(faqUrl),
         headers: ApiUtils.getHeaders(), body: body);
     if (response.statusCode == 200) {
-      print(response.body);
       final responseJson = jsonDecode(response.body);
 
       var jsonResponse = responseJson['data'] as List<dynamic>;
@@ -91,8 +92,6 @@ class _HelpScreenState extends State<HelpScreen> {
 
       return list;
     } else {
-      // La requête a échoué avec un code d'erreur, comme 401 Unauthorized
-      print('Request failed with status: ${response.statusCode}.');
       return null;
     }
   }

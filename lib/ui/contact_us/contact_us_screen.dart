@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +8,7 @@ import 'package:smartbox/ui/utils/widgets_utils.dart';
 import '../utils/api_utils.dart';
 import '../utils/constants.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 import 'package:url_launcher/url_launcher.dart';
@@ -71,44 +70,48 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
                 children: [
-                  const SizedBox(width: 10,),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   Expanded(
                     child: buildCard(
-                      title: "Appel",
-                      icon: Icons.call,
-                      color: Colors.orangeAccent,
-                      onPressed: () {
-                        var url = "tel:$supportPhone";
-                        _launchURL(url);
-                      }
-                    ),
+                        title: "Appel",
+                        icon: Icons.call,
+                        color: Colors.orangeAccent,
+                        onPressed: () {
+                          var url = "tel:$supportPhone";
+                          _launchURL(url);
+                        }),
                   ),
-                  const SizedBox(width: 10,),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   Expanded(
                     child: buildCard(
-                      title: "Mail",
-                      icon: Icons.mail,
-                      color: Colors.greenAccent,
-                      onPressed: () {
-                        var _url = "mailto:$supportMail";
-                        _launchURL(_url);
-                      }
-                    ),
+                        title: "Mail",
+                        icon: Icons.mail,
+                        color: Colors.greenAccent,
+                        onPressed: () {
+                          var url0 = "mailto:$supportMail";
+                          _launchURL(url0);
+                        }),
                   ),
-                  const SizedBox(width: 10,),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   Expanded(
                     child: buildCard(
-                      title: "Chat",
-                      icon: Icons.chat_outlined,
-                      color: Colors.purpleAccent,
-                      onPressed: () {
-                        String uri =
-                            supportChat;
-                        _launchURL(Uri.encodeFull(uri));
-                      }
-                    ),
+                        title: "Chat",
+                        icon: Icons.chat_outlined,
+                        color: Colors.purpleAccent,
+                        onPressed: () {
+                          String uri = supportChat;
+                          _launchURL(Uri.encodeFull(uri));
+                        }),
                   ),
-                  const SizedBox(width: 10,),
+                  const SizedBox(
+                    width: 10,
+                  ),
                 ],
               ),
             ),
@@ -218,10 +221,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       spaceWidget,
                       TextButton(
                         style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          primary: Colors.white,
                           backgroundColor: Theme.of(context).primaryColor,
                           minimumSize: const Size.fromHeight(12),
                         ),
@@ -253,7 +256,11 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     );
   }
 
-  Widget buildCard({required String title, required IconData icon, required Color color, required Function() onPressed}) {
+  Widget buildCard(
+      {required String title,
+      required IconData icon,
+      required Color color,
+      required Function() onPressed}) {
     return GestureDetector(
       onTap: onPressed,
       child: Card(
@@ -336,7 +343,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(sbInputRadius),
@@ -355,11 +362,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         },
       );
     } else {
-      // La requête a échoué avec un code d'erreur, comme 401 Unauthorized
-      print('Request failed with status: ${response.statusCode}.');
       return null;
     }
   }
 
-  void _launchURL(_url) async => await launch(_url);
+  void _launchURL(url) async => await launchUrl(url);
 }

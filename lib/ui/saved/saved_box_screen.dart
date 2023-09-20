@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:smartbox/ui/boxes/box_details_screen.dart';
 import 'package:smartbox/ui/boxes/box_details_with_exchange_screen.dart';
 import 'package:smartbox/ui/helper/please_login_screen.dart';
 import 'package:smartbox/ui/utils/api_body_parameters.dart';
@@ -16,11 +15,11 @@ import 'package:smartbox/ui/utils/widgets_utils.dart';
 import '../../features/auth/cubits/auth_cubit.dart';
 import '../../features/model/box_model.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 import '../../features/model/details_client_model.dart';
 import '../boxes/box_details_reservation_screen.dart';
-import '../reserve/reservation_screen.dart';
 import '../utils/api_utils.dart';
 import '../utils/constants.dart';
 
@@ -38,14 +37,14 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
   @override
   Widget build(BuildContext context) {
     return context.read<AuthCubit>().state is Authenticated
-    ? Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text("Cadeaux enregistrés"),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Padding(
+        ? Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              title: const Text("Cadeaux enregistrés"),
+              centerTitle: true,
+            ),
+            body: Center(
+                child: Padding(
               padding: const EdgeInsets.all(space),
               child: FutureBuilder<List<Order>?>(
                   future: getBoxes(),
@@ -69,7 +68,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                         List<Order>? reserve = [];
                         List<Order>? consomme = [];
 
-                        for (var order in list) {
+                        /* for (var order in list) {
                           print(order.status);
                           if (order.status == 0) {
                             print("En cours");
@@ -81,7 +80,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                             print("consomme");
                             consomme.add(order);
                           }
-                        }
+                        } */
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,11 +169,11 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                                             horizontal: 10),
                                         child: TextButton(
                                           style: TextButton.styleFrom(
+                                            foregroundColor: Colors.white,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
-                                            primary: Colors.white,
                                             backgroundColor:
                                                 Theme.of(context).primaryColor,
                                             minimumSize:
@@ -453,9 +452,9 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                     }
                     return const Center(child: CircularProgressIndicator());
                   }),
-            )
-      ),
-    ) : const PleaseLoginScreen();
+            )),
+          )
+        : const PleaseLoginScreen();
   }
 
   Widget detail(
@@ -482,8 +481,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                       (item) => Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage("$mediaUrl${item.image}" ??
-                                  "https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80"),
+                              image: NetworkImage("$mediaUrl${item.image}"),
                               fit: BoxFit.cover),
                         ),
                         //child: Text(item.toString()),
@@ -733,10 +731,10 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                     ),
                     TextButton(
                       style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        primary: Colors.white,
                         backgroundColor: Theme.of(context).primaryColor,
                         minimumSize: const Size.fromHeight(12),
                       ),
@@ -774,8 +772,6 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
       body: body,
     );
     if (response.statusCode == 200) {
-      // La requête a réussi, vous pouvez accéder aux données dans response.body
-      print(response.body);
       final responseJson = jsonDecode(response.body);
 
       var jsonResponse = responseJson['data'] as List<dynamic>;
@@ -784,8 +780,6 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
 
       return list;
     } else {
-      // La requête a échoué avec un code d'erreur, comme 401 Unauthorized
-      print('Request failed with status: ${response.statusCode}.');
       return null;
     }
   }
@@ -808,8 +802,6 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
     }
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      final responseJson = jsonDecode(response.body);
-
       if (!mounted) return;
 
       showDialog(
@@ -839,7 +831,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(sbInputRadius),

@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
             MaterialPageRoute(builder: (context) => const MainScreen()),
           );
         } else {
-          Navigator.of(context).pushReplacementNamed(Routes.country_choice);
+          Navigator.of(context).pushReplacementNamed(Routes.countryChoice);
         }
       }
     }

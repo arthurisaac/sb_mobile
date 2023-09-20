@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../auth_model.dart';
 import '../auth_repository.dart';
+
 @immutable
 abstract class SignUpState {}
 
 class SignUpInitial extends SignUpState {}
+
 class SignUp extends SignUpState {
   //to store authDetials
   final AuthModel authModel;
@@ -49,7 +51,8 @@ class SignUpCubit extends Cubit<SignUpState> {
     //emitting signInProgress state
     //  emit(SignInProgress(authProvider));
     //signIn user with given provider and also add user details in api
-    _authRepository.addUserData(
+    _authRepository
+        .addUserData(
       nom: nom,
       prenom: prenom,
       email: email,
@@ -59,16 +62,13 @@ class SignUpCubit extends Cubit<SignUpState> {
       mobile: mobile,
       //latitude: latitude ?? "",
       //longitude: longitude ?? ""
-    ).then((result) {
+    )
+        .then((result) {
       //success
       emit(SignUpSuccess(authModel: AuthModel.fromJson(result)));
     }).catchError((e) {
       //failure
-
-      print("failure");
-      print(e);
       emit(SignUpFailure(e.toString()));
     });
   }
-
 }

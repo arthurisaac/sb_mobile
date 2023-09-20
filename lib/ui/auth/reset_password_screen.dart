@@ -10,6 +10,7 @@ import '../utils/api_body_parameters.dart';
 import '../utils/api_utils.dart';
 import '../utils/ui_utils.dart';
 import '../utils/widgets_utils.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -117,10 +118,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     spaceWidget,
                     TextButton(
                       style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        primary: Colors.white,
                         backgroundColor: Theme.of(context).primaryColor,
                         minimumSize: const Size.fromHeight(12),
                       ),
@@ -147,7 +148,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   Future passwordReset() async {
     UiUtils.modalLoading(context, "Chargement en cours");
-    final body = {codeKey: widget.code, passwordKey: passwordController.text, passwordConfirmationKey: passwordConfirmationController.text};
+    final body = {
+      codeKey: widget.code,
+      passwordKey: passwordController.text,
+      passwordConfirmationKey: passwordConfirmationController.text
+    };
     final response = await http.post(Uri.parse(passwordResetUrl),
         headers: ApiUtils.getHeaders(), body: body);
 
@@ -164,8 +169,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             return Dialog(
               backgroundColor: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -185,18 +189,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary:
-                        Theme.of(context).primaryColor,
+                        backgroundColor: Theme.of(context).primaryColor,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(
-                              sbInputRadius),
+                          borderRadius: BorderRadius.circular(sbInputRadius),
                         ),
                       ),
                       onPressed: () {
                         //if (!mounted) return;
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const LoginScreen()));
                       },
                       child: const Text("Fermer"),
                     ),
@@ -240,11 +242,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
       if (keyResponse.isNotEmpty && valueResponse.isNotEmpty) {
         if (mounted) {
-          UiUtils.setSnackBar(
-              "Erreur $keyResponse",
-              "Une erreur s'est produite $valueResponse",
-              context,
-              false);
+          UiUtils.setSnackBar("Erreur $keyResponse",
+              "Une erreur s'est produite $valueResponse", context, false);
         }
       }
     } else {

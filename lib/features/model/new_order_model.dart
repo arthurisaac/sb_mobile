@@ -60,25 +60,25 @@ class NewOrder {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user'] = this.user;
-    data['box'] = this.box;
-    data['delivery_place'] = this.deliveryPlace;
-    data['nom_client'] = this.nomClient;
-    data['prenom_client'] = this.prenomClient;
-    data['ville_client'] = this.villeClient;
-    data['pays_client'] = this.paysClient;
-    data['telephone_client'] = this.telephoneClient;
-    data['mail_client'] = this.mailClient;
-    data['promo_code'] = this.promoCode;
-    data['total'] = this.total;
-    data['payment_method'] = this.paymentMethod;
-    data['order_confirmation'] = this.orderConfirmation;
-    data['delivrey_confirmation'] = this.delivreyConfirmation;
-    data['trique'] = this.trique;
-    data['updated_at'] = this.updatedAt;
-    data['created_at'] = this.createdAt;
-    data['id'] = this.id;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user'] = user;
+    data['box'] = box;
+    data['delivery_place'] = deliveryPlace;
+    data['nom_client'] = nomClient;
+    data['prenom_client'] = prenomClient;
+    data['ville_client'] = villeClient;
+    data['pays_client'] = paysClient;
+    data['telephone_client'] = telephoneClient;
+    data['mail_client'] = mailClient;
+    data['promo_code'] = promoCode;
+    data['total'] = total;
+    data['payment_method'] = paymentMethod;
+    data['order_confirmation'] = orderConfirmation;
+    data['delivrey_confirmation'] = delivreyConfirmation;
+    data['trique'] = trique;
+    data['updated_at'] = updatedAt;
+    data['created_at'] = createdAt;
+    data['id'] = id;
     return data;
   }
 }

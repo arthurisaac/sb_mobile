@@ -58,8 +58,7 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
                       (item) => Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage("$mediaUrl${item.image}" ??
-                                  "https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80"),
+                              image: NetworkImage("$mediaUrl${item.image}"),
                               fit: BoxFit.cover),
                         ),
                         //child: Text(item.toString()),
@@ -287,26 +286,33 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
                 if (context.read<AuthCubit>().state is Authenticated) {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => DeliveryModeScreen(
-                        box: widget.box,
-                      )));
+                            box: widget.box,
+                          )));
                 } else {
                   AlertDialog alert = AlertDialog(
                     title: const Text("Attention"),
-                    content: const Text("Vous avez besoin d'être connecté avant d'acheter une box"),
+                    content: const Text(
+                        "Vous avez besoin d'être connecté avant d'acheter une box"),
                     actions: [
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => const ManualLoginScreen())
-                          );
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const ManualLoginScreen()));
                         },
-                        child: Text("Connexion", style: TextStyle(color: Theme.of(context).primaryColor),),
+                        child: Text(
+                          "Connexion",
+                          style:
+                              TextStyle(color: Theme.of(context).primaryColor),
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text("Annuler", style: TextStyle(color: Colors.red),),
+                        child: const Text(
+                          "Annuler",
+                          style: TextStyle(color: Colors.red),
+                        ),
                       )
                     ],
                   );
@@ -318,7 +324,6 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
                     },
                   );
                 }
-
               },
               child: Container(
                 padding: const EdgeInsets.all(10),

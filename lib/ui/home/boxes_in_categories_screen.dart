@@ -1,17 +1,16 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smartbox/features/model/box_model.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:smartbox/ui/boxes/box_details_screen.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
 import '../../features/auth/cubits/auth_cubit.dart';
 import '../../features/model/settings_model.dart';
-import '../../features/model/sub_category_item_model.dart';
 import '../../features/model/sub_category_model.dart';
 import '../ad/ad_details_screen.dart';
 import '../sub_categories/sub_categories_items_screen.dart';
@@ -60,8 +59,7 @@ class _BoxesInCategoriesState extends State<BoxesInCategories> {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => AdDetailsScreen(
                               ad: widget.settingsModel.bannerAdDetail
-                                      .toString() ??
-                                  "No details")));
+                                  .toString())));
                     },
                     child: Container(
                       width: double.infinity,
@@ -114,7 +112,8 @@ class _BoxesInCategoriesState extends State<BoxesInCategories> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         SubCategoriesItemsScreen(
-                                      subCats: subCats[index].items, title: subCats[index].title ?? "",
+                                      subCats: subCats[index].items,
+                                      title: subCats[index].title ?? "",
                                     ),
                                   ),
                                 );
@@ -261,8 +260,6 @@ class _BoxesInCategoriesState extends State<BoxesInCategories> {
 
       return list;
     } else {
-      // La requête a échoué avec un code d'erreur, comme 401 Unauthorized
-      print('Request failed with status: ${response.statusCode}.');
       return null;
     }
   }
@@ -422,12 +419,7 @@ class _BoxItemState extends State<BoxItem> {
       userKey: context.read<AuthCubit>().getId().toString(),
       boxKey: widget.box.id.toString()
     };
-    final response = await http.post(Uri.parse(addFavoriteUrl),
+    await http.post(Uri.parse(addFavoriteUrl),
         headers: ApiUtils.getHeaders(), body: body);
-    if (response.statusCode == 201) {
-      print(response.body);
-    } else {
-      print('Request failed with status: ${response.statusCode}.');
-    }
   }
 }

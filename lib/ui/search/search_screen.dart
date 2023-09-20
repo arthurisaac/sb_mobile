@@ -12,6 +12,7 @@ import '../utils/api_body_parameters.dart';
 import '../utils/api_utils.dart';
 import '../utils/constants.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 class SearchScreen extends StatefulWidget {
@@ -52,67 +53,74 @@ class _SearchScreenState extends State<SearchScreen> {
             setState(() {});
           });
         },
-        child: searchController.text.isEmpty ? Container() : FutureBuilder<List<Box>?>(
-          future: getBoxes(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              if (kDebugMode) {
-                print(snapshot.error);
-              }
-              return Text("Une erreur s'est produite ${snapshot.error}");
-            }
+        child: searchController.text.isEmpty
+            ? Container()
+            : FutureBuilder<List<Box>?>(
+                future: getBoxes(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    if (kDebugMode) {
+                      print(snapshot.error);
+                    }
+                    return Text("Une erreur s'est produite ${snapshot.error}");
+                  }
 
-            if (snapshot.hasData) {
-              List<Box>? boxList = snapshot.data;
-              if (snapshot.data != null && boxList!.isNotEmpty) {
-                return Column(
-                  children: [
-                    spaceWidget,
-                    Container(
-                      width: double.infinity,
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(space),
-                      child: const Text("Cadeaux"),
-                    ),
-                    spaceWidget,
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 30,
-                            crossAxisSpacing: 24,
-                            childAspectRatio: 0.75,
+                  if (snapshot.hasData) {
+                    List<Box>? boxList = snapshot.data;
+                    if (snapshot.data != null && boxList!.isNotEmpty) {
+                      return Column(
+                        children: [
+                          spaceWidget,
+                          Container(
+                            width: double.infinity,
+                            color: Colors.white,
+                            padding: const EdgeInsets.all(space),
+                            child: const Text("Cadeaux"),
                           ),
-                          itemCount: boxList.length,
-                          itemBuilder: (context, index) {
-                            Box box = boxList[index];
-                            return BoxItem(box: box);
-                          }),
-                    ),
-                  ],
-                );
-              } else {
-                return const Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.error_outline, color: Colors.red, size: 120,),
-                      spaceWidget,
-                      Text("Aucun résultat pour cette recherche"),
-                    ],
-                  ),
-                );
-              }
-            }
+                          spaceWidget,
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 30,
+                                  crossAxisSpacing: 24,
+                                  childAspectRatio: 0.75,
+                                ),
+                                itemCount: boxList.length,
+                                itemBuilder: (context, index) {
+                                  Box box = boxList[index];
+                                  return BoxItem(box: box);
+                                }),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return const Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 120,
+                            ),
+                            spaceWidget,
+                            Text("Aucun résultat pour cette recherche"),
+                          ],
+                        ),
+                      );
+                    }
+                  }
 
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        ),
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
       ),
     );
   }
@@ -125,8 +133,6 @@ class _SearchScreenState extends State<SearchScreen> {
     final response = await http.post(Uri.parse(searchBoxUrl),
         headers: ApiUtils.getHeaders(), body: body);
     if (response.statusCode == 200) {
-      // La requête a réussi, vous pouvez accéder aux données dans response.body
-      print(response.body);
       final responseJson = jsonDecode(response.body);
 
       var jsonResponse = responseJson['data'] as List<dynamic>;
@@ -135,8 +141,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
       return list;
     } else {
-      // La requête a échoué avec un code d'erreur, comme 401 Unauthorized
-      print('Request failed with status: ${response.statusCode}.');
       return null;
     }
   }

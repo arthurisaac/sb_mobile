@@ -18,10 +18,10 @@ class Boxes {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['section'] = section;
-    if (this.box != null) {
+    if (box != null) {
       data['box'] = box!.toJson();
     }
     data['created_at'] = createdAt;

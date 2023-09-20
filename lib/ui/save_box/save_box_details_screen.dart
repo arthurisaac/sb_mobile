@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:smartbox/ui/main/main_screen.dart';
-import 'package:smartbox/ui/reserve/reservation_screen.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
 import '../../features/auth/cubits/auth_cubit.dart';
@@ -14,6 +11,7 @@ import '../../features/model/details_client_model.dart';
 import '../utils/api_utils.dart';
 import '../utils/constants.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 class SaveBoxDetailsScreen extends StatefulWidget {
@@ -125,7 +123,8 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
                           data: box.isInside,
                           style: {
                             "body": Style(
-                                padding: HtmlPaddings.zero, margin: Margins.zero),
+                                padding: HtmlPaddings.zero,
+                                margin: Margins.zero),
                             "ul": Style(
                                 padding: HtmlPaddings.only(left: 15),
                                 margin: Margins.zero,
@@ -152,7 +151,8 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
                           data: box.mustKnow,
                           style: {
                             "body": Style(
-                                padding: HtmlPaddings.zero, margin: Margins.zero),
+                                padding: HtmlPaddings.zero,
+                                margin: Margins.zero),
                             "ul": Style(
                                 padding: HtmlPaddings.only(left: 15),
                                 margin: Margins.zero,
@@ -168,8 +168,8 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
                   Html(
                     data: box.description,
                     style: {
-                      "body":
-                          Style(padding: HtmlPaddings.zero, margin: Margins.zero),
+                      "body": Style(
+                          padding: HtmlPaddings.zero, margin: Margins.zero),
                     },
                   ),
                 ],
@@ -180,7 +180,7 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
               padding: const EdgeInsets.all(space),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(sbInputRadius),
@@ -239,7 +239,6 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
       },
     );
     if (response.statusCode == 200) {
-
       if (mounted) {
         Navigator.of(context).pop();
 
@@ -270,7 +269,7 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).primaryColor,
+                        backgroundColor: Theme.of(context).primaryColor,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(sbInputRadius),
@@ -330,7 +329,7 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).primaryColor,
+                        backgroundColor: Theme.of(context).primaryColor,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(sbInputRadius),

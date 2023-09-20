@@ -1,10 +1,8 @@
 import 'package:country_picker/country_picker.dart';
-import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:smartbox/features/model/details_client_model.dart';
 import 'package:smartbox/ui/order_now/delivery_resume_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
-import 'package:smartbox/ui/utils/strings_constants.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
 import '../../features/model/box_model.dart';

@@ -16,7 +16,6 @@ import '../features/auth/cubits/auth_cubit.dart';
 import '../features/auth/cubits/register_cubiti.dart';
 import '../features/auth/cubits/sign_in_cubit.dart';
 import '../ui/utils/constants.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../utils/firebase_options.dart';
 

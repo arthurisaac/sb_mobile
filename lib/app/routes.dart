@@ -11,7 +11,7 @@ class Routes {
   static const login = "login";
   static const register = "register";
   static const splash = 'splash';
-  static const country_choice = 'country_choose';
+  static const countryChoice = 'country_choose';
   static String currentRoute = splash;
 
   static Route<dynamic> onGenerateRouted(RouteSettings routeSettings) {
@@ -26,7 +26,7 @@ class Routes {
       case register:
         return MaterialPageRoute(
             builder: (context) => const RegistrationScreen());
-        case country_choice:
+      case countryChoice:
         return MaterialPageRoute(
             builder: (context) => const ChooseCountryScreen());
       default:

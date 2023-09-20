@@ -93,33 +93,33 @@ class Box {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['category'] = this.category;
-    data['partner'] = this.partner;
-    data['user'] = this.user;
-    data['name'] = this.name;
-    data['notation'] = this.notation;
-    data['notation_count'] = this.notationCount;
-    data['price'] = this.price;
-    data['discount'] = this.discount;
-    data['discount_code'] = this.discountCode;
-    data['min_person'] = this.minPerson;
-    data['max_person'] = this.maxPerson;
-    data['start_time'] = this.startTime;
-    data['end_time'] = this.endTime;
-    data['validity'] = this.validity;
-    data['description'] = this.description;
-    data['must_know'] = this.mustKnow;
-    data['is_inside'] = this.isInside;
-    data['country'] = this.country;
-    data['enable'] = this.enable;
-    data['image'] = this.image;
-    data['favorites'] = this.favorites;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.images != null) {
-      data['images'] = this.images!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['category'] = category;
+    data['partner'] = partner;
+    data['user'] = user;
+    data['name'] = name;
+    data['notation'] = notation;
+    data['notation_count'] = notationCount;
+    data['price'] = price;
+    data['discount'] = discount;
+    data['discount_code'] = discountCode;
+    data['min_person'] = minPerson;
+    data['max_person'] = maxPerson;
+    data['start_time'] = startTime;
+    data['end_time'] = endTime;
+    data['validity'] = validity;
+    data['description'] = description;
+    data['must_know'] = mustKnow;
+    data['is_inside'] = isInside;
+    data['country'] = country;
+    data['enable'] = enable;
+    data['image'] = image;
+    data['favorites'] = favorites;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (images != null) {
+      data['images'] = images!.map((v) => v.toJson()).toList();
     }
     return data;
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smartbox/ui/save_box/save_box_screen.dart';
-import 'package:smartbox/ui/saved/saved_box_screen.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
 import '../../features/auth/cubits/auth_cubit.dart';

@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartbox/features/model/details_client_model.dart';
 import 'package:smartbox/features/model/new_order_model.dart';
 import 'package:smartbox/ui/main/main_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 import '../../features/auth/cubits/auth_cubit.dart';
@@ -20,7 +20,9 @@ class PaymentChoiceScreen extends StatefulWidget {
   final NewOrder order;
   final Box box;
   final double total;
-  const PaymentChoiceScreen({Key? key, required this.order, required this.box, required this.total}) : super(key: key);
+  const PaymentChoiceScreen(
+      {Key? key, required this.order, required this.box, required this.total})
+      : super(key: key);
 
   @override
   State<PaymentChoiceScreen> createState() => _PaymentChoiceScreenState();
@@ -50,7 +52,13 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Moyen de paiement", style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),),
+                    Text(
+                      "Moyen de paiement",
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
                     spaceWidget,
                     spaceWidget,
                     GestureDetector(
@@ -62,95 +70,106 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(10)
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Image.asset(
+                          "images/orange_money.png",
+                          width: 100,
                         ),
-                        child: Image.asset("images/orange_money.png", width: 100,),
                       ),
                     )
                   ],
                 ),
               ),
               spaceWidget,
-              payment == "om" ? Container(
-                color: Colors.white,
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Paiement", style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),),
-                    spaceWidget,
-                    spaceWidget,
-                    TextFormField(
-                      controller: phoneNumberController,
-                      keyboardType: TextInputType.phone,
-                      showCursor: false,
-                      readOnly: false,
-                      decoration: InputDecoration(
-                        labelText: "Téléphone",
-                        hintText: "Numéro de téléphone",
-                        errorText: null,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(sbInputRadius),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Champ requis';
-                        }
-                        return null;
-                      },
-                      onTap: () {},
-                    ),
-                    spaceWidget,
-                    TextFormField(
-                      controller: otpCodeController,
-                      keyboardType: TextInputType.number,
-                      showCursor: false,
-                      readOnly: false,
-                      decoration: InputDecoration(
-                        labelText: "OPT",
-                        hintText: "Code opt",
-                        errorText: null,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(sbInputRadius),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Champ requis';
-                        }
-                        return null;
-                      },
-                      onTap: () {},
-                    ),
-                    spaceWidget,
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Theme
-                            .of(context)
-                            .primaryColor,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(sbInputRadius),
-                        ),
-                      ),
-                      onPressed: () async {
-                        if (phoneNumberController.text.isNotEmpty && otpCodeController.text.isNotEmpty) {
-                          savePayment();
-                        } else {}
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(14),
-                        child: const Center(child: Text("Valider")),
+              payment == "om"
+                  ? Container(
+                      color: Colors.white,
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Paiement",
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          spaceWidget,
+                          spaceWidget,
+                          TextFormField(
+                            controller: phoneNumberController,
+                            keyboardType: TextInputType.phone,
+                            showCursor: false,
+                            readOnly: false,
+                            decoration: InputDecoration(
+                              labelText: "Téléphone",
+                              hintText: "Numéro de téléphone",
+                              errorText: null,
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.circular(sbInputRadius),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Champ requis';
+                              }
+                              return null;
+                            },
+                            onTap: () {},
+                          ),
+                          spaceWidget,
+                          TextFormField(
+                            controller: otpCodeController,
+                            keyboardType: TextInputType.number,
+                            showCursor: false,
+                            readOnly: false,
+                            decoration: InputDecoration(
+                              labelText: "OPT",
+                              hintText: "Code opt",
+                              errorText: null,
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.circular(sbInputRadius),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Champ requis';
+                              }
+                              return null;
+                            },
+                            onTap: () {},
+                          ),
+                          spaceWidget,
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(sbInputRadius),
+                              ),
+                            ),
+                            onPressed: () async {
+                              if (phoneNumberController.text.isNotEmpty &&
+                                  otpCodeController.text.isNotEmpty) {
+                                savePayment();
+                              } else {}
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(14),
+                              child: const Center(child: Text("Valider")),
+                            ),
+                          )
+                        ],
                       ),
                     )
-                  ],
-                ),
-              ): Container(),
+                  : Container(),
             ],
           ),
         ),
@@ -181,8 +200,7 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
               ),
             ),
           );
-        }
-    );
+        });
 
     final body = {
       userKey: context.read<AuthCubit>().getId().toString(),
@@ -193,17 +211,13 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
       amountKey: widget.total.toString()
     };
 
-    final response = await http.post(
-        Uri.parse(savePaymentUrl),
-        headers: ApiUtils.getHeaders(),
-        body: body
-    );
+    final response = await http.post(Uri.parse(savePaymentUrl),
+        headers: ApiUtils.getHeaders(), body: body);
 
     final responseJson = jsonDecode(response.body);
     //print(response.body);
 
     if (response.statusCode == 201) {
-
       if (mounted) {
         showDialog(
             barrierDismissible: false,
@@ -217,7 +231,11 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // The loading indicator
-                      const Icon(Icons.check_circle_outline, color: Colors.greenAccent, size: 96,),
+                      const Icon(
+                        Icons.check_circle_outline,
+                        color: Colors.greenAccent,
+                        size: 96,
+                      ),
                       const SizedBox(
                         height: 15,
                       ),
@@ -227,7 +245,7 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Theme.of(context).primaryColor,
+                          backgroundColor: Theme.of(context).primaryColor,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(sbInputRadius),
@@ -235,9 +253,8 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                         ),
                         onPressed: () {
                           //if (!mounted) return;
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => const MainScreen())
-                          );
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const MainScreen()));
                         },
                         child: const Text("Fermer"),
                       ),
@@ -245,15 +262,12 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                   ),
                 ),
               );
-            }
-        );
+            });
       }
-
     } else if (response.statusCode == 200) {
       if (kDebugMode) {
         print('Request failed with status: ${response.statusCode}.');
       }
-
 
       var rpc = responseJson['data'];
       String body = rpc['message'];
@@ -274,12 +288,19 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         // The loading indicator
-                        const Icon(Icons.error, color: Colors.orange, size: 96,),
+                        const Icon(
+                          Icons.error,
+                          color: Colors.orange,
+                          size: 96,
+                        ),
                         const SizedBox(
                           height: 15,
                         ),
                         // Some text
-                        const Text('Une erreur s\'est produite lors du paiement', textAlign: TextAlign.center,),
+                        const Text(
+                          'Une erreur s\'est produite lors du paiement',
+                          textAlign: TextAlign.center,
+                        ),
                         spaceWidget,
                         Padding(
                           padding: const EdgeInsets.all(space),
@@ -290,10 +311,11 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Theme.of(context).primaryColor,
+                            backgroundColor: Theme.of(context).primaryColor,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(sbInputRadius),
+                              borderRadius:
+                                  BorderRadius.circular(sbInputRadius),
                             ),
                           ),
                           onPressed: () {
@@ -305,13 +327,13 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                     ),
                   ),
                 );
-              }
-          );
+              });
         }
-
       } else {
         final responseJson = jsonDecode(response.body);
         var message = responseJson['message'];
+
+        if (!mounted) return;
 
         showDialog(
             barrierDismissible: true,
@@ -325,11 +347,18 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // The loading indicator
-                      const Icon(Icons.error, color: Colors.orange, size: 96,),
+                      const Icon(
+                        Icons.error,
+                        color: Colors.orange,
+                        size: 96,
+                      ),
                       const SizedBox(
                         height: 15,
                       ),
-                      const Text('Une erreur s\'est produite lors du paiement', textAlign: TextAlign.center,),
+                      const Text(
+                        'Une erreur s\'est produite lors du paiement',
+                        textAlign: TextAlign.center,
+                      ),
                       spaceWidget,
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -340,7 +369,7 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Theme.of(context).primaryColor,
+                          backgroundColor: Theme.of(context).primaryColor,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(sbInputRadius),
@@ -355,10 +384,8 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                   ),
                 ),
               );
-            }
-        );
+            });
       }
-
 
       return null;
     }

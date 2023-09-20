@@ -75,16 +75,16 @@ class AuthRepository {
     String countryCode = auth.getCountryCode() ?? "";
 
     final result = await _authRemoteDataSource.addUser(
-      nom: nom,
-      prenom: prenom,
-      email: email,
-      password: password,
-      passwordConfirmation:
-          passwordConfirmation,
+        nom: nom,
+        prenom: prenom,
+        email: email,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
         mobile: mobile,
-      country: country,
-      countryCode: countryCode/*, latitude: latitude ?? "", longitude: longitude ?? ""*/
-    );
+        country: country,
+        countryCode:
+            countryCode /*, latitude: latitude ?? "", longitude: longitude ?? ""*/
+        );
     await _authLocalDataSource.setId(result['id']);
     await _authLocalDataSource.changeAuthStatus(true);
     await _authLocalDataSource.setNom(result['nom']);
@@ -95,28 +95,26 @@ class AuthRepository {
     return Map.from(result); //
   }
 
-
   //  Modifier le mot de passe
-  Future<String> updatePassword({
-    String? password,
-    String? passwordConfirmation}) async {
+  Future<String> updatePassword(
+      {String? password, String? passwordConfirmation}) async {
     final result = await _authRemoteDataSource.updatePassword(
-        password: password,
-        passwordConfirmation: passwordConfirmation
-    );
+        password: password, passwordConfirmation: passwordConfirmation);
     return result;
   }
 
   // Mise à jour profil
-  Future<String> updateUser({String? nom,String? prenom,
-    String? telephone,}) async {
+  Future<String> updateUser({
+    String? nom,
+    String? prenom,
+    String? telephone,
+  }) async {
     final result = await _authRemoteDataSource.updateUser(
       nom: nom,
       prenom: prenom,
       telephone: telephone,
     );
-    print(result);
-    Map<String, dynamic> user = result['user'];
+    //Map<String, dynamic> user = result['user'];
     String message = result['message'];
 
     return message; //

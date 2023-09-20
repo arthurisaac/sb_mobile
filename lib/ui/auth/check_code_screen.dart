@@ -12,6 +12,7 @@ import '../utils/api_utils.dart';
 import '../utils/constants.dart';
 import '../utils/ui_utils.dart';
 import '../utils/widgets_utils.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 class CheckCodeScreen extends StatefulWidget {
@@ -79,10 +80,6 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                       outlineBorderRadius: 15,
                       style: const TextStyle(fontSize: 17),
                       onCompleted: (pin) {
-                        setState(() {
-                          code:
-                          pin;
-                        });
                         checkCode(pin);
                       },
                     ),
@@ -91,10 +88,10 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                     ),
                     TextButton(
                       style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        primary: Colors.white,
                         backgroundColor: Theme.of(context).primaryColor,
                         minimumSize: const Size.fromHeight(12),
                       ),
@@ -103,10 +100,10 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                       },
                       child: TextButton(
                         style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          primary: Colors.white,
                           backgroundColor: Theme.of(context).primaryColor,
                           minimumSize: const Size.fromHeight(12),
                         ),
