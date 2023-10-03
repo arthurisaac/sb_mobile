@@ -90,7 +90,7 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                         ),
                         validator: (value) {
                           if (value!.isEmpty ||
-                              !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(value)) {
                             return 'Entrer un email valide!';
                           }
@@ -140,15 +140,16 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                         },
                       ),
                       spaceWidget,
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                              const ForgetPasswordScreen()));
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(space),
-                          child: Text("Mot de passe oublié ?"),
+                      Container(
+                        width: double.infinity,
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                const ForgetPasswordScreen()));
+                          },
+                          child: const Text("Mot de passe oublié ?"),
                         ),
                       ),
                       spaceWidget,

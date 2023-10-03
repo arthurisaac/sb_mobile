@@ -1,7 +1,7 @@
 //const String serverUrl = 'http://192.168.11.105:8000/';
 //const String serverUrl = 'http://192.168.1.198:8000/';
 //const String serverUrl = 'http://localhost:8001/';
-const String serverUrl = 'https://smartbox.fasobizness.com/';
+const String serverUrl = 'https://yiikiglobal.com/';
 const String baseUrl = '${serverUrl}api/';
 const String mediaUrl = '${serverUrl}storage/';
 const String jwtKey = 'rBDsbikDxRIlKEyvmW9wDpndJoM1Ieov8jH0zive';
@@ -37,6 +37,8 @@ const String passwordResetUrl = "${baseUrl}password/reset";
 const String faqUrl = "${baseUrl}faqs";
 const String sendMessageUrl = "${baseUrl}send-message";
 const String sendCommentUrl = "${baseUrl}send-comment";
+const String boxWithSamePriceUrl = "${baseUrl}boxes-same-prices";
+const String boxExchangeUrl = "${baseUrl}exchange-box";
 
 const String sliderMainPageUrl = "${baseUrl}sliders-main-page";
 const String deleteUserUrl = "${baseUrl}delete-user";

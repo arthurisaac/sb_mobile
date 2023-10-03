@@ -11,21 +11,21 @@ import '../../features/model/box_model.dart';
 import '../../features/model/details_client_model.dart';
 import '../reserve/reservation_screen.dart';
 
-class BoxDetailsWithExchangeScreen extends StatefulWidget {
+class BoxDetailsWithEditReservationScreen extends StatefulWidget {
   final Box box;
   final Order order;
 
-  const BoxDetailsWithExchangeScreen(
+  const BoxDetailsWithEditReservationScreen(
       {Key? key, required this.box, required this.order})
       : super(key: key);
 
   @override
-  State<BoxDetailsWithExchangeScreen> createState() =>
-      _BoxDetailsWithExchangeScreenState();
+  State<BoxDetailsWithEditReservationScreen> createState() =>
+      _BoxDetailsWithEditReservationScreenState();
 }
 
-class _BoxDetailsWithExchangeScreenState
-    extends State<BoxDetailsWithExchangeScreen> {
+class _BoxDetailsWithEditReservationScreenState
+    extends State<BoxDetailsWithEditReservationScreen> {
   late List<Images>? imgList = [];
   late Box box;
   int _index = 0;
@@ -261,75 +261,44 @@ class _BoxDetailsWithExchangeScreenState
                   ],
                 ),
               ),
+              spaceWidget,
+              Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(space),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    showModalBottomSheet(
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      backgroundColor: Colors.white,
+                      isScrollControlled: true,
+                      builder: (context) {
+                        return ReservationScreen(
+                          box: box,
+                          order: widget.order,
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(10),
+                    child: const Center(
+                      child: Text("Modifier sa réservation"),
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(
                 height: 60,
               )
             ],
           ),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.all(space),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                (widget.box.discount! > 0)
-                    ? Text(
-                        "${widget.box.discount} $priceSymbol",
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.w800, color: Colors.red),
-                      )
-                    : Text(
-                        "${widget.box.price} $priceSymbol",
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelLarge
-                            ?.copyWith(fontWeight: FontWeight.w800),
-                      ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    color: Theme.of(context).primaryColor,
-                    child: const Text("Echanger avec un autre"),
-                  ),
-                )
-              ],
-            ),
-            spaceWidget,
-            ElevatedButton(
-              onPressed: () async {
-                showModalBottomSheet(
-                  context: context,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  backgroundColor: Colors.white,
-                  isScrollControlled: true,
-                  builder: (context) {
-                    return ReservationScreen(
-                      box: box,
-                      order: widget.order,
-                    );
-                  },
-                );
-              },
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(10),
-                child: const Center(
-                  child: Text("Modifier sa réservation"),
-                ),
-              ),
-            )
-          ],
         ),
       ),
     );

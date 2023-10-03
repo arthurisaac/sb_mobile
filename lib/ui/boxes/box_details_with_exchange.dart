@@ -5,24 +5,34 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smartbox/features/model/images_model.dart';
-import 'package:smartbox/ui/auth/manual_login_screen.dart';
-import 'package:smartbox/ui/order_now/delivery_mode_screen.dart';
+import 'package:smartbox/ui/main/main_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
+import 'package:smartbox/ui/utils/ui_utils.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
 import '../../features/auth/cubits/auth_cubit.dart';
 import '../../features/model/box_model.dart';
+import '../../features/model/details_client_model.dart';
+import '../utils/api_body_parameters.dart';
 
-class BoxDetailsScreen extends StatefulWidget {
+// ignore: depend_on_referenced_packages
+import 'package:http/http.dart';
+
+import '../utils/api_utils.dart';
+
+class BoxDetailsWithExchange extends StatefulWidget {
   final Box box;
+  final Order order;
 
-  const BoxDetailsScreen({Key? key, required this.box}) : super(key: key);
+  const BoxDetailsWithExchange(
+      {Key? key, required this.box, required this.order})
+      : super(key: key);
 
   @override
-  State<BoxDetailsScreen> createState() => _BoxDetailsScreenState();
+  State<BoxDetailsWithExchange> createState() => _BoxDetailsWithExchangeState();
 }
 
-class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
+class _BoxDetailsWithExchangeState extends State<BoxDetailsWithExchange> {
   late List<Images>? imgList = [];
   late Box box;
   int _index = 0;
@@ -39,7 +49,7 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(box.name.toString()),
+        title: Text(widget.box.name ?? ""),
       ),
       body: SingleChildScrollView(
         child: SizedBox(
@@ -258,85 +268,56 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
                   ],
                 ),
               ),
+              spaceWidget,
+              Padding(
+                padding: const EdgeInsets.all(space),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    UiUtils.msgConfirmationDialog(
+                        context,
+                        "Confirmation",
+                        "Souhaitez vraiment échanger de cadeau ? ",
+                        () async {
+                          await exchangeBox();
+                          if (mounted) {
+                            UiUtils.okAlertDialog(context, "Cadeau échangé", "Votre cadeau a été échangé avec succès", () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MainScreen()));
+                            });
+                          }
+                        },
+                        null);
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(10),
+                    child: const Center(
+                      child: Text("Echanger son cadeau"),
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(
                 height: 60,
-              )
+              ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.all(space),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            (widget.box.discount! > 0)
-                ? Text(
-                    "${widget.box.discount} $priceSymbol",
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w800, color: Colors.red),
-                  )
-                : Text(
-                    "${widget.box.price} $priceSymbol",
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge
-                        ?.copyWith(fontWeight: FontWeight.w800),
-                  ),
-            ElevatedButton(
-              onPressed: () {
-                if (context.read<AuthCubit>().state is Authenticated) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => DeliveryModeScreen(
-                            box: widget.box,
-                          )));
-                } else {
-                  AlertDialog alert = AlertDialog(
-                    title: const Text("Attention"),
-                    content: const Text(
-                        "Vous avez besoin d'être connecté avant d'acheter une box"),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const ManualLoginScreen()));
-                        },
-                        child: Text(
-                          "Connexion",
-                          style:
-                              TextStyle(color: Theme.of(context).primaryColor),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text(
-                          "Annuler",
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      )
-                    ],
-                  );
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return alert;
-                    },
-                  );
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                color: Theme.of(context).primaryColor,
-                child: const Text("Acheter"),
-              ),
-            )
-          ],
-        ),
-      ),
     );
+  }
+
+  Future exchangeBox() async {
+    UiUtils.modalLoading(context, "Chargement en cours");
+
+    final body = {
+      userKey: context.read<AuthCubit>().getId().toString(),
+      boxKey: widget.box.id.toString(),
+      orderKey: widget.order.id.toString(),
+    };
+    await post(Uri.parse(boxExchangeUrl),
+        headers: ApiUtils.getHeaders(), body: body);
+
+    if (!mounted) return;
+    Navigator.of(context).pop();
   }
 }

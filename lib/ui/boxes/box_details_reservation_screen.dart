@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smartbox/features/model/images_model.dart';
+import 'package:smartbox/ui/boxes/box_exchange_presentation_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
@@ -167,7 +168,7 @@ class _BoxDetailsReservationScreenState
                           const SizedBox(
                             width: 5,
                           ),
-                          Text("${box.maxPerson} personnes"),
+                          Text("${box.maxPerson ?? 1} personnes"),
                         ],
                       ),
                       const SizedBox(
@@ -269,38 +270,70 @@ class _BoxDetailsReservationScreenState
       bottomNavigationBar: Container(
         color: Colors.white,
         padding: const EdgeInsets.all(space),
-        child: GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
+        child: Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    backgroundColor: Colors.white,
+                    isScrollControlled: true,
+                    builder: (context) {
+                      return ReservationScreen(
+                        box: box,
+                        order: widget.order,
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.orange,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(14),
+                  width: double.infinity,
+                  child: const Text(
+                    "Reserver maintenant",
+                    style: TextStyle(color: Colors.white), textAlign: TextAlign.center
+                  ),
                 ),
               ),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              backgroundColor: Colors.white,
-              isScrollControlled: true,
-              builder: (context) {
-                return ReservationScreen(
-                  box: box,
-                  order: widget.order,
-                );
-              },
-            );
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(10),
             ),
-            padding: const EdgeInsets.all(space),
-            width: double.infinity,
-            child: const Text(
-              "Reserver maintenant",
-              style: TextStyle(color: Colors.white),
+            const SizedBox(width: 5,),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  String price = widget.box.price.toString();
+                  if (widget.box.discount! > 0) {
+                    price = widget.box.discount.toString();
+                  }
+
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => BoxExchangePresentationScreen(price: price, order: widget.order,))
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(14),
+                  child: const Text(
+                    "Échanger",
+                    style: TextStyle(color: Colors.white), textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

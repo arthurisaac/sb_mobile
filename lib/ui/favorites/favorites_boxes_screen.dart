@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartbox/features/model/favorite_model.dart';
-import 'package:smartbox/ui/home/boxes_in_categories_screen.dart';
 
 import '../../features/auth/cubits/auth_cubit.dart';
 import '../../features/model/box_model.dart';
 import '../helper/please_login_screen.dart';
+import '../home/boxes_in_categories_screen.dart';
 import '../utils/api_body_parameters.dart';
 import '../utils/api_utils.dart';
 
@@ -27,12 +27,12 @@ class FavoritesBoxesScreen extends StatefulWidget {
 class _FavoritesBoxesScreenState extends State<FavoritesBoxesScreen> {
   @override
   Widget build(BuildContext context) {
-    return context.read<AuthCubit>().state is Authenticated
-        ? Scaffold(
+    return Scaffold(
             appBar: AppBar(
               title: const Text("Liste de souhaits"),
             ),
-            body: FutureBuilder<List<Favorite>?>(
+            body:  context.read<AuthCubit>().state is Authenticated
+            ? FutureBuilder<List<Favorite>?>(
               future: getFavorite(),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
@@ -40,11 +40,6 @@ class _FavoritesBoxesScreenState extends State<FavoritesBoxesScreen> {
                   return Padding(
                     padding: const EdgeInsets.all(space),
                     child: GridView.builder(
-                        /*gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 4.0,
-                      mainAxisSpacing: 4.0,
-                    ),*/
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
@@ -88,8 +83,8 @@ class _FavoritesBoxesScreenState extends State<FavoritesBoxesScreen> {
                   child: CircularProgressIndicator(),
                 );
               },
-            ))
-        : const PleaseLoginScreen();
+            ) : const PleaseLoginScreen()
+    );
   }
 
   Future<List<Favorite>?> getFavorite() async {

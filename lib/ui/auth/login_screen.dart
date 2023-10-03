@@ -118,6 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
             },
             blendMode: BlendMode.darken,
             child: Container(
+              height: MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(
                 // gradient: LinearGradient(
                 //   colors: [gradientStart, gradientEnd],

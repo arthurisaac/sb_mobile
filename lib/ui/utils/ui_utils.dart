@@ -87,4 +87,29 @@ class UiUtils {
       },
     );
   }
+
+  static void msgConfirmationDialog(BuildContext context, String title, String message, onMessagePressed, onPressed) {
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: onMessagePressed,
+          child: const Text("Oui"),
+        ),
+        TextButton(
+          onPressed: onPressed ??  () {
+            Navigator.of(context).pop();
+          },
+          child: const Text("non"),
+        )
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }

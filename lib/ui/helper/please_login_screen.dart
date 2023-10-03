@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:smartbox/ui/auth/login_screen.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
+import '../../app/routes.dart';
 import '../utils/constants.dart';
 
 class PleaseLoginScreen extends StatefulWidget {
@@ -53,9 +53,10 @@ class _PleaseLoginScreenState extends State<PleaseLoginScreen> {
                     backgroundColor: Colors.white,
                   ),
                   onPressed: () async {
-                    Navigator.of(context).push(
+                    /*Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => const LoginScreen())
-                    );
+                    );*/
+                    Navigator.of(context).pushReplacementNamed(Routes.login);
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),

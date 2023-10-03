@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:smartbox/ui/boxes/box_details_with_exchange_screen.dart';
+import 'package:smartbox/ui/boxes/box_details_with_edit_reservation_screen.dart';
 import 'package:smartbox/ui/helper/please_login_screen.dart';
 import 'package:smartbox/ui/utils/api_body_parameters.dart';
 import 'package:smartbox/ui/utils/ui_utils.dart';
@@ -68,19 +68,15 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                         List<Order>? reserve = [];
                         List<Order>? consomme = [];
 
-                        /* for (var order in list) {
-                          print(order.status);
+                         for (var order in list) {
                           if (order.status == 0) {
-                            print("En cours");
                             enCours.add(order);
                           } else if (order.status == 1) {
-                            print("En reservé");
                             reserve.add(order);
                           } else if (order.status == 2) {
-                            print("consomme");
                             consomme.add(order);
                           }
-                        } */
+                        }
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,7 +227,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              BoxDetailsWithExchangeScreen(
+                                              BoxDetailsWithEditReservationScreen(
                                             box: box,
                                             order: order,
                                           ),
@@ -677,14 +673,6 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                           borderRadius: BorderRadius.circular(sbInputRadius),
                         ),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty ||
-                            !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(value)) {
-                          return 'Entrer un email valide!';
-                        }
-                        return null;
-                      },
                       onTap: () {},
                     ),
                     const SizedBox(
