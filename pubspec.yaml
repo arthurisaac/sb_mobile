@@ -41,9 +41,6 @@ dependencies:
   hive_flutter: ^1.0.0
   hive: ^2.0.4
   jaguar_jwt: ^3.0.0
-  flutter_map: ^3.1.0
-  latlong2: ^0.8.1
-  location: ^4.4.0
   country_picker: ^2.0.20
   firebase_messaging: ^14.6.4
   flutter_local_notifications: ^15.0.0
