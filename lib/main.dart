@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'app/app.dart';
@@ -31,18 +30,4 @@ Future<void> main() async {
   });
 
   runApp(await initializeApp());
-}
-
-Future<void> getCurrentLocation() async {
-  try {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    if (kDebugMode) {
-      print('Latitude: ${position.latitude}, Longitude: ${position.longitude}');
-    }
-  } catch (e) {
-    if (kDebugMode) {
-      print(e);
-    }
-  }
 }
