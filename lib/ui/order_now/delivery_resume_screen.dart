@@ -101,7 +101,7 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
                   children: [
                     Text(
                       "Expéditeur",
-                      style: Theme.of(context)
+                      style: Theme.of(context)  
                           .textTheme
                           .labelLarge
                           ?.copyWith(fontWeight: FontWeight.bold),
