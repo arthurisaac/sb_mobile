@@ -78,371 +78,376 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                           }
                         }
 
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            enCours.isNotEmpty ? spaceWidget : Container(),
-                            enCours.isNotEmpty
-                                ? const Text(
-                                    "En cours",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  )
-                                : const Text(""),
-                            enCours.isNotEmpty ? spaceWidget : Container(),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: enCours.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                Order order = enCours[index];
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              enCours.isNotEmpty ? spaceWidget : Container(),
+                              enCours.isNotEmpty
+                                  ? const Text(
+                                      "En cours",
+                                      style:
+                                          TextStyle(fontWeight: FontWeight.bold),
+                                    )
+                                  : const Text(""),
+                              enCours.isNotEmpty ? spaceWidget : Container(),
+                              ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: enCours.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  Order order = enCours[index];
 
-                                Box? box = order.box;
+                                  Box? box = order.box;
 
-                                return Card(
-                                  elevation: 50,
-                                  shadowColor: Colors.black,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 100,
-                                        width: double.maxFinite,
-                                        padding:
-                                            const EdgeInsets.only(bottom: 15),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                "$mediaUrl${box!.image}"),
-                                            fit: BoxFit.cover,
-                                          ),
-                                          borderRadius: const BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10)),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: space),
-                                        child: Text(
-                                          "${box.price} $priceSymbol",
-                                          style: TextStyle(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontWeight: FontWeight.bold,
+                                  return Card(
+                                    elevation: 50,
+                                    shadowColor: Colors.black,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 100,
+                                          width: double.maxFinite,
+                                          padding:
+                                              const EdgeInsets.only(bottom: 15),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  "$mediaUrl${box!.image}"),
+                                              fit: BoxFit.cover,
+                                            ),
+                                            borderRadius: const BorderRadius.only(
+                                                topLeft: Radius.circular(10),
+                                                topRight: Radius.circular(10)),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: space),
-                                        child: Divider(),
-                                      ),
-                                      spaceWidget,
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: space),
-                                        child: Text(
-                                          "${box.name}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium
-                                              ?.copyWith(
-                                                  fontWeight: FontWeight.bold),
+                                        const SizedBox(
+                                          height: 10,
                                         ),
-                                      ),
-                                      spaceWidget,
-                                      spaceWidget,
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        child: TextButton(
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: Colors.white,
-                                            shape: RoundedRectangleBorder(
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: space),
+                                          child: Text(
+                                            "${box.price} $priceSymbol",
+                                            style: TextStyle(
+                                              color:
+                                                  Theme.of(context).primaryColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: space),
+                                          child: Divider(),
+                                        ),
+                                        spaceWidget,
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: space),
+                                          child: Text(
+                                            "${box.name}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium
+                                                ?.copyWith(
+                                                    fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        spaceWidget,
+                                        spaceWidget,
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          child: TextButton(
+                                            style: TextButton.styleFrom(
+                                              foregroundColor: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              backgroundColor:
+                                                  Theme.of(context).primaryColor,
+                                              minimumSize:
+                                                  const Size.fromHeight(12),
+                                            ),
+                                            onPressed: () async {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          BoxDetailsReservationScreen(
+                                                            box: box,
+                                                            order: order,
+                                                          )));
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              padding: const EdgeInsets.all(8),
+                                              child: const Center(
+                                                child: Text("Voir"),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        spaceWidget
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                              enCours.isNotEmpty
+                                  ? const SizedBox(
+                                      height: 20,
+                                    )
+                                  : Container(),
+                              reserve.isNotEmpty
+                                  ? const Text(
+                                      "Réservé",
+                                      style:
+                                          TextStyle(fontWeight: FontWeight.bold),
+                                    )
+                                  : const Text(""),
+                              reserve.isNotEmpty ? spaceWidget : Container(),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: reserve.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  Order order = reserve[index];
+                                  Box? box = order.box;
+
+                                  return Card(
+                                    elevation: 50,
+                                    shadowColor: Colors.black,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                BoxDetailsWithEditReservationScreen(
+                                              box: box,
+                                              order: order,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            height: 100,
+                                            width: double.maxFinite,
+                                            padding:
+                                                const EdgeInsets.only(bottom: 15),
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    "$mediaUrl${box!.image}"),
+                                                fit: BoxFit.cover,
+                                              ),
                                               borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            backgroundColor:
-                                                Theme.of(context).primaryColor,
-                                            minimumSize:
-                                                const Size.fromHeight(12),
-                                          ),
-                                          onPressed: () async {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        BoxDetailsReservationScreen(
-                                                          box: box,
-                                                          order: order,
-                                                        )));
-                                          },
-                                          child: Container(
-                                            width: double.infinity,
-                                            padding: const EdgeInsets.all(8),
-                                            child: const Center(
-                                              child: Text("Voir"),
+                                                  const BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(10),
+                                                      topRight:
+                                                          Radius.circular(10)),
                                             ),
                                           ),
-                                        ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: space),
+                                            child: Text(
+                                              "Cadeau réservé",
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: space),
+                                            child: Divider(),
+                                          ),
+                                          spaceWidget,
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: space),
+                                            child: Text(
+                                              "${box.name}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium
+                                                  ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                            ),
+                                          ),
+                                          spaceWidget,
+                                          order.reservation != null
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                          horizontal: space),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(),
+                                                      Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.date_range,
+                                                            size: 15,
+                                                            color:
+                                                                Theme.of(context)
+                                                                    .primaryColor,
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Text(
+                                                            "${order.reservation}",
+                                                            style:
+                                                                Theme.of(context)
+                                                                    .textTheme
+                                                                    .bodySmall
+                                                                    ?.copyWith(
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .primaryColor,
+                                                                    ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              : Container(),
+                                          spaceWidget,
+                                        ],
                                       ),
-                                      spaceWidget
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                            enCours.isNotEmpty
-                                ? const SizedBox(
-                                    height: 20,
-                                  )
-                                : Container(),
-                            reserve.isNotEmpty
-                                ? const Text(
-                                    "Réservé",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  )
-                                : const Text(""),
-                            reserve.isNotEmpty ? spaceWidget : Container(),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: reserve.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                Order order = reserve[index];
-                                Box? box = order.box;
-
-                                return Card(
-                                  elevation: 50,
-                                  shadowColor: Colors.black,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              BoxDetailsWithEditReservationScreen(
-                                            box: box,
-                                            order: order,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 100,
-                                          width: double.maxFinite,
-                                          padding:
-                                              const EdgeInsets.only(bottom: 15),
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                  "$mediaUrl${box!.image}"),
-                                              fit: BoxFit.cover,
-                                            ),
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(10),
-                                                    topRight:
-                                                        Radius.circular(10)),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: space),
-                                          child: Text(
-                                            "Cadeau réservé",
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: space),
-                                          child: Divider(),
-                                        ),
-                                        spaceWidget,
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: space),
-                                          child: Text(
-                                            "${box.name}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium
-                                                ?.copyWith(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                          ),
-                                        ),
-                                        spaceWidget,
-                                        order.reservation != null
-                                            ? Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: space),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(),
-                                                    Row(
-                                                      children: [
-                                                        Icon(
-                                                          Icons.date_range,
-                                                          size: 15,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          "${order.reservation}",
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .bodySmall
-                                                                  ?.copyWith(
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .primaryColor,
-                                                                  ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              )
-                                            : Container(),
-                                        spaceWidget,
-                                      ],
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                            consomme.isNotEmpty
-                                ? const Text(
-                                    "Consommé",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  )
-                                : const Text(""),
-                            consomme.isNotEmpty ? spaceWidget : Container(),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: consomme.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                Order order = consomme[index];
-                                Box? box = order.box;
+                                  );
+                                },
+                              ),
+                              consomme.isNotEmpty
+                                  ? const Text(
+                                      "Consommé",
+                                      style:
+                                          TextStyle(fontWeight: FontWeight.bold),
+                                    )
+                                  : const Text(""),
+                              consomme.isNotEmpty ? spaceWidget : Container(),
+                              ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: consomme.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  Order order = consomme[index];
+                                  Box? box = order.box;
 
-                                return Card(
-                                  elevation: 50,
-                                  shadowColor: Colors.black,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => detail(
-                                            context: context,
-                                            order: order,
-                                            box: box,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 100,
-                                          width: double.maxFinite,
-                                          padding:
-                                              const EdgeInsets.only(bottom: 15),
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                  "$mediaUrl${box!.image}"),
-                                              fit: BoxFit.cover,
-                                            ),
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(10),
-                                                    topRight:
-                                                        Radius.circular(10)),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: space),
-                                          child: Text(
-                                            "Cadeau consommé",
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontWeight: FontWeight.bold,
+                                  return Card(
+                                    elevation: 50,
+                                    shadowColor: Colors.black,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => detail(
+                                              context: context,
+                                              order: order,
+                                              box: box,
                                             ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: space),
-                                          child: Divider(),
-                                        ),
-                                        spaceWidget,
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: space),
-                                          child: Text(
-                                            "${box.name}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium
-                                                ?.copyWith(
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                        );
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            height: 100,
+                                            width: double.maxFinite,
+                                            padding:
+                                                const EdgeInsets.only(bottom: 15),
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    "$mediaUrl${box!.image}"),
+                                                fit: BoxFit.cover,
+                                              ),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(10),
+                                                      topRight:
+                                                          Radius.circular(10)),
+                                            ),
                                           ),
-                                        ),
-                                        spaceWidget,
-                                      ],
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: space),
+                                            child: Text(
+                                              "Cadeau consommé",
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: space),
+                                            child: Divider(),
+                                          ),
+                                          spaceWidget,
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: space),
+                                            child: Text(
+                                              "${box.name}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium
+                                                  ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                            ),
+                                          ),
+                                          spaceWidget,
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         );
                       }
                     }
@@ -754,22 +759,30 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
     final body = {
       orderConfirmationKey: context.read<AuthCubit>().getId().toString(),
     };
-    final response = await http.post(
-      Uri.parse(savedOrderUrl),
-      headers: ApiUtils.getHeaders(),
-      body: body,
-    );
-    if (response.statusCode == 200) {
-      final responseJson = jsonDecode(response.body);
+    try {
+      final response = await http.post(
+        Uri.parse(savedOrderUrl),
+        headers: ApiUtils.getHeaders(),
+        body: body,
+      );
 
-      var jsonResponse = responseJson['data'] as List<dynamic>;
+      if (response.statusCode == 200) {
+        final responseJson = jsonDecode(response.body);
+        var jsonResponse = responseJson['data'] as List<dynamic>;
 
-      List<Order> list = jsonResponse.map((e) => Order.fromJson(e)).toList();
+        List<Order> list = jsonResponse.map((e) => Order.fromJson(e)).toList();
 
-      return list;
-    } else {
+        return list;
+      } else {
+        print('not ok 200');
+        return null;
+      }
+    } catch (e) {
+      print("Une erreur s'est produite");
+      print(e);
       return null;
     }
+
   }
 
   sendCommentAndNotation(String box) async {

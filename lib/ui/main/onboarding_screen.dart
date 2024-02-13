@@ -132,9 +132,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Container(
               padding: const EdgeInsets.all(60),
+              height: MediaQuery.of(context).size.height * 0.5,
               child: Image.asset(
                 urlImage,
-                fit: BoxFit.cover,
+                //fit: BoxFit.cover,
                 width: double.infinity,
               ),
             ),

@@ -25,7 +25,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
           child: Column(
             children: [
               const Spacer(),
-              Image.asset("images/directions_bro.png", width: MediaQuery.of(context).size.width * 0.8,),
+              Image.asset("images/directions_bro.png", height: MediaQuery.of(context).size.height * 0.6,),
               const Spacer(),
               const Text("Choisir le pays"),
               spaceWidget,
