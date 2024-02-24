@@ -200,7 +200,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const LoginScreen()));
                       },
-                      child: const Text("Fermer"),
+                      child: const Text("Fermer", style: TextStyle(color: Colors.white),),
                     ),
                   ],
                 ),

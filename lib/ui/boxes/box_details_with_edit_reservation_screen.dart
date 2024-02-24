@@ -265,8 +265,8 @@ class _BoxDetailsWithEditReservationScreenState
               Container(
                 color: Colors.white,
                 padding: const EdgeInsets.all(space),
-                child: ElevatedButton(
-                  onPressed: () async {
+                child: InkWell(
+                  onTap: () async {
                     showModalBottomSheet(
                       context: context,
                       shape: const RoundedRectangleBorder(
@@ -288,8 +288,12 @@ class _BoxDetailsWithEditReservationScreenState
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(sbInputRadius),
+                    ),
                     child: const Center(
-                      child: Text("Modifier sa réservation"),
+                      child: Text("Modifier sa réservation", style: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartbox/features/model/box_model.dart';
 import 'package:smartbox/ui/auth/forget_password_screen.dart';
 import 'package:smartbox/ui/auth/registration_screen.dart';
 import 'package:smartbox/ui/utils/ui_utils.dart';
@@ -70,7 +71,10 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                   child: Column(
                     children: [
                       spaceWidget,
-                      const Icon(Icons.lock, size: 150,),
+                      const Icon(
+                        Icons.lock,
+                        size: 150,
+                      ),
                       spaceWidget,
                       spaceWidget,
                       TextFormField(
@@ -120,9 +124,7 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                             },
                             icon: Icon(
                               // Based on passwordVisible state choose the icon
-                              _passwordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                              _passwordVisible ? Icons.visibility : Icons.visibility_off,
                               color: Theme.of(context).primaryColorDark,
                             ),
                           ),
@@ -146,8 +148,7 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                const ForgetPasswordScreen()));
+                                builder: (context) => const ForgetPasswordScreen()));
                           },
                           child: const Text("Mot de passe oublié ?"),
                         ),
@@ -158,8 +159,7 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                           bloc: context.read<SignInCubit>(),
                           listener: (context, state) async {
                             if (state is SignInProgress) {
-                              UiUtils.modalLoading(
-                                  context, 'Connexion en cours...');
+                              UiUtils.modalLoading(context, 'Connexion en cours...');
                             } else if (state is SignInFailure) {
                               //if (!mounted) return;
                               Navigator.of(context).pop();
@@ -171,8 +171,7 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                                   return Dialog(
                                     backgroundColor: Colors.white,
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 20),
+                                      padding: const EdgeInsets.symmetric(vertical: 20),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
@@ -190,21 +189,17 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                                           const SizedBox(
                                             height: 15,
                                           ),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Theme.of(context).primaryColor,
-                                              elevation: 0,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        sbInputRadius),
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              //if (!mounted) return;
+                                          InkWell(
+                                            onTap: () {
                                               Navigator.of(context).pop();
                                             },
-                                            child: const Text("Fermer"),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context).primaryColor,
+                                                borderRadius: BorderRadius.circular(sbInputRadius),
+                                              ),
+                                              child: const Text("Fermer", style: TextStyle(color: Colors.white)),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -215,22 +210,20 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                               /*UiUtils.setSnackBar(
                                 "Connexion ", state.errorMessage, context, false);*/
                             } else if (state is SignInSuccess) {
-
                               Navigator.of(context).pop();
-                              context
-                                  .read<AuthCubit>()
-                                  .updateDetails(authModel: state.authModel);
+                              context.read<AuthCubit>().updateDetails(authModel: state.authModel);
                               /* Navigator.of(context).pushReplacementNamed(
                                 Routes.home,
                                 arguments: false);*/
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const MainScreen()));
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) => const MainScreen()));
                             }
                           },
                           builder: (context, state) {
                             return TextButton(
                               style: TextButton.styleFrom(
-                                foregroundColor: Colors.white, shape: RoundedRectangleBorder(
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 backgroundColor: Theme.of(context).primaryColor,
@@ -255,12 +248,13 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                               ),
                             );
                           }),
-                      const SizedBox(height: 30,),
+                      const SizedBox(
+                        height: 30,
+                      ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                              const RegistrationScreen()));
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => const RegistrationScreen()));
                         },
                         child: const Column(
                           children: [

@@ -10,6 +10,7 @@ import '../../features/model/box_model.dart';
 import '../../features/model/details_client_model.dart';
 import '../utils/api_utils.dart';
 import '../utils/constants.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
@@ -39,6 +40,7 @@ class _SaveBoxManuallyScreenState extends State<SaveBoxManuallyScreen> {
             ),
             const Text("Entrez le numéro du cadeau"),
             spaceWidget,
+            spaceWidget,
             TextFormField(
               controller: numeroController,
               keyboardType: TextInputType.text,
@@ -61,19 +63,19 @@ class _SaveBoxManuallyScreenState extends State<SaveBoxManuallyScreen> {
               onTap: () {},
             ),
             spaceWidget,
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).primaryColor,
-                minimumSize: const Size.fromHeight(50), // NE
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(sbInputRadius),
-                ), // W
-              ),
-              onPressed: () {
+            spaceWidget,
+            InkWell(
+              onTap: () {
                 checkNumberCode();
               },
-              child: const Text(
-                'Valider',
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(sbInputRadius),
+                ),
+                child: Center(child: const Text('Valider', style: TextStyle(color: Colors.white))),
               ),
             ),
           ],
@@ -87,8 +89,8 @@ class _SaveBoxManuallyScreenState extends State<SaveBoxManuallyScreen> {
       UiUtils.modalLoading(context, "Chargement en cours");
     }
 
-    final response = await http
-        .post(Uri.parse(checkNumberUrl), headers: ApiUtils.getHeaders(), body: {
+    final response =
+        await http.post(Uri.parse(checkNumberUrl), headers: ApiUtils.getHeaders(), body: {
       "number": numeroController.text,
     });
 
@@ -128,19 +130,22 @@ class _SaveBoxManuallyScreenState extends State<SaveBoxManuallyScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).primaryColor,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(sbInputRadius),
-                          ),
-                        ),
-                        onPressed: () {
+                      InkWell(
+                        onTap: () {
                           //if (!mounted) return;
                           Navigator.of(context).pop();
                         },
-                        child: const Text("Fermer"),
+                        child: Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.circular(sbInputRadius),
+                          ),
+                          child: const Text(
+                            "Fermer",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -165,8 +170,7 @@ class _SaveBoxManuallyScreenState extends State<SaveBoxManuallyScreen> {
           }
         } else {
           if (mounted) {
-            UiUtils.setSnackBar("Attention",
-                "Cette commande a déjà été reservée.", context, false);
+            UiUtils.setSnackBar("Attention", "Cette commande a déjà été reservée.", context, false);
           }
         }
       }

@@ -18,8 +18,7 @@ class SaveBoxDetailsScreen extends StatefulWidget {
   final Box box;
   final Order order;
 
-  const SaveBoxDetailsScreen({Key? key, required this.box, required this.order})
-      : super(key: key);
+  const SaveBoxDetailsScreen({Key? key, required this.box, required this.order}) : super(key: key);
 
   @override
   State<SaveBoxDetailsScreen> createState() => _SaveBoxDetailsScreenState();
@@ -49,10 +48,7 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
             spaceWidget,
             Text(
               "${box.name}",
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.start,
             ),
             spaceWidget,
@@ -122,14 +118,12 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
                       ? Html(
                           data: box.isInside,
                           style: {
-                            "body": Style(
-                                padding: HtmlPaddings.zero,
-                                margin: Margins.zero),
+                            "body": Style(padding: HtmlPaddings.zero, margin: Margins.zero),
                             "ul": Style(
                                 padding: HtmlPaddings.only(left: 15),
                                 margin: Margins.zero,
-                                listStyleImage: const ListStyleImage(
-                                    "${serverUrl}images/list.jpg")),
+                                listStyleImage:
+                                    const ListStyleImage("${serverUrl}images/list.jpg")),
                             "li": Style(padding: HtmlPaddings.only(left: 5)),
                           },
                         )
@@ -150,14 +144,12 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
                       ? Html(
                           data: box.mustKnow,
                           style: {
-                            "body": Style(
-                                padding: HtmlPaddings.zero,
-                                margin: Margins.zero),
+                            "body": Style(padding: HtmlPaddings.zero, margin: Margins.zero),
                             "ul": Style(
                                 padding: HtmlPaddings.only(left: 15),
                                 margin: Margins.zero,
-                                listStyleImage: const ListStyleImage(
-                                    "${serverUrl}images/list.png")),
+                                listStyleImage:
+                                    const ListStyleImage("${serverUrl}images/list.png")),
                             "li": Style(padding: HtmlPaddings.only(left: 5)),
                           },
                         )
@@ -168,8 +160,7 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
                   Html(
                     data: box.description,
                     style: {
-                      "body": Style(
-                          padding: HtmlPaddings.zero, margin: Margins.zero),
+                      "body": Style(padding: HtmlPaddings.zero, margin: Margins.zero),
                     },
                   ),
                 ],
@@ -178,22 +169,19 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
             spaceWidget,
             Padding(
               padding: const EdgeInsets.all(space),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(sbInputRadius),
-                  ),
-                ),
-                onPressed: () async {
+              child: InkWell(
+                onTap: () async {
                   saveBoxDetails();
                 },
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(sbInputRadius),
+                  ),
                   child: const Center(
-                    child: Text("Enregistrer"),
+                    child: Text("Enregistrer", style: TextStyle(color: Colors.white)),
                   ),
                 ),
               ),
@@ -322,24 +310,26 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
                       height: 15,
                     ),
                     // Some text
-                    Text(
-                        'Erreur de connexion. Status : ${response.statusCode} ! '),
+                    Text('Erreur de connexion. Status : ${response.statusCode} ! '),
                     const SizedBox(
                       height: 15,
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(sbInputRadius),
-                        ),
-                      ),
-                      onPressed: () {
+                    InkWell(
+                      onTap: () {
                         //if (!mounted) return;
                         Navigator.of(context).pop();
                       },
-                      child: const Text("Fermer"),
+                      child: Container(
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(sbInputRadius),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: const Text("Fermer", style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
                     ),
                   ],
                 ),

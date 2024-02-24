@@ -11,6 +11,7 @@ import '../../features/model/box_model.dart';
 import '../../features/model/details_client_model.dart';
 import '../utils/api_utils.dart';
 import '../utils/constants.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
@@ -76,8 +77,8 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
           );
         });
 
-    final response = await http
-        .post(Uri.parse(checkNumberUrl), headers: ApiUtils.getHeaders(), body: {
+    final response =
+        await http.post(Uri.parse(checkNumberUrl), headers: ApiUtils.getHeaders(), body: {
       "number": qrResult,
     });
     if (response.statusCode == 200) {
@@ -114,19 +115,22 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).primaryColor,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(sbInputRadius),
-                          ),
-                        ),
-                        onPressed: () {
+                      InkWell(
+                        onTap: () {
                           //if (!mounted) return;
                           Navigator.of(context).pop();
                         },
-                        child: const Text("Fermer"),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.circular(sbInputRadius),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: const Text("Fermer", style: TextStyle(color: Colors.white)),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -204,8 +208,7 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
                 margin: const EdgeInsets.all(space),
                 child: const Text(
                   "Scanner le code qr du cadeau",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -216,22 +219,22 @@ class _SaveBoxScreenState extends State<SaveBoxScreen> {
               bottom: space,
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: space),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    minimumSize: const Size.fromHeight(50), // N
-                    shape: RoundedRectangleBorder(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const SaveBoxManuallyScreen()));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(sbInputRadius),
                     ),
-
-                    /// EW
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const SaveBoxManuallyScreen()));
-                  },
-                  child: const Text(
-                    'Entrer manuellement',
+                    child: Center(
+                      child: const Text(
+                        'Entrer manuellement', style: TextStyle(color: Colors.white)
+                      ),
+                    ),
                   ),
                 ),
               ),

@@ -48,8 +48,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
               padding: const EdgeInsets.all(space),
               child: FutureBuilder<List<Order>?>(
                   future: getBoxes(),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.hasError) {
                       return const Center(
                         child: Text("Une erreur s'est produite"),
@@ -68,7 +67,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                         List<Order>? reserve = [];
                         List<Order>? consomme = [];
 
-                         for (var order in list) {
+                        for (var order in list) {
                           if (order.status == 0) {
                             enCours.add(order);
                           } else if (order.status == 1) {
@@ -86,8 +85,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                               enCours.isNotEmpty
                                   ? const Text(
                                       "En cours",
-                                      style:
-                                          TextStyle(fontWeight: FontWeight.bold),
+                                      style: TextStyle(fontWeight: FontWeight.bold),
                                     )
                                   : const Text(""),
                               enCours.isNotEmpty ? spaceWidget : Container(),
@@ -104,19 +102,16 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                                     elevation: 50,
                                     shadowColor: Colors.black,
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
                                           height: 100,
                                           width: double.maxFinite,
-                                          padding:
-                                              const EdgeInsets.only(bottom: 15),
+                                          padding: const EdgeInsets.only(bottom: 15),
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
-                                              image: NetworkImage(
-                                                  "$mediaUrl${box!.image}"),
+                                              image: NetworkImage("$mediaUrl${box!.image}"),
                                               fit: BoxFit.cover,
                                             ),
                                             borderRadius: const BorderRadius.only(
@@ -128,13 +123,11 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                                           height: 10,
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: space),
+                                          padding: const EdgeInsets.symmetric(horizontal: space),
                                           child: Text(
                                             "${box.price} $priceSymbol",
                                             style: TextStyle(
-                                              color:
-                                                  Theme.of(context).primaryColor,
+                                              color: Theme.of(context).primaryColor,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -143,48 +136,39 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                                           height: 5,
                                         ),
                                         const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: space),
+                                          padding: EdgeInsets.symmetric(horizontal: space),
                                           child: Divider(),
                                         ),
                                         spaceWidget,
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: space),
+                                          padding: const EdgeInsets.symmetric(horizontal: space),
                                           child: Text(
                                             "${box.name}",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .titleMedium
-                                                ?.copyWith(
-                                                    fontWeight: FontWeight.bold),
+                                                ?.copyWith(fontWeight: FontWeight.bold),
                                           ),
                                         ),
                                         spaceWidget,
                                         spaceWidget,
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10),
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
                                           child: TextButton(
                                             style: TextButton.styleFrom(
                                               foregroundColor: Colors.white,
                                               shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
+                                                borderRadius: BorderRadius.circular(10),
                                               ),
-                                              backgroundColor:
-                                                  Theme.of(context).primaryColor,
-                                              minimumSize:
-                                                  const Size.fromHeight(12),
+                                              backgroundColor: Theme.of(context).primaryColor,
+                                              minimumSize: const Size.fromHeight(12),
                                             ),
                                             onPressed: () async {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          BoxDetailsReservationScreen(
-                                                            box: box,
-                                                            order: order,
-                                                          )));
+                                              Navigator.of(context).push(MaterialPageRoute(
+                                                  builder: (context) => BoxDetailsReservationScreen(
+                                                        box: box,
+                                                        order: order,
+                                                      )));
                                             },
                                             child: Container(
                                               width: double.infinity,
@@ -209,8 +193,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                               reserve.isNotEmpty
                                   ? const Text(
                                       "Réservé",
-                                      style:
-                                          TextStyle(fontWeight: FontWeight.bold),
+                                      style: TextStyle(fontWeight: FontWeight.bold),
                                     )
                                   : const Text(""),
                               reserve.isNotEmpty ? spaceWidget : Container(),
@@ -238,40 +221,32 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                                         );
                                       },
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             height: 100,
                                             width: double.maxFinite,
-                                            padding:
-                                                const EdgeInsets.only(bottom: 15),
+                                            padding: const EdgeInsets.only(bottom: 15),
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                image: NetworkImage(
-                                                    "$mediaUrl${box!.image}"),
+                                                image: NetworkImage("$mediaUrl${box!.image}"),
                                                 fit: BoxFit.cover,
                                               ),
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(10),
-                                                      topRight:
-                                                          Radius.circular(10)),
+                                              borderRadius: const BorderRadius.only(
+                                                  topLeft: Radius.circular(10),
+                                                  topRight: Radius.circular(10)),
                                             ),
                                           ),
                                           const SizedBox(
                                             height: 5,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: space),
+                                            padding: const EdgeInsets.symmetric(horizontal: space),
                                             child: Text(
                                               "Cadeau réservé",
                                               style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColor,
+                                                color: Theme.of(context).primaryColor,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -280,34 +255,28 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                                             height: 5,
                                           ),
                                           const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: space),
+                                            padding: EdgeInsets.symmetric(horizontal: space),
                                             child: Divider(),
                                           ),
                                           spaceWidget,
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: space),
+                                            padding: const EdgeInsets.symmetric(horizontal: space),
                                             child: Text(
                                               "${box.name}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .titleMedium
-                                                  ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                  ?.copyWith(fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                           spaceWidget,
                                           order.reservation != null
                                               ? Padding(
                                                   padding:
-                                                      const EdgeInsets.symmetric(
-                                                          horizontal: space),
+                                                      const EdgeInsets.symmetric(horizontal: space),
                                                   child: Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                        MainAxisAlignment.spaceBetween,
                                                     children: [
                                                       Container(),
                                                       Row(
@@ -315,24 +284,20 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                                                           Icon(
                                                             Icons.date_range,
                                                             size: 15,
-                                                            color:
-                                                                Theme.of(context)
-                                                                    .primaryColor,
+                                                            color: Theme.of(context).primaryColor,
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
                                                           ),
                                                           Text(
                                                             "${order.reservation}",
-                                                            style:
-                                                                Theme.of(context)
-                                                                    .textTheme
-                                                                    .bodySmall
-                                                                    ?.copyWith(
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .primaryColor,
-                                                                    ),
+                                                            style: Theme.of(context)
+                                                                .textTheme
+                                                                .bodySmall
+                                                                ?.copyWith(
+                                                                  color: Theme.of(context)
+                                                                      .primaryColor,
+                                                                ),
                                                           ),
                                                         ],
                                                       )
@@ -350,8 +315,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                               consomme.isNotEmpty
                                   ? const Text(
                                       "Consommé",
-                                      style:
-                                          TextStyle(fontWeight: FontWeight.bold),
+                                      style: TextStyle(fontWeight: FontWeight.bold),
                                     )
                                   : const Text(""),
                               consomme.isNotEmpty ? spaceWidget : Container(),
@@ -379,40 +343,32 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                                         );
                                       },
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             height: 100,
                                             width: double.maxFinite,
-                                            padding:
-                                                const EdgeInsets.only(bottom: 15),
+                                            padding: const EdgeInsets.only(bottom: 15),
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                image: NetworkImage(
-                                                    "$mediaUrl${box!.image}"),
+                                                image: NetworkImage("$mediaUrl${box!.image}"),
                                                 fit: BoxFit.cover,
                                               ),
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(10),
-                                                      topRight:
-                                                          Radius.circular(10)),
+                                              borderRadius: const BorderRadius.only(
+                                                  topLeft: Radius.circular(10),
+                                                  topRight: Radius.circular(10)),
                                             ),
                                           ),
                                           const SizedBox(
                                             height: 5,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: space),
+                                            padding: const EdgeInsets.symmetric(horizontal: space),
                                             child: Text(
                                               "Cadeau consommé",
                                               style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColor,
+                                                color: Theme.of(context).primaryColor,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -421,22 +377,18 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                                             height: 5,
                                           ),
                                           const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: space),
+                                            padding: EdgeInsets.symmetric(horizontal: space),
                                             child: Divider(),
                                           ),
                                           spaceWidget,
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: space),
+                                            padding: const EdgeInsets.symmetric(horizontal: space),
                                             child: Text(
                                               "${box.name}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .titleMedium
-                                                  ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                  ?.copyWith(fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                           spaceWidget,
@@ -458,8 +410,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
         : const PleaseLoginScreen();
   }
 
-  Widget detail(
-      {required BuildContext context, required Order order, required Box box}) {
+  Widget detail({required BuildContext context, required Order order, required Box box}) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Votre cadeau"),
@@ -482,8 +433,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                       (item) => Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage("$mediaUrl${item.image}"),
-                              fit: BoxFit.cover),
+                              image: NetworkImage("$mediaUrl${item.image}"), fit: BoxFit.cover),
                         ),
                         //child: Text(item.toString()),
                       ),
@@ -598,14 +548,11 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                         ? Html(
                             data: box.isInside,
                             style: {
-                              "body": Style(
-                                  padding: HtmlPaddings.zero,
-                                  margin: Margins.zero),
+                              "body": Style(padding: HtmlPaddings.zero, margin: Margins.zero),
                               "ul": Style(
                                 padding: HtmlPaddings.only(left: 15),
                                 margin: Margins.zero,
-                                listStyleImage: const ListStyleImage(
-                                    "${serverUrl}images/list.jpg"),
+                                listStyleImage: const ListStyleImage("${serverUrl}images/list.jpg"),
                               ),
                               "li": Style(
                                 padding: HtmlPaddings.only(
@@ -631,14 +578,12 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                         ? Html(
                             data: box.mustKnow,
                             style: {
-                              "body": Style(
-                                  padding: HtmlPaddings.zero,
-                                  margin: Margins.zero),
+                              "body": Style(padding: HtmlPaddings.zero, margin: Margins.zero),
                               "ul": Style(
                                   padding: HtmlPaddings.only(left: 15),
                                   margin: Margins.zero,
-                                  listStyleImage: const ListStyleImage(
-                                      "${serverUrl}images/list.png")),
+                                  listStyleImage:
+                                      const ListStyleImage("${serverUrl}images/list.png")),
                               "li": Style(padding: HtmlPaddings.only(left: 5)),
                             },
                           )
@@ -649,8 +594,7 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                     Html(
                       data: box.description,
                       style: {
-                        "body": Style(
-                            padding: HtmlPaddings.zero, margin: Margins.zero),
+                        "body": Style(padding: HtmlPaddings.zero, margin: Margins.zero),
                       },
                     ),
                     const SizedBox(
@@ -782,7 +726,6 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
       print(e);
       return null;
     }
-
   }
 
   sendCommentAndNotation(String box) async {
@@ -790,8 +733,8 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
       UiUtils.modalLoading(context, "Chargement en cours");
     }
 
-    final response = await http
-        .post(Uri.parse(sendCommentUrl), headers: ApiUtils.getHeaders(), body: {
+    final response =
+        await http.post(Uri.parse(sendCommentUrl), headers: ApiUtils.getHeaders(), body: {
       "box": box,
       "user": context.read<AuthCubit>().getId().toString(),
       "comment": commentController.text,
@@ -830,19 +773,22 @@ class _SavedBoxScreenState extends State<SavedBoxScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(sbInputRadius),
-                      ),
-                    ),
-                    onPressed: () {
+                  InkWell(
+                    onTap: () {
                       //if (!mounted) return;
                       Navigator.of(context).pop();
                     },
-                    child: const Text("Ok"),
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(sbInputRadius),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: const Text("Ok", style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
                   ),
                 ],
               ),

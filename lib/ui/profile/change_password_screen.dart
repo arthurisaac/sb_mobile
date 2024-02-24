@@ -22,8 +22,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(changePassword),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFd96e70),
       ),
       body: Padding(
         padding: const EdgeInsets.all(space),
@@ -74,12 +72,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             BlocConsumer<UpdatePasswordCubit, UpdatePasswordSate>(
                 bloc: context.read<UpdatePasswordCubit>(),
                 builder: (context, state) {
-                  return TextButton(
-                    style: TextButton.styleFrom(
-                      splashFactory: NoSplash.splashFactory,
-                      backgroundColor: const Color(0xFFd96e70).withOpacity(0.3),
-                    ),
-                    onPressed: () async {
+                  return InkWell(
+                    onTap: () async {
                       if (passwordConfirmationController.text.isNotEmpty &&
                           passwordController.text.isNotEmpty) {
                         context.read<UpdatePasswordCubit>().updatePassword(
@@ -89,8 +83,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      padding: const EdgeInsets.all(12),
-                      child: const Text(goNext),
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(sbInputRadius),
+                      ),
+                      child: const Text(goNext, style: TextStyle(color: Colors.white)),
                     ),
                   );
                 },

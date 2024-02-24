@@ -212,14 +212,20 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
                       .labelLarge
                       ?.copyWith(fontWeight: FontWeight.w800),
                 ),
-                ElevatedButton(
-                    onPressed: () {
+                InkWell(
+                    onTap: () {
                       saveDetails();
                     },
                     child: Container(
                       padding: const EdgeInsets.all(10),
-                      color: Theme.of(context).primaryColor,
-                      child: const Text("Payer maintenant"),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(sbInputRadius),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: const Text("Payer maintenant", style: TextStyle(color: Colors.white)),
+                      ),
                     ))
               ],
             ),
@@ -299,18 +305,14 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).primaryColor,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(sbInputRadius),
-                          ),
-                        ),
-                        onPressed: () {
+                      InkWell(
+                        onTap: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text("Fermer"),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: const Text("Fermer", style: TextStyle(color: Colors.white)),
+                        ),
                       ),
                     ],
                   ),

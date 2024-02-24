@@ -38,11 +38,19 @@ class _DeliveryModeScreenState extends State<DeliveryModeScreen> {
                     spaceWidget,
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: space),
-                      child: Text("Livraison", style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),),
+                      child: Text(
+                        "Livraison",
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
                     ),
                     const Padding(
                       padding: EdgeInsets.all(space),
-                      child: Text("Comment souhaitez-vous envoyer le coffret cadeau?",),
+                      child: Text(
+                        "Comment souhaitez-vous envoyer le coffret cadeau?",
+                      ),
                     ),
                     RadioListTile(
                         title: const Text("Livraison à domicile"),
@@ -78,41 +86,49 @@ class _DeliveryModeScreenState extends State<DeliveryModeScreen> {
                 ),
               ),
               spaceWidget,
-              (livraison.isNotEmpty) ? Card(
-                elevation: 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(space),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Livraison", style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),),
-                      spaceWidget,
-                      spaceWidget,
-                      TextFormField(
-                        controller: deliveryController,
-                        keyboardType: TextInputType.text,
-                        showCursor: false,
-                        readOnly: false,
-                        decoration: InputDecoration(
-                          hintText: "Où livrer",
-                          label: Text(label),
-                          errorText: null,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(sbInputRadius),
-                          ),
+              (livraison.isNotEmpty)
+                  ? Card(
+                      elevation: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(space),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Livraison",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            spaceWidget,
+                            spaceWidget,
+                            TextFormField(
+                              controller: deliveryController,
+                              keyboardType: TextInputType.text,
+                              showCursor: false,
+                              readOnly: false,
+                              decoration: InputDecoration(
+                                hintText: "Où livrer",
+                                label: Text(label),
+                                errorText: null,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(sbInputRadius),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Champ requis';
+                                }
+                                return null;
+                              },
+                            )
+                          ],
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Champ requis';
-                          }
-                          return null;
-                        },
-                      )
-                    ],
-                  ),
-                ),
-              ) : Container(),
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         ),
@@ -123,21 +139,23 @@ class _DeliveryModeScreenState extends State<DeliveryModeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            (widget.box.discount! > 0) ? Text(
-              "${widget.box.discount} $priceSymbol",
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge
-                  ?.copyWith(fontWeight: FontWeight.w800),
-            ) : Text(
-              "${widget.box.price} $priceSymbol",
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge
-                  ?.copyWith(fontWeight: FontWeight.w800),
-            ),
-            ElevatedButton(
-              onPressed: () {
+            (widget.box.discount! > 0)
+                ? Text(
+                    "${widget.box.discount} $priceSymbol",
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(fontWeight: FontWeight.w800),
+                  )
+                : Text(
+                    "${widget.box.price} $priceSymbol",
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(fontWeight: FontWeight.w800),
+                  ),
+            InkWell(
+              onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => DetailsClientScreen(
                           box: widget.box,
@@ -147,8 +165,14 @@ class _DeliveryModeScreenState extends State<DeliveryModeScreen> {
               },
               child: Container(
                 padding: const EdgeInsets.all(10),
-                color: Theme.of(context).primaryColor,
-                child: const Text("Suivant"),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(sbInputRadius),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: const Text("Suivant", style: TextStyle(color: Colors.white)),
+                ),
               ),
             )
           ],

@@ -247,8 +247,8 @@ class _DetailsClientScreenState extends State<DetailsClientScreen> {
                         .labelLarge
                         ?.copyWith(fontWeight: FontWeight.w800),
                   ),
-            ElevatedButton(
-              onPressed: () {
+            InkWell(
+              onTap: () {
                 Order order = Order(
                     id: 0,
                     nom: nomController.text,
@@ -267,8 +267,14 @@ class _DetailsClientScreenState extends State<DetailsClientScreen> {
               },
               child: Container(
                 padding: const EdgeInsets.all(10),
-                color: Theme.of(context).primaryColor,
-                child: const Text("Récapitulatif"),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(sbInputRadius),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  child: const Text("Récapitulatif", style: TextStyle(color: Colors.white)),
+                ),
               ),
             )
           ],

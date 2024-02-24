@@ -58,7 +58,8 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
                 ),
                 items: imgList
                     ?.map(
-                      (item) => Container(
+                      (item) =>
+                      Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage("$mediaUrl${item.image}"),
@@ -66,7 +67,7 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
                         ),
                         //child: Text(item.toString()),
                       ),
-                    )
+                )
                     .toList(),
               ),
               Center(
@@ -74,7 +75,9 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
                   width: 20,
                   height: 6,
                   color: Colors.black,
-                  activeColor: Theme.of(context).primaryColor,
+                  activeColor: Theme
+                      .of(context)
+                      .primaryColor,
                   count: imgList!.length,
                   index: _index,
                 ),
@@ -87,7 +90,8 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
                   children: [
                     Text(
                       "${box.name}",
-                      style: Theme.of(context)
+                      style: Theme
+                          .of(context)
                           .textTheme
                           .titleMedium
                           ?.copyWith(fontWeight: FontWeight.bold),
@@ -100,7 +104,8 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
                       children: [
                         RatingBarIndicator(
                           rating: double.tryParse(box.notation.toString()) ?? 0,
-                          itemBuilder: (context, index) => const Icon(
+                          itemBuilder: (context, index) =>
+                          const Icon(
                             Icons.star,
                             color: Colors.amber,
                           ),
@@ -122,28 +127,28 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
                     ),
                     (box.discount! > 0)
                         ? Row(
-                            children: [
-                              Text(
-                                "${box.price} $priceSymbol",
-                                style: const TextStyle(
-                                  decoration: TextDecoration.lineThrough,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "${box.discount} $priceSymbol",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red),
-                              ),
-                            ],
-                          )
-                        : Text(
-                            "${box.price} $priceSymbol",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                      children: [
+                        Text(
+                          "${box.price} $priceSymbol",
+                          style: const TextStyle(
+                            decoration: TextDecoration.lineThrough,
                           ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          "${box.discount} $priceSymbol",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red),
+                        ),
+                      ],
+                    )
+                        : Text(
+                      "${box.price} $priceSymbol",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
               ),
@@ -194,56 +199,64 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
                     ),
                     Text(
                       "Qu'est-ce qui est inclus ?",
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     box.isInside != null && box.isInside!.isNotEmpty
                         ? Html(
-                            data: box.isInside,
-                            style: {
-                              "body": Style(
-                                  padding: HtmlPaddings.zero,
-                                  margin: Margins.zero),
-                              "ul": Style(
-                                  padding: HtmlPaddings.only(left: 15),
-                                  margin: Margins.zero,
-                                  listStyleImage: const ListStyleImage(
-                                      "${serverUrl}images/list.jpg")),
-                              "li": Style(padding: HtmlPaddings.only(left: 5)),
-                            },
-                          )
+                      data: box.isInside,
+                      style: {
+                        "body": Style(
+                            padding: HtmlPaddings.zero,
+                            margin: Margins.zero),
+                        "ul": Style(
+                            padding: HtmlPaddings.only(left: 15),
+                            margin: Margins.zero,
+                            listStyleImage: const ListStyleImage(
+                                "${serverUrl}images/list.jpg")),
+                        "li": Style(padding: HtmlPaddings.only(left: 5)),
+                      },
+                    )
                         : Container(),
                     const SizedBox(
                       height: 20,
                     ),
                     Text(
                       "Que devrais-je savoir ?",
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     box.mustKnow!.isNotEmpty
                         ? Html(
-                            data: box.mustKnow,
-                            style: {
-                              "body": Style(
-                                  padding: HtmlPaddings.zero,
-                                  margin: Margins.zero),
-                              "ul": Style(
-                                  padding: HtmlPaddings.only(left: 15),
-                                  margin: Margins.zero,
-                                  listStyleImage: const ListStyleImage(
-                                      "${serverUrl}images/list.png")),
-                              "li": Style(padding: HtmlPaddings.only(left: 5)),
-                            },
-                          )
+                      data: box.mustKnow,
+                      style: {
+                        "body": Style(
+                            padding: HtmlPaddings.zero,
+                            margin: Margins.zero),
+                        "ul": Style(
+                            padding: HtmlPaddings.only(left: 15),
+                            margin: Margins.zero,
+                            listStyleImage: const ListStyleImage(
+                                "${serverUrl}images/list.png")),
+                        "li": Style(padding: HtmlPaddings.only(left: 5)),
+                      },
+                    )
                         : Container(),
                     const SizedBox(
                       height: 20,
@@ -269,74 +282,90 @@ class _BoxDetailsScreenState extends State<BoxDetailsScreen> {
         color: Colors.white,
         padding: const EdgeInsets.all(space),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            (widget.box.discount! > 0)
-                ? Text(
-                    "${widget.box.discount} $priceSymbol",
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w800, color: Colors.red),
-                  )
-                : Text(
-                    "${widget.box.price} $priceSymbol",
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge
-                        ?.copyWith(fontWeight: FontWeight.w800),
-                  ),
-            ElevatedButton(
-              onPressed: () {
-                if (context.read<AuthCubit>().state is Authenticated) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => DeliveryModeScreen(
-                            box: widget.box,
-                          )));
-                } else {
-                  AlertDialog alert = AlertDialog(
-                    title: const Text("Attention"),
-                    content: const Text(
-                        "Vous avez besoin d'être connecté avant d'acheter une box"),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const ManualLoginScreen()));
-                        },
-                        child: Text(
-                          "Connexion",
-                          style:
-                              TextStyle(color: Theme.of(context).primaryColor),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text(
-                          "Annuler",
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      )
-                    ],
-                  );
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return alert;
-                    },
-                  );
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                color: Theme.of(context).primaryColor,
-                child: const Text("Acheter"),
-              ),
-            )
-          ],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+        (widget.box.discount! > 0)
+            ? Text(
+          "${widget.box.discount} $priceSymbol",
+          style: Theme
+              .of(context)
+              .textTheme
+              .labelLarge
+              ?.copyWith(
+              fontWeight: FontWeight.w800, color: Colors.red),
+        )
+            : Text(
+          "${widget.box.price} $priceSymbol",
+          style: Theme
+              .of(context)
+              .textTheme
+              .labelLarge
+              ?.copyWith(fontWeight: FontWeight.w800),
         ),
-      ),
+        InkWell(
+          onTap: () {
+            if (context
+                .read<AuthCubit>()
+                .state is Authenticated) {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      DeliveryModeScreen(
+                        box: widget.box,
+                      )));
+            } else {
+              AlertDialog alert = AlertDialog(
+                title: const Text("Attention"),
+                content: const Text(
+                    "Vous avez besoin d'être connecté avant d'acheter une box"),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ManualLoginScreen()));
+                    },
+                    child: Text(
+                      "Connexion",
+                      style:
+                      TextStyle(color: Theme
+                          .of(context)
+                          .primaryColor),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      "Annuler",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  )
+                ],
+              );
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return alert;
+                },
+              );
+            }
+          },
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(sbInputRadius),
+                color: Theme.of(context).primaryColor,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: const Text("Acheter", style: TextStyle(color: Colors.white),),
+          ),
+        ),
+      )
+      ],
+    ),)
+    ,
     );
   }
 }

@@ -239,7 +239,7 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-                      const Text('Paiement enregistré'),
+                      const Text('Paiement enregistré', style: TextStyle(color: Colors.white)),
                       const SizedBox(
                         height: 15,
                       ),
@@ -321,7 +321,7 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: const Text("Fermer"),
+                          child: const Text("Fermer", style: TextStyle(color: Colors.white)),
                         ),
                       ],
                     ),

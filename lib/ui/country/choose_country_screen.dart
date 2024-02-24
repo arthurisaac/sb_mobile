@@ -110,7 +110,7 @@ class _ChooseCountryScreenState extends State<ChooseCountryScreen> {
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
-                  child: const Center(child: Text("Continuer")),
+                  child: const Center(child: Text("Continuer", style: TextStyle(color: Colors.white),)),
                 ),
               ),
               const SizedBox(

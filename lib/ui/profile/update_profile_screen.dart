@@ -103,13 +103,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             BlocConsumer<UpdateProfileCubit, UpdateProfileSate>(
                 bloc: context.read<UpdateProfileCubit>(),
                 builder: (context, state) {
-                  return TextButton(
-                    style: TextButton.styleFrom(
-                      splashFactory: NoSplash.splashFactory,
-                      backgroundColor:
-                      Theme.of(context).primaryColor.withOpacity(0.5),
-                    ),
-                    onPressed: () async {
+                  return InkWell(
+                    onTap: () async {
                       if (firstNameController.text.isNotEmpty && lastNameController.text.isNotEmpty &&
                           phoneController.text.isNotEmpty) {
                         context.read<UpdateProfileCubit>().updateProfile(
@@ -121,8 +116,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      padding: const EdgeInsets.all(12),
-                      child: const Text(goNext),
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(sbInputRadius),
+                      ),
+                      child: const Text(goNext, style: TextStyle(color: Colors.white)),
                     ),
                   );
                 },

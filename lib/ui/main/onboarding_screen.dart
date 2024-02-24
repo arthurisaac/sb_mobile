@@ -59,16 +59,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
       ),
       bottomSheet: isLastPage
-          ? TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                backgroundColor: Theme.of(context).primaryColor,
-                minimumSize: const Size.fromHeight(80),
-              ),
-              onPressed: () async {
+          ? InkWell(
+              onTap: () async {
                 final prefs = await SharedPreferences.getInstance();
                 prefs.setBool(showOnBoarding, true);
 
@@ -76,9 +68,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 Navigator.of(context)
                     .pushReplacementNamed(Routes.countryChoice);
               },
-              child: const Text(
-                "Commencer",
-                style: TextStyle(fontSize: 24),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(20),
+                color: Theme.of(context).primaryColor,
+                child: const Text(
+                  "Commencer",
+                  style: TextStyle(fontSize: 24, color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
               ),
             )
           : Container(
