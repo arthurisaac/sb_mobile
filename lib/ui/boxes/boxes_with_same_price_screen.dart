@@ -41,23 +41,26 @@ class _BoxesWithSamePriceScreenState extends State<BoxesWithSamePriceScreen> {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             List<Box>? list = snapshot.data;
-            return Padding(
-              padding: const EdgeInsets.all(space),
-              child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 30,
-                    crossAxisSpacing: 24,
-                    childAspectRatio: 0.75,
-                  ),
-                  itemCount: list?.length,
-                  itemBuilder: (context, index) {
-                    Box box = list![index];
-                    return BoxItemExchange(
-                      box: box,
-                      order: widget.order,
-                    );
-                  }),
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(space),
+                child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 30,
+                      crossAxisSpacing: 24,
+                      childAspectRatio: 0.75,
+                    ),
+                    itemCount: list?.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      Box box = list![index];
+                      return BoxItemExchange(
+                        box: box,
+                        order: widget.order, price: widget.price,
+                      );
+                    }),
+              ),
             );
           }
 
@@ -105,10 +108,11 @@ class _BoxesWithSamePriceScreenState extends State<BoxesWithSamePriceScreen> {
 }
 
 class BoxItemExchange extends StatefulWidget {
+  final String price;
   final Box box;
   final Order order;
 
-  const BoxItemExchange({Key? key, required this.box, required this.order})
+  const BoxItemExchange({Key? key, required this.box, required this.order, required this.price})
       : super(key: key);
 
   @override
@@ -131,7 +135,7 @@ class _BoxItemExchangeState extends State<BoxItemExchange> {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) =>
-                BoxDetailsWithExchange(box: box, order: widget.order)));
+                BoxDetailsWithExchange(box: box, order: widget.order, price: widget.price,)));
       },
       child: Card(
         elevation: 5,

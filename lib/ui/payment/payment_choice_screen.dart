@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smartbox/features/model/new_order_model.dart';
 import 'package:smartbox/ui/main/main_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
+import 'package:smartbox/ui/utils/ui_utils.dart';
 
 import '../../features/auth/cubits/auth_cubit.dart';
 import '../../features/model/box_model.dart';
@@ -20,8 +22,9 @@ class PaymentChoiceScreen extends StatefulWidget {
   final NewOrder order;
   final Box box;
   final double total;
+  final bool isExchange;
   const PaymentChoiceScreen(
-      {Key? key, required this.order, required this.box, required this.total})
+      {Key? key, required this.order, required this.box, required this.total, this.isExchange = false})
       : super(key: key);
 
   @override
@@ -96,6 +99,14 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                                 .textTheme
                                 .labelLarge
                                 ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          spaceWidget,
+                          Row(
+                            children: [
+                              Text("Montant à payer : "),
+                              SizedBox(width: 10,),
+                              Text("${widget.total} $priceSymbol", style: TextStyle(fontWeight: FontWeight.bold),),
+                            ],
                           ),
                           spaceWidget,
                           spaceWidget,
@@ -178,47 +189,34 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
   }
 
   Future savePayment() async {
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (_) {
-          return const Dialog(
-            backgroundColor: Colors.white,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // The loading indicator
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  // Some text
-                  Text('Chargement en cours...')
-                ],
-              ),
-            ),
-          );
-        });
+    UiUtils.modalLoading(context, "Chargement en cours");
 
     final body = {
       userKey: context.read<AuthCubit>().getId().toString(),
       orderKey: widget.order.id.toString(),
+      boxKey: widget.box.id.toString(),
       phoneNumberKey: phoneNumberController.text,
       paymentMethodKey: payment,
       otpCodeKey: otpCodeController.text,
       amountKey: widget.total.toString()
     };
+    var response = null;
 
-    final response = await http.post(Uri.parse(savePaymentUrl),
-        headers: ApiUtils.getHeaders(), body: body);
+    if (widget.isExchange == true) {
+      response = await http.post(Uri.parse(boxExchangeUrl),
+          headers: ApiUtils.getHeaders(), body: body);
+    } else {
+      response = await http.post(Uri.parse(savePaymentUrl),
+          headers: ApiUtils.getHeaders(), body: body);
+    }
 
     final responseJson = jsonDecode(response.body);
     //print(response.body);
 
     if (response.statusCode == 201) {
       if (mounted) {
+
+        // Dialog de success
         showDialog(
             barrierDismissible: false,
             context: context,
@@ -231,15 +229,17 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // The loading indicator
-                      const Icon(
-                        Icons.check_circle_outline,
-                        color: Colors.greenAccent,
-                        size: 96,
+                      Lottie.asset(
+                        'images/animation_success.json',
+                        width: 150,
+                        height: 150,
+                        fit: BoxFit.fill,
+                        repeat: false,
                       ),
                       const SizedBox(
                         height: 15,
                       ),
-                      const Text('Paiement enregistré', style: TextStyle(color: Colors.white)),
+                      const Text('Votre achat a été effectué avec succès', style: TextStyle(fontWeight: FontWeight.bold),),
                       const SizedBox(
                         height: 15,
                       ),
@@ -256,7 +256,7 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const MainScreen()));
                         },
-                        child: const Text("Fermer"),
+                        child: const Text("Retour à l'accueil"),
                       ),
                     ],
                   ),
@@ -276,6 +276,7 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
         Navigator.of(context).pop();
 
         if (body.isNotEmpty) {
+          // Dialog de paiment échoué
           showDialog(
               barrierDismissible: true,
               context: context,
@@ -288,10 +289,12 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         // The loading indicator
-                        const Icon(
-                          Icons.error,
-                          color: Colors.orange,
-                          size: 96,
+                        Lottie.asset(
+                          'images/animation_failure.json',
+                          width: 150,
+                          height: 150,
+                          fit: BoxFit.fill,
+                          repeat: false,
                         ),
                         const SizedBox(
                           height: 15,
@@ -335,6 +338,7 @@ class _PaymentChoiceScreenState extends State<PaymentChoiceScreen> {
 
         if (!mounted) return;
 
+        // Dialog erreur serveur
         showDialog(
             barrierDismissible: true,
             context: context,

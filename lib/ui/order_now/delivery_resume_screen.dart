@@ -250,7 +250,7 @@ class _DeliveryResumeScreenState extends State<DeliveryResumeScreen> {
       telephoneClientKey: widget.order.telephone,
       mailClientKey: widget.order.mail,
       promoCodeKey: "",
-      totalKey: widget.box.price.toString(),
+      totalKey: total.toString(),
     };
     final response = await http.post(Uri.parse(saveOrderUrl),
         headers: ApiUtils.getHeaders(), body: body);

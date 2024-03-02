@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smartbox/ui/main/main_screen.dart';
 import 'package:smartbox/ui/utils/ui_utils.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
@@ -15,8 +16,9 @@ import '../utils/constants.dart';
 class ReservationScreen extends StatefulWidget {
   final Box box;
   final Order order;
+  final bool isEdit;
 
-  const ReservationScreen({Key? key, required this.box, required this.order})
+  const ReservationScreen({Key? key, required this.box, required this.order, this.isEdit = false})
       : super(key: key);
 
   @override
@@ -154,6 +156,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
       body: {
         "order_id": widget.order.id.toString(),
         "reservation_date": dateController.text,
+        "is_edit": widget.isEdit ? "true": "false",
       },
     );
 
@@ -171,16 +174,21 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // The loading indicator
-                    const Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.green,
-                      size: 96,
+                    Lottie.asset(
+                      'images/animation_success.json',
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.fill,
+                      repeat: false,
                     ),
                     const SizedBox(
                       height: 15,
                     ),
                     // Some text
-                    const Text('Réservation enregistrée avec succès'),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(child: widget.isEdit ? Text('Date de réservation modifiée avec succès. Vous serez prévenu par mail après sa validation', textAlign: TextAlign.center,) : Text('Réservation enregistrée avec succès')),
+                    ),
                     const SizedBox(
                       height: 15,
                     ),

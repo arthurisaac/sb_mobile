@@ -51,138 +51,42 @@ class _BoxesInCategoriesState extends State<BoxesInCategories> {
         title: Text(widget.title),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            widget.settingsModel.bannerAdEnable == 1
-                ? GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AdDetailsScreen(
-                              ad: widget.settingsModel.bannerAdDetail
-                                  .toString())));
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      decoration: const BoxDecoration(color: Colors.orange),
-                      padding: const EdgeInsets.all(14),
-                      child: Text(
-                        "${widget.settingsModel.bannerAd}",
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.white),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              widget.settingsModel.bannerAdEnable == 1
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AdDetailsScreen(
+                                ad: widget.settingsModel.bannerAdDetail
+                                    .toString())));
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        decoration: const BoxDecoration(color: Colors.orange),
+                        padding: const EdgeInsets.all(14),
+                        child: Text(
+                          "${widget.settingsModel.bannerAd}",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: Colors.white),
+                        ),
                       ),
-                    ),
-                  )
-                : Container(),
-            spaceWidget,
-            Padding(
-              padding: const EdgeInsets.all(space),
-              child: boxList.isNotEmpty
-                  ? Column(
-                      children: [
-                        GridView.builder(
-                            /* gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 4.0,
-                                mainAxisSpacing: 4.0,
-                              ),*/
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 30,
-                              crossAxisSpacing: 10,
-                              // width / height: fixed for *all* items
-                              childAspectRatio: 0.75,
-                            ),
-                            shrinkWrap: true,
-                            itemCount: boxList.length,
-                            itemBuilder: (context, index) {
-                              Box box = boxList[index];
-                              return BoxItem(box: box);
-                            }),
-                        spaceWidget,
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: subCats.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        SubCategoriesItemsScreen(
-                                      subCats: subCats[index].items,
-                                      title: subCats[index].title ?? "",
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                        "$mediaUrl${subCats[index].image}"),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Text(
-                                    "${subCats[index].title}",
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      shadows: <Shadow>[
-                                        Shadow(
-                                          offset: Offset(0.0, 0.0),
-                                          blurRadius: 3.0,
-                                          color: Color.fromARGB(255, 0, 0, 0),
-                                        ),
-                                        Shadow(
-                                          offset: Offset(0.0, 0.0),
-                                          blurRadius: 8.0,
-                                          color: Color.fromARGB(
-                                              125, 255, 255, 255),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        )
-                      ],
                     )
-                  : const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-              /*child: FutureBuilder<List<Box>?>(
-                future: getBoxes(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    if (kDebugMode) {
-                      print(snapshot.error);
-                    }
-                    return Text("Une erreur s'est produite ${snapshot.error}");
-                  }
-
-                  if (snapshot.hasData) {
-                    List<Box>? boxList = snapshot.data;
-                    if (snapshot.data != null && boxList!.isNotEmpty) {
-                      return Column(
+                  : Container(),
+              spaceWidget,
+              Padding(
+                padding: const EdgeInsets.all(space),
+                child: boxList.isNotEmpty
+                    ? Column(
                         children: [
                           GridView.builder(
-                              */
-              /* gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 4.0,
-                                mainAxisSpacing: 4.0,
-                              ),*/
-              /*
+                              /* gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 4.0,
+                                  mainAxisSpacing: 4.0,
+                                ),*/
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
@@ -199,39 +103,137 @@ class _BoxesInCategoriesState extends State<BoxesInCategories> {
                               }),
                           spaceWidget,
                           ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: subCats.length,
                             itemBuilder: (context, index) {
-                              return Container(
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                        "$mediaUrl${subCats[index].image}"),
-                                    fit: BoxFit.cover,
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          SubCategoriesItemsScreen(
+                                        subCats: subCats[index].items,
+                                        title: subCats[index].title ?? "",
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          "$mediaUrl${subCats[index].image}"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(18.0),
+                                    child: Text(
+                                      "${subCats[index].title}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        shadows: <Shadow>[
+                                          Shadow(
+                                            offset: Offset(0.0, 0.0),
+                                            blurRadius: 3.0,
+                                            color: Color.fromARGB(255, 0, 0, 0),
+                                          ),
+                                          Shadow(
+                                            offset: Offset(0.0, 0.0),
+                                            blurRadius: 8.0,
+                                            color: Color.fromARGB(
+                                                125, 255, 255, 255),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               );
                             },
                           )
                         ],
-                      );
-                    } else {
-                      return const Center(
-                        child: Text(
-                            "Nous n'avons aucun cadeau disponible pour cette catégorie"),
-                      );
+                      )
+                    : const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                /*child: FutureBuilder<List<Box>?>(
+                  future: getBoxes(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      if (kDebugMode) {
+                        print(snapshot.error);
+                      }
+                      return Text("Une erreur s'est produite ${snapshot.error}");
                     }
-                  }
 
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),*/
-            ),
-          ],
+                    if (snapshot.hasData) {
+                      List<Box>? boxList = snapshot.data;
+                      if (snapshot.data != null && boxList!.isNotEmpty) {
+                        return Column(
+                          children: [
+                            GridView.builder(
+                                */
+                /* gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 4.0,
+                                  mainAxisSpacing: 4.0,
+                                ),*/
+                /*
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 30,
+                                  crossAxisSpacing: 10,
+                                  // width / height: fixed for *all* items
+                                  childAspectRatio: 0.75,
+                                ),
+                                shrinkWrap: true,
+                                itemCount: boxList.length,
+                                itemBuilder: (context, index) {
+                                  Box box = boxList[index];
+                                  return BoxItem(box: box);
+                                }),
+                            spaceWidget,
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: subCats.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          "$mediaUrl${subCats[index].image}"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        );
+                      } else {
+                        return const Center(
+                          child: Text(
+                              "Nous n'avons aucun cadeau disponible pour cette catégorie"),
+                        );
+                      }
+                    }
+
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),*/
+              ),
+            ],
+          ),
         ),
       ),
     );

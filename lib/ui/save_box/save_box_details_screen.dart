@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smartbox/ui/main/main_screen.dart';
+import 'package:smartbox/ui/utils/ui_utils.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
 
 import '../../features/auth/cubits/auth_cubit.dart';
@@ -193,30 +195,7 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
   }
 
   saveBoxDetails() async {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (_) {
-        return const Dialog(
-          backgroundColor: Colors.white,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // The loading indicator
-                CircularProgressIndicator(),
-                SizedBox(
-                  height: 15,
-                ),
-                // Some text
-                Text('Chargement en cours...')
-              ],
-            ),
-          ),
-        );
-      },
-    );
+    UiUtils.modalLoading(context, "Enregistrement en cours...");
 
     final response = await http.post(
       Uri.parse(confirmedOrderUrl),
@@ -242,16 +221,18 @@ class _SaveBoxDetailsScreenState extends State<SaveBoxDetailsScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // The loading indicator
-                    const Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.greenAccent,
-                      size: 96,
+                    Lottie.asset(
+                      'images/animation_success.json',
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.fill,
+                      repeat: false,
                     ),
                     const SizedBox(
                       height: 15,
                     ),
                     // Some text
-                    const Text('Enregistré avec succès'),
+                    const Text('Enregistré avec succès', style: TextStyle(fontWeight: FontWeight.w600),),
                     const SizedBox(
                       height: 15,
                     ),

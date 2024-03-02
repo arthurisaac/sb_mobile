@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smartbox/features/model/box_model.dart';
 import 'package:smartbox/ui/auth/forget_password_screen.dart';
 import 'package:smartbox/ui/auth/registration_screen.dart';
@@ -176,10 +177,12 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           // The loading indicator
-                                          const Icon(
-                                            Icons.error,
-                                            color: Colors.red,
-                                            size: 96,
+                                          Lottie.asset(
+                                            'images/animation_failure.json',
+                                            width: 150,
+                                            height: 150,
+                                            fit: BoxFit.fill,
+                                            repeat: false,
                                           ),
                                           const SizedBox(
                                             height: 15,
@@ -194,6 +197,7 @@ class _ManualLoginScreenState extends State<ManualLoginScreen> {
                                               Navigator.of(context).pop();
                                             },
                                             child: Container(
+                                              padding: EdgeInsets.all(14),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context).primaryColor,
                                                 borderRadius: BorderRadius.circular(sbInputRadius),

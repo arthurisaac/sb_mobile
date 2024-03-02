@@ -41,8 +41,8 @@ class _PleaseLoginScreenState extends State<PleaseLoginScreen> {
                 spaceWidget,
                 Lottie.asset(
                   'images/animation_login.json',
-                  width: 200,
-                  height: 200,
+                  width: 150,
+                  height: 150,
                   fit: BoxFit.fill,
                 ),
                 spaceWidget,

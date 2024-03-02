@@ -1,7 +1,7 @@
-const String serverUrl = 'http://192.168.11.110:8000/';
+//const String serverUrl = 'http://192.168.11.111:8000/';
 //const String serverUrl = 'http://192.168.1.198:8000/';
 //const String serverUrl = 'http://localhost:8001/';
-//const String serverUrl = 'https://yiikiglobal.com/';
+const String serverUrl = 'https://yiikiglobal.com/';
 const String baseUrl = '${serverUrl}api/';
 const String mediaUrl = '${serverUrl}storage/';
 const String jwtKey = 'rBDsbikDxRIlKEyvmW9wDpndJoM1Ieov8jH0zive';

@@ -281,6 +281,7 @@ class _BoxDetailsWithEditReservationScreenState
                         return ReservationScreen(
                           box: box,
                           order: widget.order,
+                          isEdit: true,
                         );
                       },
                     );

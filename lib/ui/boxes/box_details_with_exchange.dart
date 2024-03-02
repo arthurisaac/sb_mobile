@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smartbox/features/model/images_model.dart';
+import 'package:smartbox/features/model/new_order_model.dart';
 import 'package:smartbox/ui/main/main_screen.dart';
+import 'package:smartbox/ui/payment/payment_choice_screen.dart';
 import 'package:smartbox/ui/utils/constants.dart';
 import 'package:smartbox/ui/utils/ui_utils.dart';
 import 'package:smartbox/ui/utils/widgets_utils.dart';
@@ -21,11 +23,12 @@ import 'package:http/http.dart';
 import '../utils/api_utils.dart';
 
 class BoxDetailsWithExchange extends StatefulWidget {
+  final String price;
   final Box box;
   final Order order;
 
   const BoxDetailsWithExchange(
-      {Key? key, required this.box, required this.order})
+      {Key? key, required this.box, required this.order, required this.price})
       : super(key: key);
 
   @override
@@ -36,10 +39,16 @@ class _BoxDetailsWithExchangeState extends State<BoxDetailsWithExchange> {
   late List<Images>? imgList = [];
   late Box box;
   int _index = 0;
+  String price = "0";
 
   @override
   void initState() {
     super.initState();
+
+    price = widget.box.price.toString();
+    if (widget.box.discount! > 0) {
+      price = widget.box.discount.toString();
+    }
 
     imgList = widget.box.images;
     box = widget.box;
@@ -278,12 +287,20 @@ class _BoxDetailsWithExchangeState extends State<BoxDetailsWithExchange> {
                         "Confirmation",
                         "Souhaitez vraiment échanger de cadeau ? ",
                         () async {
-                          await exchangeBox();
-                          if (mounted) {
-                            UiUtils.okAlertDialog(context, "Cadeau échangé", "Votre cadeau a été échangé avec succès", () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MainScreen()));
-                            });
+                          if (widget.price == price) {
+                            await exchangeBox();
+                            if (mounted) {
+                              UiUtils.okAlertDialog(context, "Cadeau échangé", "Votre cadeau a été échangé avec succès", () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MainScreen()));
+                              });
+                            }
+                          } else {
+                            Order order = widget.order;
+                            var total = (double.tryParse(price) ?? 0) - (double.tryParse(widget.price) ?? 0);
+                            NewOrder newOrder = NewOrder(user: context.read<AuthCubit>().getId().toString(), box: widget.box.id.toString(), total: total.toString(), id: order.id );
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentChoiceScreen(order: newOrder, box: widget.box, total: total, isExchange: true,)));
                           }
+
                         },
                         null);
                   },
@@ -313,6 +330,9 @@ class _BoxDetailsWithExchangeState extends State<BoxDetailsWithExchange> {
       userKey: context.read<AuthCubit>().getId().toString(),
       boxKey: widget.box.id.toString(),
       orderKey: widget.order.id.toString(),
+      phoneNumberKey: "",
+      otpCodeKey: "",
+      amountKey: widget.price,
     };
     await post(Uri.parse(boxExchangeUrl),
         headers: ApiUtils.getHeaders(), body: body);
